@@ -1,8 +1,13 @@
+'''
+Original Author: https://github.com/jimmy-print
+Edit: https://github.com/Abdur-rahmaanJ
+'''
+
 from hooman import Hooman
 
 import pygame
 
-window_width, window_height = 800, 800
+window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
 
 rect_x, rect_y = 100, 100
