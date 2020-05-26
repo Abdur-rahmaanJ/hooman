@@ -4,4 +4,4 @@ from .hooman import(
     Hooman
     )
 
-__version__ = '0.1.6'
+__version__ = '0.1.8'

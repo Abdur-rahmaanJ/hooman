@@ -13,7 +13,7 @@ hapi.handle_events = handle_events
 while hapi.is_running:
     hapi.background((255, 255, 255))
 
-    hapi.stroke_weight(5)
+    hapi.stroke_size(5)
     hapi.stroke((0, 255, 0))
 
     for i in range(0, hapi.WIDTH, 20):
