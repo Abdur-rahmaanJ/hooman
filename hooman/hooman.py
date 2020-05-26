@@ -1,10 +1,12 @@
 
+
+import pygame
 from math import pi
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):
+
         pygame.init()
-        self.codes = pygame.locals
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self._fill = (255, 255, 255)
@@ -42,7 +44,7 @@ class Hooman:
             else:
                 self.screen.fill((col[0], col[1], col[2]))
 
-    def stroke_weight(self, weight):
+    def stroke_size(self, weight):
         self._stroke_weight = weight
 
     def no_stroke(self):
@@ -69,6 +71,8 @@ class Hooman:
         return y
 
     def text(self, letters, x, y):
+        if not isinstance(letters, str):
+            letters = str(letters)
         font = pygame.font.SysFont(self.sysfont, self.font_size)
         text = font.render(letters, True, self._fill)
         self.screen.blit(text, (x, y))
