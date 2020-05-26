@@ -10,6 +10,8 @@ pip install hooman
 
 ![](assets/color_change.gif)
 
+color change
+
 ```python
 from hooman import Hooman
 
@@ -47,7 +49,9 @@ pygame.quit()
 
 ```
 
-![](assets/line_mouse.gif)
+lines
+
+![](assets/lines.gif)
 
 ```python
 from hooman import Hooman
@@ -77,6 +81,8 @@ while hapi.is_running:
 pygame.quit()
 
 ```
+
+squares
 
 ![](assets/squares.jpg)
 
