@@ -1,15 +1,5 @@
-import pygame
-from math import pi
 
-from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_ESCAPE,
-    KEYDOWN,
-    QUIT,
-)
+from math import pi
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):
