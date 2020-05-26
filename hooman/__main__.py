@@ -1,4 +1,4 @@
-import meteomoris
+
 
 def main():
     pass
