@@ -7,12 +7,13 @@ hapi = Hooman(window_width, window_height)
 
 bg_col = (255, 255, 255)
 
-  #the function that gets called when the button is clicked on
+#the function that gets called when the button is clicked on
 def button_clicked(): 
     if button2.y == 250:
         button2.y = 300
     else:
         button2.y = 250
+
 
 button1 = Button(
     x=150,
@@ -59,7 +60,7 @@ while hapi.is_running:
     button2.update()
 
     hapi.event_loop()
-    
+
     hapi.flip_display()
 
     clock.tick(60)

@@ -95,8 +95,8 @@ class Hooman:
 
 class Button:
 
-    def __init__(self, x, y, w=0, h=0, calculateSize=False, text="", background=(255,255,255),
-                 font="Calibri", font_size=30, font_colour=(0,0,0), outline=None,action=None,
+    def __init__(self, x, y, w=0, h=0, calculateSize=False, text="", background=(255, 255, 255),
+                 font="Calibri", font_size=30, font_colour=(0, 0, 0), outline=None,action=None,
                  action_arg=None, surface=None, image=None, enlarge=False, enlarge_amount=1.1,
                  hover_image=None, dont_generate=False, hover_background_color=None, curve_amount=0):
         self.x = x
@@ -135,7 +135,7 @@ class Button:
         #create the surfaces for the button to blit every frame
         if not dont_generate:
             if self.w == 0 or self.h == 0 or self.caclulateSize:
-                if not image is None:
+                if image is not None:
                     self.w = self.image.get_width()
                     self.h = self.image.get_height()
                 else:
@@ -249,22 +249,23 @@ class Button:
     def _draw(self):
         if self.hover:
             if self.enlarge:
-                self.surface.blit(self.hover_image,(self.x - self.dx//2,self.y - self.dy//2))
+                self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:
-                self.surface.blit(self.hover_image,(self.x,self.y))
+                self.surface.blit(self.hover_image, (self.x,self.y))
         else:
-            self.surface.blit(self.image,(self.x,self.y))
+            self.surface.blit(self.image, (self.x, self.y))
 
 
 #used to simplify outlining the button/checkbox
 #instead of many vars in button, create an outline object to give to button
 class Outline:
-    def __init__(self, type="full", outline_amount = 2, outline_color = (0,0,0)):
+    def __init__(self, type="full", outline_amount=2, outline_color=(0, 0, 0)):
         self.type = type
         self.s = outline_amount
         self.col = outline_color
 
-    def _draw(self,surf,col,w,h,curve_amount):
+
+    def _draw(self, surf, col, w, h, curve_amount):
         if self.type == "half":
             surf.blit(curve_square(w, h, curve_amount, col), (0, 0))
         elif self.type == "full":
@@ -272,7 +273,7 @@ class Outline:
             surf.blit(curve_square(w - self.s * 2, h - self.s * 2, curve_amount, col), (self.s, self.s))
             
 #this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
-def curve_square(width,height,curve, color = (0, 0, 0)):
+def curve_square(width, height, curve, color=(0, 0, 0)):
     if not 0 <= curve <= 1:
         raise ValueError("curve value out of range, must be between 0 and 1")
     curve *= min(width, height)
