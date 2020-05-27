@@ -91,17 +91,20 @@ class Hooman:
         self.mouse_test_x = self.mouseX()
         for event in pygame.event.get():
             self.handle_events(event)
-    
+
 
 class Button:
-    
-    def __init__(self,x,y,w= 0,h=0, calculateSize = False,text="",background = (255,255,255),font = "Calibri", font_size = 30, font_colour = (0,0,0), outline = None,action = None, action_arg = None, surface = None, image = None, enlarge = False, enlarge_amount = 1.1, hover_image = None, dont_generate = False, hover_background_color = None, curve_amount = 0):
+
+    def __init__(self, x, y, w=0, h=0, calculateSize=False, text="", background=(255,255,255),
+                 font="Calibri", font_size=30, font_colour=(0,0,0), outline=None,action=None,
+                 action_arg=None, surface=None, image=None, enlarge=False, enlarge_amount=1.1,
+                 hover_image=None, dont_generate=False, hover_background_color=None, curve_amount=0):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
         self.surface = surface
-        #if no surface is supplied, try getting 
+        #if no surface is supplied, try getting main screen
         if self.surface is None:
             self.surface = pygame.display.get_surface()
             if self.surface is None:
@@ -110,7 +113,9 @@ class Button:
         self.text_colour = font_colour
         self.background = background
         self.curve_amount = curve_amount
-        self.hover_background = self.background if hover_background_color == None else hover_background_color
+        self.hover_background = self.background
+        if hover_background_color is not None:
+            self.hover_background = hover_background_color
         self.font = pygame.font.Font(pygame.font.match_font(font),font_size)
         self.out = outline
         self.action = action
@@ -121,7 +126,8 @@ class Button:
         self.enlarge_amount = enlarge_amount
         if self.enlarge:
             if self.text != "":
-                self.enlarge_font = pygame.font.Font(pygame.font.match_font(font),int(font_size * enlarge_amount))
+                self.enlarge_font = pygame.font.Font(
+                    pygame.font.match_font(font), int(font_size * enlarge_amount))
         self.action_arg = action_arg
         self.hover = False
         self.caclulateSize = calculateSize
@@ -143,12 +149,13 @@ class Button:
         #generate images
         #if no image, create the button by drawing
         if self.image is None:
-            self.image = pygame.Surface((self.w,self.h), pygame.SRCALPHA)
-            self.hover_image = pygame.Surface((self.w,self.h), pygame.SRCALPHA)
+            self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
+            self.hover_image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.image.blit(curve_square(self.w, self.h, self.curve_amount, self.background), (0,0))
-            self.hover_image.blit(curve_square(self.w, self.h, self.curve_amount, self.hover_background), (0,0))
+            self.hover_image.blit(curve_square(
+                self.w, self.h, self.curve_amount, self.hover_background), (0,0))
             #self.hover_image.fill(self.hover_background)
-            if not self.out is None:
+            if self.out is not None:
                 self.out._draw(self.hover_image,self.hover_background,self.w,self.h,self.curve_amount)
             self.hover_image.convert()
             self.image.convert()
@@ -156,10 +163,10 @@ class Button:
         elif self.hover_image is None:
             self.hover_image = self.image.copy()
             if not self.out is None:
-                pygame.draw.rect(self.hover_image,(0,0,0,255),(0,0,self.w,self.out.s))
-                pygame.draw.rect(self.hover_image,(0,0,0,255),(0,0,self.out.s,self.h))
-                pygame.draw.rect(self.hover_image,(0,0,0,255),(self.w,self.h,-self.w,-self.out.s))
-                pygame.draw.rect(self.hover_image,(0,0,0,255),(self.w,self.h,-self.out.s, -self.h))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.out.s))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0 ,0 ,self.out.s, self.h))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.w, -self.out.s))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.out.s, -self.h))
             self.hover_image.convert_alpha()
             self.image.convert_alpha()
         #enlarge the image, no matter if user gives an image or not
@@ -169,11 +176,12 @@ class Button:
             self.hover_image = pygame.transform.scale(self.image,size) 
         #put the text over images, if enlarge, create a bigger font so resolution stays high
         if self.text != "":
-            txt = self.font.render(self.text,True,self.text_colour)
+            txt = self.font.render(self.text, True, self.text_colour)
             self.image.blit(txt,((self.w - txt.get_width())//2, (self.h - txt.get_height())//2))
             if self.enlarge:
-                txt = self.enlarge_font.render(self.text,True,self.text_colour)
-            self.hover_image.blit(txt,((self.hover_image.get_width() - txt.get_width())//2, (self.hover_image.get_height() - txt.get_height())//2))  
+                txt = self.enlarge_font.render(self.text, True, self.text_colour)
+            self.hover_image.blit(txt,((self.hover_image.get_width() - txt.get_width())//2,
+                                       (self.hover_image.get_height() - txt.get_height())//2))  
         #if the user gives both images, check to see if different sizes so know if enlarged or not
         if self.hover_image.get_width() != self.w or self.hover_image.get_height() != self.h:
             self.enlarge = True
@@ -185,13 +193,13 @@ class Button:
             
     #if no width or height is given, calculate it with length of text
     def _caclulate_size(self):
-        txt = self.font.render(self.text,False,(0,0,0))
+        txt = self.font.render(self.text, False, (0, 0, 0))
         self.w = txt.get_width() + self.w
         self.h = txt.get_height() + self.h
     
     #return a pygame.Rect of the button
     def get_rect(self):
-        return pygame.Rect(self.x,self.y,self.w,self.h)
+        return pygame.Rect(self.x, self.y, self.w, self.h)
     
     #this is what will be shown when print(button)
     def __str__(self):
@@ -215,8 +223,8 @@ class Button:
         self.hover = False
         returnee = False
         #check if mouse over button
-        if mouse_pos[0] > self.x and mouse_pos[0] < self.x+self.w:
-            if mouse_pos[1] > self.y and mouse_pos[1] < self.y+self.h:
+        if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.w:
+            if mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.h:
                 self.hover = True
                 #check for click, if held down, action only gets called once
                 if click and not self.prev_clicked_state:
@@ -258,22 +266,22 @@ class Outline:
 
     def _draw(self,surf,col,w,h,curve_amount):
         if self.type == "half":
-            surf.blit(curve_square(w, h, curve_amount, col), (0,0))
+            surf.blit(curve_square(w, h, curve_amount, col), (0, 0))
         elif self.type == "full":
-            surf.blit(curve_square(w, h, curve_amount, self.col), (0,0))
-            surf.blit(curve_square(w-self.s*2, h-self.s*2, curve_amount, col), (self.s,self.s))
+            surf.blit(curve_square(w, h, curve_amount, self.col), (0, 0))
+            surf.blit(curve_square(w - self.s * 2, h - self.s * 2, curve_amount, col), (self.s, self.s))
             
 #this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
-def curve_square(width,height,curve, color = (0,0,0)):
+def curve_square(width,height,curve, color = (0, 0, 0)):
     if not 0 <= curve <= 1:
         raise ValueError("curve value out of range, must be between 0 and 1")
-    curve *= min(width,height)
+    curve *= min(width, height)
     curve = int(curve)
-    surf = pygame.Surface((width,height),pygame.SRCALPHA)
-    pygame.draw.rect(surf,color,(0,curve,width,height-2*curve))
-    pygame.draw.rect(surf,color,(curve,0,width - 2 * curve,height))
-    pygame.draw.circle(surf,color, (curve,curve),curve)
-    pygame.draw.circle(surf,color, (width - curve,curve),curve)
-    pygame.draw.circle(surf,color, (curve,height - curve),curve)
-    pygame.draw.circle(surf,color, (width - curve,height - curve),curve)
+    surf = pygame.Surface((width, height), pygame.SRCALPHA)
+    pygame.draw.rect(surf, color, (0, curve, width, height - 2 * curve))
+    pygame.draw.rect(surf, color, (curve, 0, width - 2 * curve, height))
+    pygame.draw.circle(surf, color, (curve, curve), curve)
+    pygame.draw.circle(surf, color, (width - curve, curve), curve)
+    pygame.draw.circle(surf, color, (curve, height - curve), curve)
+    pygame.draw.circle(surf, color, (width - curve, height - curve), curve)
     return surf
