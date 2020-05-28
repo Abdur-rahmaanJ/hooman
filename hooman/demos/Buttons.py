@@ -15,30 +15,36 @@ def button_clicked():
         button2.y = 250
 
 
-button1 = Button(
-    x=150,
-    y=150,
-    w=200,
-    h=30,
-    text="Click Me",
-    background=(200, 200, 200),
-    hover_background_color=(150, 150, 150),
-    curve_amount=0.3
+grey_style = {
+    'background_color':(200, 200, 200),
+    'hover_background_color':(220, 220, 220),
+    'curve':0.1,
+    'padding_x':5,
+    'padding_y':5,
+    'font_size':15
+    }
+button1 = hapi.button(150, 150, "Click Me",
+    grey_style
 )
 
-button2 = Button(
-    x=150,
-    y=250,
-    w=200,
-    h=30,
-    text="No Click Me",
-    background=(200, 200, 200),
-    hover_background_color=(220, 220, 220),
-    outline = Outline(outline_color=(200, 200, 200)),
-    curve_amount=0.3,
-    action=button_clicked
+buttonx = hapi.button(150, 10, "Click Me",
+    grey_style
 )
 
+button2 = hapi.button(150, 250, "No Click Me",
+    {
+    'background_color':(200, 200, 200),
+    'hover_background_color':(220, 220, 220),
+    'outline':hapi.outline({
+            'color':(200, 200, 200), 
+            'amount':5
+            }),
+    'curve':0.3,
+    'action':button_clicked,
+    'padding_x':40,
+    'padding_y':10,
+    'font_size':15
+    })
 
 def handle_events(event):
     if event.type == pygame.QUIT:
@@ -57,8 +63,15 @@ while hapi.is_running:
 
     if button1.update(): #if the button was clicked
         bg_col = (255, 0, 0) if bg_col == (255, 255, 255) else (255, 255, 255)
-    button2.update()
-
+    
+    # for i in range(5):
+    #     x = hapi.button(10+i*80, hapi.mouseY(), "Click Me",
+    #         grey_style
+    #     )
+    # don't use it for ui elements in loop lile the above
+    # each element can also be individually
+    # updated
+    hapi.update_ui() 
     hapi.event_loop()
 
     hapi.flip_display()
