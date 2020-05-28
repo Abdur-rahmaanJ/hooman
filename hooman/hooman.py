@@ -94,9 +94,8 @@ class Hooman:
 
 
 class Button:
-
     def __init__(self, x, y, w=0, h=0, calculateSize=False, text="", background=(255, 255, 255),
-                 font="Calibri", font_size=30, font_colour=(0, 0, 0), outline=None,action=None,
+                 font="Calibri", font_size=30, font_colour=(0, 0, 0), outline=None, action=None,
                  action_arg=None, surface=None, image=None, enlarge=False, enlarge_amount=1.1,
                  hover_image=None, dont_generate=False, hover_background_color=None, curve_amount=0):
         self.x = x
@@ -144,7 +143,8 @@ class Button:
                     else:
                         raise ValueError("cannot calculate width and height without text")
             self._Generate_images()
-     
+
+
     def _Generate_images(self):     
         #generate images
         #if no image, create the button by drawing
@@ -189,32 +189,35 @@ class Button:
         #convert the images so it is faster to put on screen
         self.image.convert()
         self.hover_image.convert()
-        
-            
+
+ 
     #if no width or height is given, calculate it with length of text
     def _caclulate_size(self):
         txt = self.font.render(self.text, False, (0, 0, 0))
         self.w = txt.get_width() + self.w
         self.h = txt.get_height() + self.h
-    
+
+
     #return a pygame.Rect of the button
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.w, self.h)
-    
+
+
     #this is what will be shown when print(button)
     def __str__(self):
         if self.text:
             return "Button: '" + self.text + "'"
         else:
             return "Button: at (" + str(self.x)  + ", " + str(self.y) + ")"  
-    
+
+
     #update the text of the button, remake the surfaces for the button
     def Update_text(self,text):
         self.text = text
         if self.caclulateSize:
             self._caclulate_size()
         self._Generate_images()
-    
+
     
     #update the button, this should get called every frame
     def update(self):
@@ -251,7 +254,7 @@ class Button:
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:
-                self.surface.blit(self.hover_image, (self.x,self.y))
+                self.surface.blit(self.hover_image, (self.x, self.y))
         else:
             self.surface.blit(self.image, (self.x, self.y))
 
@@ -271,7 +274,8 @@ class Outline:
         elif self.type == "full":
             surf.blit(curve_square(w, h, curve_amount, self.col), (0, 0))
             surf.blit(curve_square(w - self.s * 2, h - self.s * 2, curve_amount, col), (self.s, self.s))
-            
+
+
 #this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
 def curve_square(width, height, curve, color=(0, 0, 0)):
     if not 0 <= curve <= 1:
