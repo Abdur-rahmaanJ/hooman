@@ -1,4 +1,4 @@
-from hooman import Hooman, Button, Outline
+from hooman import Hooman
 
 import pygame
 

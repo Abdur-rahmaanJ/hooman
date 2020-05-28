@@ -1,7 +1,5 @@
 import pygame
 
-from hooman_python import options_val
-
 class Button:
 
     def __init__(self, x, y, text, param_options):
@@ -202,7 +200,7 @@ class Button:
     def height(self):
         txt = self.font.render(self.text, False, (0, 0, 0))
         h = txt.get_height() + self.h + self.padding_y * 2
-        return h
+        return
 
 
 #used to simplify outlining the button/checkbox
@@ -211,7 +209,10 @@ class Outline:
     def __init__(self, options):
         self.s = options["amount"]
         self.col = options["color"]
-        self.type = options_val(options, "type", "full") # dict key default
+        if 'type' in options:
+            self.type = options['type']
+        else:
+            self.type = 'full'
 
 
     def _draw(self, surf, col, w, h, curve_amount):

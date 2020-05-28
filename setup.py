@@ -15,7 +15,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 setup(
     name='hooman',  # Required
-    version='0.1.9',  # Required
+    version='0.2.5',  # Required
     description='Pygame for humans',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)

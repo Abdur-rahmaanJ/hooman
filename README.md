@@ -126,7 +126,7 @@ buttons
 ![](assets/demo_buttons.png)
 
 ```python
-from hooman import Hooman, Button, Outline
+from hooman import Hooman
 
 import pygame
 
