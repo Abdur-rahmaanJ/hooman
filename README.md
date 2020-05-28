@@ -211,6 +211,21 @@ pygame.quit()
 
 # Docs
 
+## Attributes
+
+## .WIDTH
+
+- `hapi.WIDTH` is gives the width of the screen
+
+## .HEIGHT
+
+- `hapi.HEIGHT` is gives the height of the screen
+
+## .is_running
+
+- if loop is running
+
+
 ## Colors, strokes & Fill
 
 ## .fill
@@ -231,7 +246,7 @@ pygame.quit()
 - `hapi.background((100, 100, 100))` for r g b
 - `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
 
-## size
+## Size
 
 ## .stroke_size
 
@@ -249,7 +264,88 @@ pygame.quit()
 - sets font size of text
 - `hapi.font_size(12)`
 
+## Basic elements
+
+## .rect
+
+`hapi.rect(x, y, width, height)`
+- x - x coordinate
+- y - y coordinate
+
+## .ellipse
+
+`hapi.ellipse(x, y, width, height)`
+- x - x coordinate
+- y - y coordinate
+
+## .line
+
+`hapi.line(x1, y1, x2, y2)`
+
+- x1 - x coordinate of first point
+- y1 - y coordinate of first point
+- x2 - x coordinate of second point
+- y2 - y coordinate of second point
+
+## .text
+
+`.text(letters, x, y)`
+
+- letters - string of chars eg. 'abcd'
+- x - x coordinate
+- y - y coordinate
+- will convert any type passed to string
+- `hapi.text(5, 10, 10)` is valid
+- `hapi.text(hapi.mouseX(), 10, 10)` is valid out of the box
+
+## Interactivity
+
+## .mouseX
+
+- `hapi.mouseX()` gives the current x coordinate of the mouse
+
+## .mouseY
+
+- `hapi.mouseY()` gives the current y coordinate of the mouse
+
+## Pygame specifics
+
+## .flip_display
+
+- is just `pygame.display.flip()` behind the scene
+
+## .event_loop
+
+requires
+
+```python
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
+
+hapi.handle_events = handle_events
+```
+
+- is put inside `hapi.is_running` loop
+
+## 
+
 # Ui
+
+## .update_ui
+
+- no need to update each element if you call this
+- called inside `hapi.is_running` loop
+- here is when **NOT** to use it:
+
+```python
+while hapi.is_running:
+    for i in range(5):
+            x = hapi.button(10+i*80, hapi.mouseY(), "Click Me",
+                grey_style
+            )
+        hapi.update_ui() 
+```
 
 ## .button
 
