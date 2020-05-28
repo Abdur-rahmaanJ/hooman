@@ -207,8 +207,8 @@ class Button:
 #instead of many vars in button, create an outline object to give to button
 class Outline:
     def __init__(self, options):
-        self.s = options["amount"]
-        self.col = options["color"]
+        self.s = options["amount"] if "amount" in options else 2 
+        self.col = options["color"] if "color" in options else (0,0,0)
         if 'type' in options:
             self.type = options['type']
         else:
