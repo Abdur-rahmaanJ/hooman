@@ -3,7 +3,7 @@
 
 ```
 pip install hooman
-```O
+```
 # demos
 
 
@@ -225,6 +225,20 @@ pygame.quit()
 
 - if loop is running
 
+## .screen
+
+still exposes a screen to draw with any pygame shape
+
+`pygame.draw.arc(hapi.screen, (255, 0, 0), [80,10,200,200], hapi.PI, hapi.PI/2, 2)`
+
+## Constants
+
+## .PI
+
+The value of pi as provided by the maths module
+
+`pygame.draw.arc(hapi.screen, (255, 0, 0), [80,10,200,200], hapi.PI, hapi.PI/2, 2)`
+
 
 ## Colors, strokes & Fill
 
@@ -297,6 +311,62 @@ pygame.quit()
 - will convert any type passed to string
 - `hapi.text(5, 10, 10)` is valid
 - `hapi.text(hapi.mouseX(), 10, 10)` is valid out of the box
+
+## .polygon
+
+`.polygon(coords, fill=True)`
+
+- coords is a 2d array [(0,0), (10, 10), (10, 100)]
+- if fill is `False`, only the outline will be drawn
+- adjust outline with `.stroke_size`
+
+## .begin_shape
+
+`hapi.begin_shape()` starts drawing a polygon
+
+## .vertex
+
+`.vertex((100, 200))`
+
+## .end_shape
+
+`hapi.end_shape(fill=True)` draws polygon on closing
+
+Minimal demo of `.begin_shape`, `.vertex` and `.end_shape`
+
+```python
+from hooman import Hooman
+
+import pygame
+
+hapi = Hooman(500, 500)
+
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
+
+hapi.handle_events = handle_events
+
+while hapi.is_running:
+    hapi.background(hapi.color['white'])
+
+    hapi.fill(hapi.color['blue'])
+    hapi.stroke_size(4)
+
+    hapi.begin_shape()
+    hapi.vertex((0, 0))
+    hapi.vertex((100, 0))
+    hapi.vertex((hapi.mouseX(), hapi.mouseY()))
+    hapi.end_shape()
+
+    # same as hapi.polygon([(0, 0), (100, 0), (hapi.mouseX(), hapi.mouseY())])
+
+    hapi.flip_display()
+    hapi.event_loop()
+
+pygame.quit()
+
+```
 
 ## Interactivity
 
