@@ -1,3 +1,8 @@
+'''
+Author: https://github.com/TheBigKahuna353
+Edit: https://github.com/Abdur-rahmaanJ
+'''
+
 from hooman import Hooman
 
 import pygame

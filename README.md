@@ -3,8 +3,7 @@
 
 ```
 pip install hooman
-```
-
+```O
 # demos
 
 
@@ -210,20 +209,56 @@ pygame.quit()
 
 ```
 
-# docs
+# Docs
 
-coming soon ...
+## Colors, strokes & Fill
 
-## Ui
+## .fill
 
-### Button
+- used for colouring next shapes
+- `hapi.fill((100, 100, 100))` for r g b
+- `hapi.fill(100)`  same as `hapi.fill((100, 100, 100))`
+
+## .stroke
+
+- used to set color of next shapes' outlines
+- `hapi.stroke((100, 100, 100))` for r g b
+- `hapi.stroke(100)`  same as `hapi.stroke((100, 100, 100))`
+
+## .background
+
+- used to set background color of screen
+- `hapi.background((100, 100, 100))` for r g b
+- `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
+
+## size
+
+## .stroke_size
+
+- used to control thickness of lines and outlines
+- `hapi.stroke_size(size)` where size is an int
+
+## .no_stroke
+
+- set lines and outlines thickness to 0
+- `hapi.no_stroke()`
+- same as `hapi.stroke_size(0)`
+
+## .font_size
+
+- sets font size of text
+- `hapi.font_size(12)`
+
+# Ui
+
+## .button
 
 Create a button with `hapi.button(x, y, text, [optional paramters])`
 
 - `x` - x location of the button
 - `y` - y location of the button
 - `text` - the text on the button
-- `[optional parameters]` - a dictionary of any extra options you want for the button
+- `[optional parameters]` - a dictionary of any extra options you want for the button listed below
 
 #### Optional Parameters
 
@@ -254,12 +289,12 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 - width() - this returns the width of the button
 - height() - this returns the height of the button
 
-### outline
+### Outline
 create a outline for ui elements with `hapi.outline([optional parameters])`
 
 - `[optional parameters]` - options for the outline
 
-#### optional paramters
+#### Optional paramters
 
 - type - the type of outline, there is 'full' and 'half', by default it is 'full'
 - amount - the thickness of the outline, by default it is 2

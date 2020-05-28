@@ -40,7 +40,13 @@ class Hooman:
                 self._fill = (col[0], col[1], col[2])
 
     def stroke(self, color):
-        self._stroke = (color[0], color[1], color[2])
+        if isinstance(col, int):
+            self._stroke = (col, col, col)
+        elif isinstance(col, list) or isinstance(col, tuple):
+            if len(col) == 1:
+                self._stroke = (col[0], col[0], col[0])
+            else:
+                self._stroke = (col[0], col[1], col[2])
 
     def background(self, col):
         if isinstance(col, int):
