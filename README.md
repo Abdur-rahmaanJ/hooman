@@ -213,3 +213,54 @@ pygame.quit()
 # docs
 
 coming soon ...
+
+## Ui
+
+### Button
+
+Create a button with `hapi.button(x, y, text, [optional paramters])`
+
+- `x` - x location of the button
+- `y` - y location of the button
+- `text` - the text on the button
+- `[optional parameters]` - a dictionary of any extra options you want for the button
+
+#### Optional Parameters
+
+- surface - the surface you want the button on, by default it is the main window
+- background - the color of the utton background
+- hover_background_color - the color of the button background when the mouse is over the button
+- font - the font of the text, by default it is Calibri
+- font_size - the size of the text, by default it is 30
+- font_colour - the colour of the text, by default it is black
+- outline - this creates an outline for the button, must be a `hapi.outline()` object
+- action - this is a function that gets called when the button is clicked
+- action_arg - if the function given in action requires a parameter, you can use this to send to the function
+- image - this should be a `pygame.Surface()` object that the button will show instead
+- hover_image - this should be a `pygame.Surface()` object that the button will show when the mouse is over the button
+- enlarge - this will resize the button when the mouse is over the button, this should be a bool
+- enlarge_amount - this is the percentage that you want the button to resize to when the mouse is over the button (1 = no change)
+- calculate_size - when set to True, this will calculate the width and height of the button from the size of the text
+- padding_x - an integer that is added on to the width on both sides of the text when calculate_size is set to True
+- padding_y - an integer that is added on to the height on both sides of the text when calulate_size is set to True
+- dont_generate - when set to True, the button will not generate the images to put on screen, this can be handy if you want to use calculate_size without supplying text, you will need to call `button.update_text()` to generate the images before drawing
+- curve - the amount of curve you want the button to have on the edges with 0 being no curve and 1 being full curve, by default it is 0
+
+#### Methods
+
+- update() - this updates the button and draws it on screen, this should be called every frame
+- Update_text(text) - this changes the text and recreates the button
+- get_rect() - this returns a pygame.Rect of the button
+- width() - this returns the width of the button
+- height() - this returns the height of the button
+
+### outline
+create a outline for ui elements with `hapi.outline([optional parameters])`
+
+- `[optional parameters]` - options for the outline
+
+#### optional paramters
+
+- type - the type of outline, there is 'full' and 'half', by default it is 'full'
+- amount - the thickness of the outline, by default it is 2
+- color - the colour of the outline, by default it is black
