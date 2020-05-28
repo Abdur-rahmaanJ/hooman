@@ -213,7 +213,7 @@ class Button:
 class Outline:
     def __init__(self, options):
         self.s = options["amount"] if "amount" in options else 2 
-        self.col = options["color"] if "color" in options else (0,0,0)
+        self.col = options["color"] if "color" in options else (0, 0, 0)
         if 'type' in options:
             self.type = options['type']
         else:
