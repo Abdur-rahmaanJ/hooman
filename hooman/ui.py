@@ -39,41 +39,40 @@ class Button:
         self.padding_x = options['padding_x']
         self.padding_y = options['padding_y']
         self.surface = options['surface']
+        self.text_colour = options['font_colour']
+        self.background_color = options['background_color']
+        self.curve_amount = options['curve']
+        font = options['font']
+        font_size = options['font_size']
+        self.outline = options['outline']
+        self.on_click = options['on_click']
+        self.on_hover = options['on_hover']
+        image = options['image']
+        dont_generate = options['dont_generate']
+        self.caclulateSize = options['calculate_size']
+        self.hover_image = options['hover_image']
+        self.enlarge = options['enlarge']
+        self.enlarge_amount = options['enlarge_amount']
+
         # if no surface is supplied, try getting main screen
         if self.surface is None:
             self.surface = pygame.display.get_surface()
             if self.surface is None:
                 raise ValueError("No surface to blit to")
-        self.text_colour = options['font_colour']
-        self.background_color = options['background_color']
-        self.curve_amount = options['curve']
 
-        #hover_background_color = options['hover_background_color']
-        #if hover_background_color is not None:
-        #    self.background_color = hover_background_color
-
-        font = options['font']
-        font_size = options['font_size']
         self.font = pygame.font.Font(pygame.font.match_font(font),font_size)
 
-        self.outline = options['outline']
-        self.on_click = options['on_click']
-        self.on_hover = options['on_hover']
-        image = options['image']
         self.image = image.copy() if image else None
         self.clicked_on = False
-        self.hover_image = options['hover_image']
-        self.enlarge = options['enlarge']
-        self.enlarge_amount = options['enlarge_amount']
+        
         if self.enlarge:
             if self.text != "":
                 self.enlarge_font = pygame.font.Font(
                     pygame.font.match_font(font), int(font_size * enlarge_amount))
         self.hover = False
-        self.caclulateSize = options['calculate_size']
+        
         self.prev_clicked_state = False
         # create the surfaces for the button to blit every frame
-        dont_generate = options['dont_generate']
         if not dont_generate:
             if self.w == 0 or self.h == 0 or self.caclulateSize:
                 if image is not None:
@@ -193,7 +192,8 @@ class Button:
     # draw the button
     def _draw(self):
         if self.hover:
-            self.on_hover(self)
+            if self.on_hover:
+                self.on_hover(self)
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:
