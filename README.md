@@ -4,9 +4,9 @@
 ```
 pip install hooman
 ```
-
 # demos
 
+Ui docs for hover not so updated
 
 ![](assets/color_change.gif)
 
@@ -126,6 +126,7 @@ buttons
 ![](assets/demo_buttons.png)
 
 ```python
+
 from hooman import Hooman
 
 import pygame
@@ -136,39 +137,46 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 #the function that gets called when the button is clicked on
-def button_clicked(): 
-    if button2.y == 250:
-        button2.y = 300
+def button_clicked(this): 
+    if this.y == 250:
+        this.y = 300
     else:
-        button2.y = 250
+        this.y = 250
+        
+    print(this.y)
+
 
 
 grey_style = {
     'background_color':(200, 200, 200),
-    'hover_background_color':(220, 220, 220),
     'curve':0.1,
     'padding_x':5,
     'padding_y':5,
     'font_size':15
     }
+
 button1 = hapi.button(150, 150, "Click Me",
     grey_style
 )
 
-buttonx = hapi.button(150, 10, "Click Me",
-    grey_style
+def button_hover(this):
+    hapi.background(hapi.color['green'])
+stylex = grey_style.copy()
+stylex['on_hover'] = button_hover
+
+buttonx = hapi.button(150, 10, "Hover Me",
+    stylex
 )
 
 button2 = hapi.button(150, 250, "No Click Me",
     {
     'background_color':(200, 200, 200),
-    'hover_background_color':(220, 220, 220),
     'outline':hapi.outline({
             'color':(200, 200, 200), 
             'amount':5
             }),
     'curve':0.3,
-    'action':button_clicked,
+    'on_click':button_clicked,
     'padding_x':40,
     'padding_y':10,
     'font_size':15
@@ -210,20 +218,242 @@ pygame.quit()
 
 ```
 
-# docs
+# Docs
 
-coming soon ...
+## Attributes
 
-## Ui
+## .WIDTH
 
-### Button
+- `hapi.WIDTH` is gives the width of the screen
+
+## .HEIGHT
+
+- `hapi.HEIGHT` is gives the height of the screen
+
+## .is_running
+
+- if loop is running
+
+## .screen
+
+still exposes a screen to draw with any pygame shape
+
+`pygame.draw.arc(hapi.screen, (255, 0, 0), [80,10,200,200], hapi.PI, hapi.PI/2, 2)`
+
+## Constants
+
+## .PI
+
+The value of pi as provided by the maths module
+
+`pygame.draw.arc(hapi.screen, (255, 0, 0), [80,10,200,200], hapi.PI, hapi.PI/2, 2)`
+
+
+## Colors, strokes & Fill
+
+## .fill
+
+- used for colouring next shapes
+- `hapi.fill((100, 100, 100))` for r g b
+- `hapi.fill(100)`  same as `hapi.fill((100, 100, 100))`
+
+## .stroke
+
+- used to set color of next shapes' outlines
+- `hapi.stroke((100, 100, 100))` for r g b
+- `hapi.stroke(100)`  same as `hapi.stroke((100, 100, 100))`
+
+## .background
+
+- used to set background color of screen
+- `hapi.background((100, 100, 100))` for r g b
+- `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
+
+## .color
+
+same as
+
+```
+{
+    'red': (255, 0, 0),
+    'green': (0, 255, 0),
+    'blue': (0, 0, 255),
+    'black': (0, 0, 0),
+    'white': (255, 0, 0),
+    'yellow': (255, 255, 0),
+    'grey': (100, 100, 100)
+}
+```
+
+also `.colors`, `.colours`, `.colour` same
+
+## Size
+
+## .stroke_size
+
+- used to control thickness of lines and outlines
+- `hapi.stroke_size(size)` where size is an int
+
+## .no_stroke
+
+- set lines and outlines thickness to 0
+- `hapi.no_stroke()`
+- same as `hapi.stroke_size(0)`
+
+## .font_size
+
+- sets font size of text
+- `hapi.font_size(12)`
+
+## Basic elements
+
+## .rect
+
+`hapi.rect(x, y, width, height)`
+- x - x coordinate
+- y - y coordinate
+
+## .ellipse
+
+`hapi.ellipse(x, y, width, height)`
+- x - x coordinate
+- y - y coordinate
+
+## .line
+
+`hapi.line(x1, y1, x2, y2)`
+
+- x1 - x coordinate of first point
+- y1 - y coordinate of first point
+- x2 - x coordinate of second point
+- y2 - y coordinate of second point
+
+## .text
+
+`.text(letters, x, y)`
+
+- letters - string of chars eg. 'abcd'
+- x - x coordinate
+- y - y coordinate
+- will convert any type passed to string
+- `hapi.text(5, 10, 10)` is valid
+- `hapi.text(hapi.mouseX(), 10, 10)` is valid out of the box
+
+## .polygon
+
+`.polygon(coords, fill=True)`
+
+- coords is a 2d array [(0,0), (10, 10), (10, 100)]
+- if fill is `False`, only the outline will be drawn
+- adjust outline with `.stroke_size`
+
+## .begin_shape
+
+`hapi.begin_shape()` starts drawing a polygon
+
+## .vertex
+
+`.vertex((100, 200))`
+
+## .end_shape
+
+`hapi.end_shape(fill=True)` draws polygon on closing
+
+Minimal demo of `.begin_shape`, `.vertex` and `.end_shape`
+
+```python
+from hooman import Hooman
+
+import pygame
+
+hapi = Hooman(500, 500)
+
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
+
+hapi.handle_events = handle_events
+
+while hapi.is_running:
+    hapi.background(hapi.color['white'])
+
+    hapi.fill(hapi.color['blue'])
+    hapi.stroke_size(4)
+
+    hapi.begin_shape()
+    hapi.vertex((0, 0))
+    hapi.vertex((100, 0))
+    hapi.vertex((hapi.mouseX(), hapi.mouseY()))
+    hapi.end_shape()
+
+    # same as hapi.polygon([(0, 0), (100, 0), (hapi.mouseX(), hapi.mouseY())])
+
+    hapi.flip_display()
+    hapi.event_loop()
+
+pygame.quit()
+
+```
+
+## Interactivity
+
+## .mouseX
+
+- `hapi.mouseX()` gives the current x coordinate of the mouse
+
+## .mouseY
+
+- `hapi.mouseY()` gives the current y coordinate of the mouse
+
+## Pygame specifics
+
+## .flip_display
+
+- is just `pygame.display.flip()` behind the scene
+
+## .event_loop
+
+requires
+
+```python
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
+
+hapi.handle_events = handle_events
+```
+
+- is put inside `hapi.is_running` loop
+
+## .set_caption
+
+same as `pygame.display.set_caption`
+
+# Ui
+
+## .update_ui
+
+- no need to update each element if you call this
+- called inside `hapi.is_running` loop
+- here is when **NOT** to use it:
+
+```python
+while hapi.is_running:
+    for i in range(5):
+            x = hapi.button(10+i*80, hapi.mouseY(), "Click Me",
+                grey_style
+            )
+        hapi.update_ui() 
+```
+
+## .button
 
 Create a button with `hapi.button(x, y, text, [optional paramters])`
 
 - `x` - x location of the button
 - `y` - y location of the button
 - `text` - the text on the button
-- `[optional parameters]` - a dictionary of any extra options you want for the button
+- `[optional parameters]` - a dictionary of any extra options you want for the button listed below
 
 #### Optional Parameters
 
@@ -254,12 +484,12 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 - width() - this returns the width of the button
 - height() - this returns the height of the button
 
-### outline
+### Outline
 create a outline for ui elements with `hapi.outline([optional parameters])`
 
 - `[optional parameters]` - options for the outline
 
-#### optional paramters
+#### Optional paramters
 
 - type - the type of outline, there is 'full' and 'half', by default it is 'full'
 - amount - the thickness of the outline, by default it is 2
