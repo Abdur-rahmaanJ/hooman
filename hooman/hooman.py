@@ -5,8 +5,8 @@ from math import pi
 
 import pygame
 
-from .ui import Button
-from .ui import Outline
+from ui import Button
+from ui import Outline
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):

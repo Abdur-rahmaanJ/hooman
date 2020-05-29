@@ -90,7 +90,6 @@ class Button:
      
     def _Generate_images(self):     
         # generate images
-        print("generate")
         # if no image, create the button by drawing
         if self.image is None or self.draw:
             self.draw = True
@@ -202,8 +201,6 @@ class Button:
         self.prev_clicked_state = click
         # draw
         self._draw()
-        
-        
         # return if the button was clicked on
         return returnee
     
@@ -214,6 +211,8 @@ class Button:
     # draw the button
     def _draw(self):
         if self.hover:
+            if self.on_hover:
+                self.on_hover(self)
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:
