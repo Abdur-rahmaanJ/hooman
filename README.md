@@ -6,6 +6,7 @@ pip install hooman
 ```
 # demos
 
+Ui docs for hover not so updated
 
 ![](assets/color_change.gif)
 
@@ -125,6 +126,7 @@ buttons
 ![](assets/demo_buttons.png)
 
 ```python
+
 from hooman import Hooman
 
 import pygame
@@ -135,39 +137,46 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 #the function that gets called when the button is clicked on
-def button_clicked(): 
-    if button2.y == 250:
-        button2.y = 300
+def button_clicked(this): 
+    if this.y == 250:
+        this.y = 300
     else:
-        button2.y = 250
+        this.y = 250
+        
+    print(this.y)
+
 
 
 grey_style = {
     'background_color':(200, 200, 200),
-    'hover_background_color':(220, 220, 220),
     'curve':0.1,
     'padding_x':5,
     'padding_y':5,
     'font_size':15
     }
+
 button1 = hapi.button(150, 150, "Click Me",
     grey_style
 )
 
-buttonx = hapi.button(150, 10, "Click Me",
-    grey_style
+def button_hover(this):
+    hapi.background(hapi.color['green'])
+stylex = grey_style.copy()
+stylex['on_hover'] = button_hover
+
+buttonx = hapi.button(150, 10, "Hover Me",
+    stylex
 )
 
 button2 = hapi.button(150, 250, "No Click Me",
     {
     'background_color':(200, 200, 200),
-    'hover_background_color':(220, 220, 220),
     'outline':hapi.outline({
             'color':(200, 200, 200), 
             'amount':5
             }),
     'curve':0.3,
-    'action':button_clicked,
+    'on_click':button_clicked,
     'padding_x':40,
     'padding_y':10,
     'font_size':15
@@ -259,6 +268,24 @@ The value of pi as provided by the maths module
 - used to set background color of screen
 - `hapi.background((100, 100, 100))` for r g b
 - `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
+
+## .color
+
+same as
+
+```
+{
+    'red': (255, 0, 0),
+    'green': (0, 255, 0),
+    'blue': (0, 0, 255),
+    'black': (0, 0, 0),
+    'white': (255, 0, 0),
+    'yellow': (255, 255, 0),
+    'grey': (100, 100, 100)
+}
+```
+
+also `.colors`, `.colours`, `.colour` same
 
 ## Size
 
@@ -398,7 +425,9 @@ hapi.handle_events = handle_events
 
 - is put inside `hapi.is_running` loop
 
-## 
+## .set_caption
+
+same as `pygame.display.set_caption`
 
 # Ui
 
