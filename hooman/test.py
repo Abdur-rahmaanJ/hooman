@@ -23,7 +23,6 @@ def button_hover_enter(this):
     #hapi.background(hapi.color['green'])
     global bg_col
     bg_col = hapi.color['green']
-    print("enter")
     this.create_button()
 
 
@@ -33,7 +32,6 @@ def button_hover_exit(this):
     #hapi.background(hapi.color['green'])
     global bg_col
     bg_col = hapi.color['white']
-    print("exit")
     this.create_button()
 
 

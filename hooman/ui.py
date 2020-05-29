@@ -211,8 +211,6 @@ class Button:
     # draw the button
     def _draw(self):
         if self.hover:
-            if self.on_hover:
-                self.on_hover(self)
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:
