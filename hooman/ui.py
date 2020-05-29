@@ -20,12 +20,12 @@ class Button:
             'font': 'Calibri',
             'font_size': 30,
             'outline': None,
-            'action': None,
+            'on_click': None,
+            'on_hover':None,
             'image': None,
             'hover_image': None,
             'enlarge': False,
             'enlarge_amount': 1.1,
-            'action_arg': None,
             'calculate_size': 1.1,
             'dont_generate': False,
             'font_colour': (0, 0, 0),
@@ -45,20 +45,20 @@ class Button:
             if self.surface is None:
                 raise ValueError("No surface to blit to")
         self.text_colour = options['font_colour']
-        self.background = options['background_color']
+        self.background_color = options['background_color']
         self.curve_amount = options['curve']
-        self.hover_background = self.background
 
-        hover_background_color = options['hover_background_color']
-        if hover_background_color is not None:
-            self.hover_background = hover_background_color
+        #hover_background_color = options['hover_background_color']
+        #if hover_background_color is not None:
+        #    self.background_color = hover_background_color
 
         font = options['font']
         font_size = options['font_size']
         self.font = pygame.font.Font(pygame.font.match_font(font),font_size)
 
-        self.out = options['outline']
-        self.action = options['action']
+        self.outline = options['outline']
+        self.on_click = options['on_click']
+        self.on_hover = options['on_hover']
         image = options['image']
         self.image = image.copy() if image else None
         self.clicked_on = False
@@ -69,7 +69,6 @@ class Button:
             if self.text != "":
                 self.enlarge_font = pygame.font.Font(
                     pygame.font.match_font(font), int(font_size * enlarge_amount))
-        self.action_arg = options['action_arg']
         self.hover = False
         self.caclulateSize = options['calculate_size']
         self.prev_clicked_state = False
@@ -93,22 +92,22 @@ class Button:
         if self.image is None:
             self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.hover_image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
-            self.image.blit(curve_square(self.w, self.h, self.curve_amount, self.background), (0,0))
+            self.image.blit(curve_square(self.w, self.h, self.curve_amount, self.background_color), (0,0))
             self.hover_image.blit(curve_square(
-                self.w, self.h, self.curve_amount, self.hover_background), (0,0))
-            # self.hover_image.fill(self.hover_background)
-            if self.out is not None:
-                self.out._draw(self.hover_image,self.hover_background,self.w,self.h,self.curve_amount)
+                self.w, self.h, self.curve_amount, self.background_color), (0,0))
+            # self.hover_image.fill(self.background_color)
+            if self.outline is not None:
+                self.outline._draw(self.hover_image,self.background_color,self.w,self.h,self.curve_amount)
             self.hover_image.convert()
             self.image.convert()
         # if the user gives an image, create the image when the mouse hovers over
         elif self.hover_image is None:
             self.hover_image = self.image.copy()
-            if not self.out is None:
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.out.s))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0 ,0 ,self.out.s, self.h))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.w, -self.out.s))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.out.s, -self.h))
+            if not self.outline is None:
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.outline.s))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0 ,0 ,self.outline.s, self.h))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.w, -self.outline.s))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.outline.s, -self.h))
             self.hover_image.convert_alpha()
             self.image.convert_alpha()
         # enlarge the image, no matter if user gives an image or not
@@ -168,15 +167,19 @@ class Button:
         if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.w:
             if mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.h:
                 self.hover = True
+                        
                 # check for click, if held down, action only gets called once
                 if click and not self.prev_clicked_state:
                     self.clicked_on = True
                 if self.prev_clicked_state and self.clicked_on and click == False:
-                    if self.action:
-                        if self.action_arg:
-                            self.action(self.action_arg)
+                    if self.on_click:
+                        '''
+                        if self.on_click_arg:
+                            self.on_click(self.on_click_arg)
                         else:
-                            self.action()
+                            self.on_click()
+                        '''
+                        self.on_click(self)
                     returnee = True
                 if not click:
                     self.clicked_on = False
@@ -190,6 +193,7 @@ class Button:
     # draw the button
     def _draw(self):
         if self.hover:
+            self.on_hover(self)
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:

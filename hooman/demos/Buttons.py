@@ -13,11 +13,13 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 #the function that gets called when the button is clicked on
-def button_clicked(): 
-    if button2.y == 250:
-        button2.y = 300
+def button_clicked(this): 
+    if this.y == 250:
+        this.y = 300
     else:
-        button2.y = 250
+        this.y = 250
+        
+    print(this.y)
 
 
 grey_style = {

@@ -28,6 +28,7 @@ class Hooman:
         self.color = self.colors
         self.colour = self.colors
 
+        self.set_caption = pygame.display.set_caption
         self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
         self.is_running = True
 
@@ -42,6 +43,7 @@ class Hooman:
         self.font_size = 10
         self.pygame = pygame
         self.mouse_test_x = 0
+        self.clock = pygame.time.Clock()
         self._all_widgets = []
         self._polygon_coords = []
 
