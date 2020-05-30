@@ -21,7 +21,8 @@ class Button:
             'font_size': 30,
             'outline': None,
             'on_click': None,
-            'on_hover':None,
+            'on_hover_enter':None,
+            'on_hover_exit':None,
             'image': None,
             'hover_image': None,
             'enlarge': False,
@@ -46,7 +47,8 @@ class Button:
         font_size = options['font_size']
         self.outline = options['outline']
         self.on_click = options['on_click']
-        self.on_hover = options['on_hover']
+        self.on_hover_enter = options['on_hover_enter']
+        self.on_hover_exit = options['on_hover_exit']
         image = options['image']
         dont_generate = options['dont_generate']
         self.caclulateSize = options['calculate_size']
@@ -64,6 +66,7 @@ class Button:
 
         self.image = image.copy() if image else None
         self.clicked_on = False
+        self.draw = False
         
         if self.enlarge:
             if self.text != "":
@@ -88,7 +91,8 @@ class Button:
     def _Generate_images(self):     
         # generate images
         # if no image, create the button by drawing
-        if self.image is None:
+        if self.image is None or self.draw:
+            self.draw = True
             self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.hover_image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.image.blit(curve_square(self.w, self.h, self.curve_amount, self.background_color), (0,0))
@@ -100,7 +104,7 @@ class Button:
             self.hover_image.convert()
             self.image.convert()
         # if the user gives an image, create the image when the mouse hovers over
-        elif self.hover_image is None:
+        elif self.hover_image is None or self.draw:
             self.hover_image = self.image.copy()
             if not self.outline is None:
                 pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.outline.s))
@@ -160,11 +164,13 @@ class Button:
     def update(self):
         click = pygame.mouse.get_pressed()[0]
         mouse_pos = pygame.mouse.get_pos()
-        self.hover = False
         returnee = False
         # check if mouse over button
         if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.w:
             if mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.h:
+                if self.hover == False:
+                    if self.on_hover_enter:
+                        self.on_hover_enter(self)
                 self.hover = True
                         
                 # check for click, if held down, action only gets called once
@@ -182,18 +188,29 @@ class Button:
                     returnee = True
                 if not click:
                     self.clicked_on = False
+            else:
+                if self.hover:
+                    if self.on_hover_exit:
+                        self.on_hover_exit(self)
+                self.hover = False
+        else:
+            if self.hover:
+                if self.on_hover_exit:
+                    self.on_hover_exit(self)
+            self.hover = False            
         self.prev_clicked_state = click
         # draw
         self._draw()
         # return if the button was clicked on
         return returnee
     
+    def create_button(self):
+        self._Generate_images()
+    
     
     # draw the button
     def _draw(self):
         if self.hover:
-            if self.on_hover:
-                self.on_hover(self)
             if self.enlarge:
                 self.surface.blit(self.hover_image,(self.x - self.dx//2, self.y - self.dy//2))
             else:

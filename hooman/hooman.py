@@ -20,7 +20,7 @@ class Hooman:
             'green': (0, 255, 0),
             'blue': (0, 0, 255),
             'black': (0, 0, 0),
-            'white': (255, 0, 0),
+            'white': (255, 255, 255),
             'yellow': (255, 255, 0),
             'grey': (100, 100, 100)
         }
@@ -154,4 +154,3 @@ class Hooman:
     def update_ui(self):
         for widget in self._all_widgets:
             widget.update()
-
