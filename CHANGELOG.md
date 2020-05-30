@@ -8,8 +8,15 @@
 - set_caption added
 
 ### 0.2.7
+
 - this param added to button callback (action)
 - action_arg removed
 - on_hover_enter 
 - on_hover_exit 
 - curve_amount changed to curve
+
+
+### 0.2.8
+
+- star shape added
+- transparent circles added
