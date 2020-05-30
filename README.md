@@ -6,7 +6,6 @@ pip install hooman
 ```
 # demos
 
-Ui docs for hover not so updated
 
 ![](assets/color_change.gif)
 
@@ -475,6 +474,18 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 - padding_y - an integer that is added on to the height on both sides of the text when calulate_size is set to True
 - dont_generate - when set to True, the button will not generate the images to put on screen, this can be handy if you want to use calculate_size without supplying text, you will need to call `button.update_text()` to generate the images before drawing
 - curve - the amount of curve you want the button to have on the edges with 0 being no curve and 1 being full curve, by default it is 0
+- on_hover_enter - when start hovering
+- on_hover_exit - when end hovering
+- on_click - when button clicked
+```python
+
+def on_hover_enter(this): # this refers to the button
+    this.background_color = hapi.color['blue']
+
+button = hapi.button(150, 250, "Click Me",
+        {'on_hover_enter':on_hover_enter}
+    )
+```
 
 #### Methods
 
