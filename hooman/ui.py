@@ -42,7 +42,7 @@ class Button:
         self.surface = options['surface']
         self.text_colour = options['font_colour']
         self.background_color = options['background_color']
-        self.curve_amount = options['curve']
+        self.curve = options['curve']
         font = options['font']
         font_size = options['font_size']
         self.outline = options['outline']
@@ -95,12 +95,12 @@ class Button:
             self.draw = True
             self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.hover_image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
-            self.image.blit(curve_square(self.w, self.h, self.curve_amount, self.background_color), (0,0))
+            self.image.blit(curve_square(self.w, self.h, self.curve, self.background_color), (0,0))
             self.hover_image.blit(curve_square(
-                self.w, self.h, self.curve_amount, self.background_color), (0,0))
+                self.w, self.h, self.curve, self.background_color), (0,0))
             # self.hover_image.fill(self.background_color)
             if self.outline is not None:
-                self.outline._draw(self.hover_image,self.background_color,self.w,self.h,self.curve_amount)
+                self.outline._draw(self.hover_image,self.background_color,self.w,self.h,self.curve)
             self.hover_image.convert()
             self.image.convert()
         # if the user gives an image, create the image when the mouse hovers over

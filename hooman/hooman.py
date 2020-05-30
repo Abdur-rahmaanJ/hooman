@@ -3,10 +3,10 @@
 import pygame
 from math import pi
 
-import pygame
-
 from ui import Button
 from ui import Outline
+from shapes import star
+from shapes import alpha_ellipse
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):
@@ -32,6 +32,7 @@ class Hooman:
         self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
         self.is_running = True
 
+        self._alpha = 255
         self._fill = (255, 255, 255)
         self._stroke = (255, 255, 255)
         self._stroke_weight = 0
@@ -48,6 +49,9 @@ class Hooman:
         self._polygon_coords = []
 
         self.outline = Outline
+        self._star = star
+        self._alpha_ellipse = alpha_ellipse
+        
 
     def fill(self, col):
         if isinstance(col, int):
@@ -84,6 +88,9 @@ class Hooman:
 
     def font_size(self, font_size):
         self.font_size = font_size
+
+    def set_alpha(self, alpha):
+        self._alpha = alpha
 
     def ellipse(self, x, y, width, height):
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
@@ -154,3 +161,9 @@ class Hooman:
     def update_ui(self):
         for widget in self._all_widgets:
             widget.update()
+
+    def star(self, x, y, r1, r2, npoints):
+        self._star(self, x, y, r1, r2, npoints)
+
+    def alpha_ellipse(self, x, y, w, h):
+        self._alpha_ellipse(self, x, y, w, h)
