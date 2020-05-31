@@ -48,7 +48,9 @@ def curve_rect(hapi, x, y, width, height, curve):
     hapi.screen.blit(surf,(x,y))
 
 def arrow(hapi, x, y, size, angle):
-    points = []
+    '''
+    https://www.reddit.com/r/pygame/comments/glomfa/drawing_polygons/fr0ig8y/?context=3
+    '''
     start = pygame.Vector2(x, y)
     left = pygame.Vector2(-1, -2)
     top = pygame.Vector2(0, -1)
@@ -59,3 +61,32 @@ def arrow(hapi, x, y, size, angle):
     hapi.vertex(start + right.rotate(angle) * size)
     hapi.vertex(start)
     hapi.end_shape()
+    
+def heart(hapi, x, y, w, h):
+    '''
+    http://www.mathematische-basteleien.de/heart.htm
+    '''
+    step_size = 1000 / (hapi.PI / 2)
+    curve_h = max(int(h*0.6), 1)
+    circle_h = max(int(h*0.4), 1)
+    wr = max(w//2, 1)
+    hr = max(curve_h//2, 1)
+
+    hapi.begin_shape()
+    for i in range(-1000, 1000, 1):
+        if i == 0:
+            continue
+        hapi.vertex((int(x + wr + (sin(i/step_size)*wr)), y + circle_h//2 + hr + i//(1000/hr)))
+    hapi.vertex((x+w,y + circle_h//2))
+    hapi.end_shape()
+
+    hapi.begin_shape()
+    for i in range(-1000, 1000, 1):
+        if i == 0:
+            continue
+        hapi.vertex((int(x + w*2 - wr - (sin(i/step_size)*wr)), y + circle_h//2 + hr + i//(1000/hr)))
+    hapi.vertex((x+w, y + circle_h//2))
+    hapi.end_shape()
+
+    hapi.ellipse(x, y, w, circle_h)
+    hapi.ellipse(x + w, y, w, circle_h)   
