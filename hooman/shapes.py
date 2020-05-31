@@ -71,7 +71,7 @@ def heart(hapi, x, y, w, h):
     circle_h = max(int(h*0.4), 1)
     wr = max(w//2, 1)
     hr = max(curve_h//2, 1)
-    
+
     hapi.begin_shape()
     for i in range(-1000, 1000, 1):
         if i == 0:
@@ -79,14 +79,14 @@ def heart(hapi, x, y, w, h):
         hapi.vertex((int(x + wr + (sin(i/step_size)*wr)), y + circle_h//2 + hr + i//(1000/hr)))
     hapi.vertex((x+w,y + circle_h//2))
     hapi.end_shape()
-    
+
     hapi.begin_shape()
     for i in range(-1000, 1000, 1):
         if i == 0:
             continue
         hapi.vertex((int(x + w*2 - wr - (sin(i/step_size)*wr)), y + circle_h//2 + hr + i//(1000/hr)))
-    hapi.vertex((x+w,y + circle_h//2))
+    hapi.vertex((x+w, y + circle_h//2))
     hapi.end_shape()
-    
-    hapi.ellipse(x,y ,w,circle_h)
-    hapi.ellipse(x + w,y,w,circle_h)    
+
+    hapi.ellipse(x, y, w, circle_h)
+    hapi.ellipse(x + w, y, w, circle_h)   

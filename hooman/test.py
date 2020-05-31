@@ -27,7 +27,7 @@ while hapi.is_running:
     hapi.background(bg_col)
     
     hapi.fill(hapi.color['red'])
-    hapi.heart(100,200,hapi.mouseX()//4,hapi.mouseY()//4)
+    hapi.heart(100, 200, hapi.mouseX()//4, hapi.mouseY()//4)
     
 
     hapi.event_loop()
