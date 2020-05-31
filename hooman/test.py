@@ -27,11 +27,11 @@ while hapi.is_running:
     hapi.background(bg_col)
     
     hapi.fill(hapi.color['red'])
-    hapi.curve_rect(100,200,100,50,hapi.mouseX()//5)
+    hapi.curve_rect(100, 200, 100, 50, hapi.mouseX()//5)
     hapi.fill(hapi.colour['blue'])
-    hapi.curve_rect(100,100,100,100,hapi.mouseX()//5)
+    hapi.curve_rect(100, 100, 100, 100, hapi.mouseX()//5)
     hapi.fill(hapi.colour['green'])
-    hapi.arrow(300,300,50,hapi.mouseX())
+    hapi.arrow(300, 300, 50, hapi.mouseX())
 
     hapi.event_loop()
 

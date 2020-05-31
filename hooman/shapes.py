@@ -49,10 +49,10 @@ def curve_rect(hapi, x, y, width, height, curve):
 
 def arrow(hapi, x, y, size, angle):
     points = []
-    start = pygame.Vector2(x,y)
-    left = pygame.Vector2(-1,-2)
-    top = pygame.Vector2(0,-1)
-    right = pygame.Vector2(1,-2)
+    start = pygame.Vector2(x, y)
+    left = pygame.Vector2(-1, -2)
+    top = pygame.Vector2(0, -1)
+    right = pygame.Vector2(1, -2)
     hapi.begin_shape()
     hapi.vertex(start + left.rotate(angle) * size)
     hapi.vertex(start + top.rotate(angle) * size)
