@@ -7,6 +7,8 @@ from ui import Button
 from ui import Outline
 from shapes import star
 from shapes import alpha_ellipse
+from shapes import curve_rect
+from shapes import arrow
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):
@@ -51,6 +53,8 @@ class Hooman:
         self.outline = Outline
         self._star = star
         self._alpha_ellipse = alpha_ellipse
+        self._curve_rect = curve_rect
+        self._arrow = arrow
         
 
     def fill(self, col):
@@ -167,3 +171,9 @@ class Hooman:
 
     def alpha_ellipse(self, x, y, w, h):
         self._alpha_ellipse(self, x, y, w, h)
+    
+    def curve_rect(self, x, y, w, h, curve):
+        self._curve_rect(self, x, y, w, h, curve)
+    
+    def arrow(self, x, y, size, angle):
+        self._arrow(self,x,y,size,angle)
