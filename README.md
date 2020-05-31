@@ -296,6 +296,12 @@ The value of pi as provided by the maths module
 - `hapi.background((100, 100, 100))` for r g b
 - `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
 
+## .set_background
+
+- used to have the background drawn every frame automatically
+- `hapi.set_background((100, 100, 100))`
+- same as `hapi.background((100, 100, 100))`
+
 ## .color
 
 same as
