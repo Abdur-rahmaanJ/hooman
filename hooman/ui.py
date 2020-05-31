@@ -19,10 +19,14 @@ class Button:
             'hover_background_color': None,
             'font': 'Calibri',
             'font_size': 30,
-            'outline': None,
+            'outline': False,
+            'outline_thickness':2,
+            'outline_color':(0,0,0),
+            'outline_half':False,
             'on_click': None,
             'on_hover_enter':None,
             'on_hover_exit':None,
+            'on_hover':None,
             'image': None,
             'hover_image': None,
             'enlarge': False,
@@ -42,13 +46,18 @@ class Button:
         self.surface = options['surface']
         self.text_colour = options['font_colour']
         self.background_color = options['background_color']
+        self.hover_bg_colour = options['hover_background_color']
         self.curve = options['curve']
         font = options['font']
         font_size = options['font_size']
         self.outline = options['outline']
+        self.outline_col = options['outline_color']
+        self.outline_half = options['outline_half']
+        self.outline_amount = options['outline_thickness']
         self.on_click = options['on_click']
         self.on_hover_enter = options['on_hover_enter']
         self.on_hover_exit = options['on_hover_exit']
+        self.on_hover = options['on_hover']
         image = options['image']
         dont_generate = options['dont_generate']
         self.caclulateSize = options['calculate_size']
@@ -97,10 +106,18 @@ class Button:
             self.hover_image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
             self.image.blit(curve_square(self.w, self.h, self.curve, self.background_color), (0,0))
             self.hover_image.blit(curve_square(
-                self.w, self.h, self.curve, self.background_color), (0,0))
+                self.w, self.h, self.curve, self.hover_bg_colour), (0,0))
             # self.hover_image.fill(self.background_color)
-            if self.outline is not None:
-                self.outline._draw(self.hover_image,self.background_color,self.w,self.h,self.curve)
+            if self.outline:
+                self.hover_image.blit(curve_square(self.w, self.h, self.curve, 
+                                       self.outline_col), (0, 0))
+                self.hover_image.blit(curve_square(self.w - self.outline_amount * 2, 
+                                       self.h - self.outline_amount * 2, 
+                                       self.curve, self.hover_bg_colour), 
+                          (self.outline_amount, self.outline_amount))
+            elif self.outline_half:
+                self.hover_image.blit(curve_square(self.w, self.h, self.curve, 
+                                       self.outline_col), (0, 0))
             self.hover_image.convert()
             self.image.convert()
         # if the user gives an image, create the image when the mouse hovers over
@@ -197,7 +214,10 @@ class Button:
             if self.hover:
                 if self.on_hover_exit:
                     self.on_hover_exit(self)
-            self.hover = False            
+            self.hover = False     
+        if self.hover:
+            if self.on_hover:
+                self.on_hover(self)
         self.prev_clicked_state = click
         # draw
         self._draw()
@@ -229,25 +249,6 @@ class Button:
         return
 
 
-# used to simplify outlining the button/checkbox
-# instead of many vars in button, create an outline object to give to button
-class Outline:
-    def __init__(self, options):
-        self.s = options["amount"] if "amount" in options else 2 
-        self.col = options["color"] if "color" in options else (0, 0, 0)
-        if 'type' in options:
-            self.type = options['type']
-        else:
-            self.type = 'full'
-
-
-    def _draw(self, surf, col, w, h, curve_amount):
-        if self.type == "half":
-            surf.blit(curve_square(w, h, curve_amount, col), (0, 0))
-        elif self.type == "full":
-            surf.blit(curve_square(w, h, curve_amount, self.col), (0, 0))
-            surf.blit(curve_square(w - self.s * 2, h - self.s * 2, curve_amount, col), (self.s, self.s))
-            
 # this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
 def curve_square(width, height, curve, color=(0, 0, 0)):
     if not 0 <= curve <= 1:
