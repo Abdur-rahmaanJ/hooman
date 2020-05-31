@@ -24,7 +24,6 @@ def star(hapi, x, y, r1, r2, npoints):
 
 def alpha_ellipse(hapi, x, y, w, h):
     # https://github.com/furas
-    # date: 2019.12.11
     # https://stackoverflow.com/questions/59293057/how-to-make-transparent-pygame-draw-circle/
     surface1 = hapi.screen.convert_alpha()
     # surface1.fill([0,0,0,0])
@@ -47,6 +46,7 @@ def curve_rect(hapi, x, y, width, height, curve):
     pygame.draw.circle(surf, shape_fill, (width - curve, height - curve), curve)
     hapi.screen.blit(surf,(x,y))
 
+
 def arrow(hapi, x, y, size, angle):
     '''
     https://www.reddit.com/r/pygame/comments/glomfa/drawing_polygons/fr0ig8y/?context=3
@@ -61,7 +61,8 @@ def arrow(hapi, x, y, size, angle):
     hapi.vertex(start + right.rotate(angle) * size)
     hapi.vertex(start)
     hapi.end_shape()
-    
+
+
 def heart(hapi, x, y, w, h):
     '''
     http://www.mathematische-basteleien.de/heart.htm
@@ -77,7 +78,7 @@ def heart(hapi, x, y, w, h):
         if i == 0:
             continue
         hapi.vertex((int(x + wr + (sin(i/step_size)*wr)), y + circle_h//2 + hr + i//(1000/hr)))
-    hapi.vertex((x+w,y + circle_h//2))
+    hapi.vertex((x+w, y+circle_h//2))
     hapi.end_shape()
 
     hapi.begin_shape()

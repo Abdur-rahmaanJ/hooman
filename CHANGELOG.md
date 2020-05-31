@@ -1,11 +1,12 @@
 
 
-### 0.2.6
+### 0.2.8
 
-- polygons
-- docs up to date
-- changelog added
-- set_caption added
+- star shape added
+- transparent circles added
+- arrow added
+- curve rect added
+
 
 ### 0.2.7
 
@@ -15,8 +16,15 @@
 - on_hover_exit 
 - curve_amount changed to curve
 
+### 0.2.6
 
-### 0.2.8
+- polygons
+- docs up to date
+- changelog added
+- set_caption added
 
-- star shape added
-- transparent circles added
+
+
+
+
+

@@ -422,6 +422,16 @@ pygame.quit()
 
 ```
 
+## .heart
+
+## .star
+
+## .curve_rect
+
+## .arrow
+
+## .alpha_ellipse
+
 ## Interactivity
 
 ## .mouseX
