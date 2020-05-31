@@ -1,8 +1,11 @@
 import pygame
+import numpy
+
+from math import pi
 from math import cos
 from math import sin
 from math import radians
-import numpy
+
 
 def star(hapi, x, y, r1, r2, npoints, rotation):
     '''
@@ -142,3 +145,113 @@ def regular_polygon(hapi, x, y, w, h, n, rotation, angle_offset = 0):
         pygame.draw.rect(hapi.screen, (0,255,0), (midpoint[0] + d[0], midpoint[1] + d[1], 5, 5))
     
     hapi.end_shape()
+
+
+
+
+#
+# Supershapes from http://paulbourke.net/geometry/supershape/
+# With help from Daniel Shiefman
+#
+
+def r_val(theta, n1, n2, n3, m, a, b):
+    if n1 == 0:
+        n1 = 0.1
+    part1 =  (1/a) * cos(theta * m/4) 
+    part1 = abs(part1)
+    part1 = pow(part1, n2)
+
+    part2 =  (1/b) * sin(theta * m/4) 
+    part2 = abs(part2)
+    part2 = pow(part2, n3)
+
+    part3 = pow(part1 + part2, 1/n1)
+
+    # returning r
+
+    if part3 == 0:
+        return 0
+
+    return 1/part3
+
+
+def supershape(hapi, x_coord, y_coord, size_x, size_y, param_options, fill=False):
+    options = {
+        'n1':0.20,
+        'n2':1.7,
+        'n3':1.7,
+        'm': 5,
+        'a':1,
+        'b':1,
+        'phi':2
+    }
+
+    
+    pivot_x = x_coord
+    pivot_y = y_coord
+
+    options.update(param_options)
+
+    n1 = options['n1']
+    n2 = options['n2']
+    n3 = options['n3']
+    m = options['m']
+    a = options['a']
+    b = options['b']
+    phi = options['phi']
+    
+    
+    hapi.begin_shape()
+    for angle in numpy.arange(0, hapi.PI*phi, 0.01):
+        r = r_val(angle, n1, n2, n3, m, a, b)
+        x = pivot_x + size_x * r * hapi.cos(angle)
+        y = pivot_y + size_y * r * hapi.sin(angle)
+
+        hapi.vertex((x, y))
+    hapi.end_shape(fill=fill)
+
+
+def smooth_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
+    '''
+    n1 between 0 and 1
+    '''
+    smooth_star_options = {
+        'n1':0.20,
+        'n2':1.7,
+        'n3':1.7,
+        'm': 5,
+        'a':1,
+        'b':1,
+        'phi':2
+    }
+    smooth_star_options['n1'] = n1
+    supershape(hapi, x_coord, y_coord, size_x, size_y, smooth_star_options, fill=fill)
+
+def oil_drop(hapi, x_coord, y_coord, size_x, size_y, fill=False):
+    '''
+    n1 between 0 and 1
+    '''
+    oil_drop_options = {
+        'n1':0.3,
+        'n2':0.3,
+        'n3':0.3,
+        'm': 1/6,
+        'a':1,
+        'b':1,
+        'phi':12
+    }
+    supershape(hapi, x_coord, y_coord, size_x, size_y, oil_drop_options, fill=fill)
+
+
+
+def flowing_star(hapi, x_coord, y_coord, size_x, size_y, fill=False):
+    flowing_star_options = {
+        'n1':0.3,
+        'n2':0.3,
+        'n3':0.3,
+        'm': 7/6,
+        'a':1,
+        'b':1,
+        'phi':12
+    }
+    supershape(hapi, x_coord, y_coord, size_x, size_y, flowing_star_options, fill=fill)
