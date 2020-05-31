@@ -3,14 +3,14 @@
 import pygame
 from math import pi
 
-from .ui import Button
-from .ui import Outline
+from ui import Button
 
-from .shapes import star
-from .shapes import alpha_ellipse
-from .shapes import curve_rect
-from .shapes import arrow
-from .shapes import heart
+from shapes import star
+from shapes import alpha_ellipse
+from shapes import curve_rect
+from shapes import arrow
+from shapes import heart
+from shapes import regular_polygon
 
 
 class Hooman:
@@ -38,6 +38,7 @@ class Hooman:
         self.is_running = True
         self.bg_col = None
 
+        self._rotation = 0 
         self._alpha = 255
         self._fill = (255, 255, 255)
         self._stroke = (255, 255, 255)
@@ -59,6 +60,7 @@ class Hooman:
         self._curve_rect = curve_rect
         self._arrow = arrow
         self._heart = heart
+        self._reg_poly = regular_polygon
         
 
     def fill(self, col):
@@ -190,3 +192,8 @@ class Hooman:
     def heart(self, x, y, w, h):
         self._heart(self, x, y, w, h)
 
+    def regular_polygon(self, x, y, w, h, num_of_points):
+        self._reg_poly(self, x, y, w, h, num_of_points, self._rotation)
+    
+    def rotate(self, angle):
+        self._rotation = angle

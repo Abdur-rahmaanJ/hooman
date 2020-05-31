@@ -296,6 +296,12 @@ The value of pi as provided by the maths module
 - `hapi.background((100, 100, 100))` for r g b
 - `hapi.background(100)`  same as `hapi.background((100, 100, 100))`
 
+## .set_background
+
+- used to have the background drawn every frame automatically
+- `hapi.set_background((100, 100, 100))`
+- same as `hapi.background((100, 100, 100))`
+
 ## .color
 
 same as
@@ -500,7 +506,10 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 - font - the font of the text, by default it is Calibri
 - font_size - the size of the text, by default it is 30
 - font_colour - the colour of the text, by default it is black
-- outline - this creates an outline for the button, must be a `hapi.outline()` object
+- outline - when set to True, the button will have an outline when the mouse hovers over
+- outline_thickness - this is the thickness of the outline
+- outline_color - the colour of the outline
+- outline_half - when set to True, it will create an outline for the bottom and right side of the button
 - action - this is a function that gets called when the button is clicked
 - action_arg - if the function given in action requires a parameter, you can use this to send to the function
 - image - this should be a `pygame.Surface()` object that the button will show instead
@@ -512,9 +521,9 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 - padding_y - an integer that is added on to the height on both sides of the text when calulate_size is set to True
 - dont_generate - when set to True, the button will not generate the images to put on screen, this can be handy if you want to use calculate_size without supplying text, you will need to call `button.update_text()` to generate the images before drawing
 - curve - the amount of curve you want the button to have on the edges with 0 being no curve and 1 being full curve, by default it is 0
-- on_hover_enter - when start hovering
-- on_hover_exit - when end hovering
-- on_click - when button clicked
+- on_hover_enter - this is a function that gets called when the mouse enters the button, the first frame it hovers over
+- on_hover_exit - this is a function that gets called when the mouse exits the button, the frame once it stops hovering over
+- on_click - this is a function that gets called when the mouse clicks the button, this only gets called once, even if mouse i being held down
 ```python
 
 def on_hover_enter(this): # this refers to the button
@@ -532,14 +541,5 @@ button = hapi.button(150, 250, "Click Me",
 - get_rect() - this returns a pygame.Rect of the button
 - width() - this returns the width of the button
 - height() - this returns the height of the button
+- create_button() - this applies any changes to the button
 
-### Outline
-create a outline for ui elements with `hapi.outline([optional parameters])`
-
-- `[optional parameters]` - options for the outline
-
-#### Optional paramters
-
-- type - the type of outline, there is 'full' and 'half', by default it is 'full'
-- amount - the thickness of the outline, by default it is 2
-- color - the colour of the outline, by default it is black

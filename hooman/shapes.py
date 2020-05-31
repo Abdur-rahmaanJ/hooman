@@ -1,6 +1,7 @@
 import pygame
 from math import cos
 from math import sin
+from math import radians
 import numpy
 
 def star(hapi, x, y, r1, r2, npoints):
@@ -91,3 +92,20 @@ def heart(hapi, x, y, w, h):
 
     hapi.ellipse(x, y, w, circle_h)
     hapi.ellipse(x + w, y, w, circle_h)   
+
+
+def regular_polygon(hapi, x, y, w, h, n, rotation):
+    if n < 3:
+        n = 3
+    
+    midpoint = pygame.Vector2(x + w//2, y + h//2)
+    
+    hapi.begin_shape()
+    
+    for angle in range(0, 360, 360//n):
+        angle = radians(angle)
+        d = pygame.Vector2(-2*sin(angle)*w, -2*cos(angle)*h).rotate(rotation)
+        
+        hapi.vertex(midpoint + d)
+    
+    hapi.end_shape()
