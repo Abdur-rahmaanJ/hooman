@@ -1,4 +1,4 @@
-pip install -e .
+
 
 ### 0.2.8
 

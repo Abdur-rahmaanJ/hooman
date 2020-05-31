@@ -14,6 +14,9 @@ from .shapes import arrow
 from .shapes import heart
 from .shapes import regular_polygon
 from .shapes import supershape
+from .shapes import smooth_star
+from .shapes import flowing_star
+from .shapes import oil_drop
 
 
 class Hooman:
@@ -67,7 +70,9 @@ class Hooman:
         self._heart = heart
         self._reg_poly = regular_polygon
         self._supershape = supershape
-        
+        self._smooth_star = smooth_star
+        self._flowing_star = flowing_star
+        self._oil_drop = oil_drop
 
     def fill(self, col):
         if isinstance(col, int):
@@ -206,3 +211,12 @@ class Hooman:
 
     def supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False):
         self._supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False)
+
+    def smooth_star(self, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
+        self._smooth_star(self, x_coord, y_coord, size_x, size_y, n1=n1, fill=fill)
+
+    def oil_drop(self, x_coord, y_coord, size_x, size_y, fill=False):
+        self._oil_drop(self, x_coord, y_coord, size_x, size_y, fill=fill)
+
+    def flowing_star(self, x_coord, y_coord, size_x, size_y, fill=False):
+        self._flowing_star(self, x_coord, y_coord, size_x, size_y, fill=fill)
