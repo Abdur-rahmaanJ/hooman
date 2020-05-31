@@ -3,8 +3,15 @@
 import pygame
 from math import pi
 
-from ui import Button
-from shapes import star, alpha_ellipse, curve_rect, arrow, heart
+from .ui import Button
+from .ui import Outline
+
+from .shapes import star
+from .shapes import alpha_ellipse
+from .shapes import curve_rect
+from .shapes import arrow
+from .shapes import heart
+
 
 class Hooman:
     def __init__(self, WIDTH, HEIGHT):
@@ -178,9 +185,8 @@ class Hooman:
         self._curve_rect(self, x, y, w, h, curve)
     
     def arrow(self, x, y, size, angle):
-        self._arrow(self,x,y,size,angle)
+        self._arrow(self, x, y, size, angle)
     
     def heart(self, x, y, w, h):
-        self._heart(self,x,y,w,h)
-    
-    
+        self._heart(self, x, y, w, h)
+
