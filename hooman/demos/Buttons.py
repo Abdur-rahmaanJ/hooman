@@ -18,8 +18,6 @@ def button_clicked(this):
         this.y = 300
     else:
         this.y = 250
-        
-    print(this.y)
 
 
 grey_style = {
@@ -30,24 +28,34 @@ grey_style = {
     'padding_y':5,
     'font_size':15
     }
+
+def button_hover_enter(this):
+    hapi.set_background(hapi.color['green'])
+
+def button_hover_exit(this):
+    hapi.set_background(hapi.color['white'])
+
+stylex = grey_style.copy()
+stylex['on_hover_enter'] = button_hover_enter
+stylex['on_hover_exit'] = button_hover_exit
+
 button1 = hapi.button(150, 150, "Click Me",
     grey_style
 )
 
-buttonx = hapi.button(150, 10, "Click Me",
-    grey_style
+buttonx = hapi.button(150, 10, "Hover Me",
+    stylex
 )
 
 button2 = hapi.button(150, 250, "No Click Me",
     {
     'background_color':(200, 200, 200),
     'hover_background_color':(220, 220, 220),
-    'outline':hapi.outline({
-            'color':(200, 200, 200), 
-            'amount':5
-            }),
+    'outline':True,
+    'outline_color':(200, 200, 200), 
+    'outline_thickness':5,
     'curve':0.3,
-    'action':button_clicked,
+    'on_click':button_clicked,
     'padding_x':40,
     'padding_y':10,
     'font_size':15
@@ -65,11 +73,13 @@ hapi.handle_events = handle_events
 
 clock = pygame.time.Clock()
 
+hapi.set_background(hapi.colour['white'])
+
 while hapi.is_running:
-    hapi.background(bg_col)
 
     if button1.update(): #if the button was clicked
         bg_col = (255, 0, 0) if bg_col == (255, 255, 255) else (255, 255, 255)
+        hapi.set_background(bg_col)
     
     # for i in range(5):
     #     x = hapi.button(10+i*80, hapi.mouseY(), "Click Me",

@@ -4,7 +4,6 @@ import pygame
 from math import pi
 
 from ui import Button
-from ui import Outline
 from shapes import star, alpha_ellipse, curve_rect, arrow, heart
 
 class Hooman:
@@ -30,6 +29,7 @@ class Hooman:
         self.set_caption = pygame.display.set_caption
         self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
         self.is_running = True
+        self.bg_col = None
 
         self._alpha = 255
         self._fill = (255, 255, 255)
@@ -47,7 +47,6 @@ class Hooman:
         self._all_widgets = []
         self._polygon_coords = []
 
-        self.outline = Outline
         self._star = star
         self._alpha_ellipse = alpha_ellipse
         self._curve_rect = curve_rect
@@ -82,6 +81,9 @@ class Hooman:
             else:
                 self.screen.fill((col[0], col[1], col[2]))
 
+    def set_background(self,col):
+        self.bg_col = col
+    
     def stroke_size(self, weight):
         self._stroke_weight = weight
 
@@ -142,6 +144,8 @@ class Hooman:
 
     def flip_display(self):
         pygame.display.flip()
+        if self.bg_col is not None:
+            self.background(self.bg_col)
 
     def line(self, x1, y1, x2, y2):
         pygame.draw.line(self.screen, self._stroke, [x1, y1], [x2, y2], self._stroke_weight)
@@ -178,3 +182,5 @@ class Hooman:
     
     def heart(self, x, y, w, h):
         self._heart(self,x,y,w,h)
+    
+    
