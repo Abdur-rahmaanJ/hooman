@@ -4,7 +4,7 @@ from math import sin
 from math import radians
 import numpy
 
-def star(hapi, x, y, r1, r2, npoints):
+def star(hapi, x, y, r1, r2, npoints, rotation):
     '''
     https://processing.org/examples/star.html
     '''
@@ -13,7 +13,8 @@ def star(hapi, x, y, r1, r2, npoints):
     angle = hapi.PI*2 / npoints
     half_angle = angle / 2
     hapi.begin_shape()
-    for a in numpy.arange(0, hapi.PI*2, angle):
+    rotation = radians(rotation)
+    for a in numpy.arange(0+rotation, hapi.PI*2 + rotation, angle):
         sx = x + cos(a) * r2
         sy = y + sin(a) * r2
         hapi.vertex((sx, sy))
@@ -32,12 +33,16 @@ def alpha_ellipse(hapi, x, y, w, h):
     pygame.draw.ellipse(surface1, shape_fill, (x, y, w, h))
     hapi.screen.blit(surface1, (0,0))
 
-def curve_rect(hapi, x, y, width, height, curve):
+def curve_rect(hapi, x, y, width, height, curve, rotation):
     curve /= 200
     curve = min(max(curve, 0), 1)
     curve *= min(width, height)
     curve = int(curve)
+    
+    print(curve)
+    
     shape_fill = hapi._fill + (hapi._alpha,)
+    '''
     surf = pygame.Surface((width, height), pygame.SRCALPHA)
     pygame.draw.rect(surf, shape_fill, (0, curve, width, height - 2 * curve))
     pygame.draw.rect(surf, shape_fill, (curve, 0, width - 2 * curve, height))
@@ -46,6 +51,23 @@ def curve_rect(hapi, x, y, width, height, curve):
     pygame.draw.circle(surf, shape_fill, (curve, height - curve), curve)
     pygame.draw.circle(surf, shape_fill, (width - curve, height - curve), curve)
     hapi.screen.blit(surf,(x,y))
+    '''
+    regular_polygon(hapi, x + width//2, y + height//2, width, height - 2*curve, 4, rotation, 0)
+    regular_polygon(hapi, x + width//2, y + height//2, width - 2*curve, height, 4, rotation, 0)
+    top_left = pygame.Vector2(-width//2,-height//2).rotate(rotation)
+    top_right = pygame.Vector2(width//2,-height//2).rotate(rotation)
+    bot_right = pygame.Vector2(width//2,height//2).rotate(rotation)
+    bot_left = pygame.Vector2(-width//2,height//2).rotate(rotation)
+    #pygame.draw.circle(hapi.screen,shape_fill, (x + curve, 
+                                                #y + curve), curve//2)
+    #pygame.draw.circle(hapi.screen,shape_fill, (int(top_right[0]) + x + width//2, 
+                                                #int(top_right[1]) + y + height//2), curve)
+    #pygame.draw.circle(hapi.screen,shape_fill, (int(bot_left[0]) + x + width//2, 
+                                                #int(bot_left[1]) + y + height//2), curve)
+    #pygame.draw.circle(hapi.screen,shape_fill, (int(bot_right[0]) + x + width//2, 
+                                                #int(bot_right[1]) + y + height//2), curve)
+    
+    
 
 
 def arrow(hapi, x, y, size, angle):
@@ -94,18 +116,29 @@ def heart(hapi, x, y, w, h):
     hapi.ellipse(x + w, y, w, circle_h)   
 
 
-def regular_polygon(hapi, x, y, w, h, n, rotation):
+def regular_polygon(hapi, x, y, w, h, n, rotation, angle_offset = 0):
     if n < 3:
         n = 3
     
-    midpoint = pygame.Vector2(x + w//2, y + h//2)
+    midpoint = pygame.Vector2(x, y)
+    #print(midpoint[0] - w//2, midpoint[1] - h//2)
+    
+    print("before:",w)
+    w = (sin(angle_offset)*w//2)//(hapi.PI/2)
+    h = h * cos(angle_offset)
+    print("after:",w)
     
     hapi.begin_shape()
     
     for angle in range(0, 360, 360//n):
-        angle = radians(angle)
-        d = pygame.Vector2(-2*sin(angle)*w, -2*cos(angle)*h).rotate(rotation)
+        angle = radians(angle + angle_offset)
+        d = pygame.Vector2(-sin(angle)*w//2, -cos(angle)*h//2).rotate(rotation)
         
         hapi.vertex(midpoint + d)
+    
+    for angle in range(0, 360, 1):
+        angle = radians(angle + angle_offset)
+        d = pygame.Vector2(-sin(angle)*w//2, -cos(angle)*h//2).rotate(rotation)
+        pygame.draw.rect(hapi.screen, (0,255,0), (midpoint[0] + d[0], midpoint[1] + d[1], 5, 5))
     
     hapi.end_shape()

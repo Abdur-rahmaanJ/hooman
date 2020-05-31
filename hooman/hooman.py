@@ -109,10 +109,13 @@ class Hooman:
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
 
     def rect(self, x, y, width, height):
+        '''
         pygame.draw.rect(self.screen, self._fill, (x, y, width, height))
         if self._stroke_weight > 0:
             pygame.draw.rect(self.screen, self._stroke, (x, y, width, height), 
                 self._stroke_weight)
+        '''
+        self._reg_poly(self, x, y, width, height, 4, self._rotation, 45)
 
     def text(self, letters, x, y):
         if not isinstance(letters, str):
@@ -178,16 +181,16 @@ class Hooman:
             widget.update()
 
     def star(self, x, y, r1, r2, npoints):
-        self._star(self, x, y, r1, r2, npoints)
+        self._star(self, x, y, r1, r2, npoints, self._rotation)
 
     def alpha_ellipse(self, x, y, w, h):
         self._alpha_ellipse(self, x, y, w, h)
     
     def curve_rect(self, x, y, w, h, curve):
-        self._curve_rect(self, x, y, w, h, curve)
+        self._curve_rect(self, x, y, w, h, curve, self._rotation)
     
-    def arrow(self, x, y, size, angle):
-        self._arrow(self, x, y, size, angle)
+    def arrow(self, x, y, size):
+        self._arrow(self, x, y, size, self._rotation)
     
     def heart(self, x, y, w, h):
         self._heart(self, x, y, w, h)
