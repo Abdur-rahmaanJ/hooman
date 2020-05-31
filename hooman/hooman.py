@@ -2,15 +2,18 @@
 
 import pygame
 from math import pi
+from math import cos
+from math import sin
 
-from ui import Button
+from .ui import Button
 
-from shapes import star
-from shapes import alpha_ellipse
-from shapes import curve_rect
-from shapes import arrow
-from shapes import heart
-from shapes import regular_polygon
+from .shapes import star
+from .shapes import alpha_ellipse
+from .shapes import curve_rect
+from .shapes import arrow
+from .shapes import heart
+from .shapes import regular_polygon
+from .shapes import supershape
 
 
 class Hooman:
@@ -19,6 +22,8 @@ class Hooman:
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.PI = pi
+        self.sin = sin
+        self.cos = cos
         
         self.colors = {
             'red': (255, 0, 0),
@@ -61,6 +66,7 @@ class Hooman:
         self._arrow = arrow
         self._heart = heart
         self._reg_poly = regular_polygon
+        self._supershape = supershape
         
 
     def fill(self, col):
@@ -197,3 +203,6 @@ class Hooman:
     
     def rotate(self, angle):
         self._rotation = angle
+
+    def supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False):
+        self._supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False)

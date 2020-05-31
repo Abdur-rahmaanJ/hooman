@@ -1,8 +1,11 @@
 import pygame
+import numpy
+
 from math import cos
 from math import sin
+
 from math import radians
-import numpy
+
 
 def star(hapi, x, y, r1, r2, npoints):
     '''
@@ -91,7 +94,6 @@ def heart(hapi, x, y, w, h):
     hapi.end_shape()
 
     hapi.ellipse(x, y, w, circle_h)
-    hapi.ellipse(x + w, y, w, circle_h)   
 
 
 def regular_polygon(hapi, x, y, w, h, n, rotation):
@@ -109,3 +111,102 @@ def regular_polygon(hapi, x, y, w, h, n, rotation):
         hapi.vertex(midpoint + d)
     
     hapi.end_shape()
+
+from math import cos
+from math import sin
+from math import pi
+
+
+#
+# Supershapes from http://paulbourke.net/geometry/supershape/
+# With help from Daniel Shiefman
+#
+
+def r_val(theta, n1, n2, n3, m, a, b):
+    if n1 == 0:
+        n1 = 0.1
+    part1 =  (1/a) * cos(theta * m/4) 
+    part1 = abs(part1)
+    part1 = pow(part1, n2)
+
+    part2 =  (1/b) * sin(theta * m/4) 
+    part2 = abs(part2)
+    part2 = pow(part2, n3)
+
+    part3 = pow(part1 + part2, 1/n1)
+
+    # returning r
+
+    if part3 == 0:
+        return 0
+
+    return 1/part3
+
+
+def supershape(hapi, x_coord, y_coord, size_x, size_y, param_options, fill=False):
+    '''
+    oil_drop = {
+        'n1':0.3,
+        'n2':0.3,
+        'n3':0.3,
+        'm': 1/6,
+        'a':1,
+        'b':1,
+        'phi':12
+    }
+
+    flowing_star = {
+        'n1':0.3,
+        'n2':0.3,
+        'n3':0.3,
+        'm': 7/6,
+        'a':1,
+        'b':1,
+        'phi':12
+    }
+
+
+    # n1 
+    smooth_star = {
+        'n1':0.20,
+        'n2':1.7,
+        'n3':1.7,
+        'm': 5,
+        'a':1,
+        'b':1,
+        'phi':2
+    }
+    '''
+    options = {
+        'n1':0.20,
+        'n2':1.7,
+        'n3':1.7,
+        'm': 5,
+        'a':1,
+        'b':1,
+        'phi':2
+    }
+
+    
+    pivot_x = x_coord
+    pivot_y = y_coord
+
+    options.update(param_options)
+
+    n1 = options['n1']
+    n2 = options['n2']
+    n3 = options['n3']
+    m = options['m']
+    a = options['a']
+    b = options['b']
+    phi = options['phi']
+    
+    
+    hapi.begin_shape()
+    for angle in numpy.arange(0, hapi.PI*phi, 0.01):
+        r = r_val(angle, n1, n2, n3, m, a, b)
+        x = pivot_x + size_x * r * hapi.cos(angle)
+        y = pivot_x + size_y * r * hapi.sin(angle)
+
+        hapi.vertex((x, y))
+    hapi.end_shape(fill=fill)
