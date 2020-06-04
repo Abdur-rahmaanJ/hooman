@@ -7,16 +7,16 @@ from math import sin
 
 from ui import Button
 
-from .shapes import star
-from .shapes import alpha_ellipse
-from .shapes import curve_rect
-from .shapes import arrow
-from .shapes import heart
-from .shapes import regular_polygon
-from .shapes import supershape
-from .shapes import smooth_star
-from .shapes import flowing_star
-from .shapes import oil_drop
+from shapes import star
+from shapes import alpha_ellipse
+from shapes import curve_rect
+from shapes import arrow
+from shapes import heart
+from shapes import regular_polygon
+from shapes import supershape
+from shapes import smooth_star
+from shapes import flowing_star
+from shapes import oil_drop
 
 
 class Hooman:
