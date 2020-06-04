@@ -1,7 +1,3 @@
-import sys
-
-sys.path.append("C:/Users/jorda/Documents/GitHub/hooman/hooman")
-
 from hooman import Hooman
 
 import pygame
