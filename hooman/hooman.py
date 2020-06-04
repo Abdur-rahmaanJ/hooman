@@ -5,18 +5,18 @@ from math import pi
 from math import cos
 from math import sin
 
-from .ui import Button
+from ui import Button
 
-from .shapes import star
-from .shapes import alpha_ellipse
-from .shapes import curve_rect
-from .shapes import arrow
-from .shapes import heart
-from .shapes import regular_polygon
-from .shapes import supershape
-from .shapes import smooth_star
-from .shapes import flowing_star
-from .shapes import oil_drop
+from shapes import star
+from shapes import alpha_ellipse
+from shapes import curve_rect
+from shapes import arrow
+from shapes import heart
+from shapes import regular_polygon
+from shapes import supershape
+from shapes import smooth_star
+from shapes import flowing_star
+from shapes import oil_drop
 
 
 class Hooman:
@@ -120,10 +120,8 @@ class Hooman:
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
 
     def rect(self, x, y, width, height):
-        pygame.draw.rect(self.screen, self._fill, (x, y, width, height))
-        if self._stroke_weight > 0:
-            pygame.draw.rect(self.screen, self._stroke, (x, y, width, height), 
-                self._stroke_weight)
+        self.regular_polygon(x, y, width, height, 4, 45)
+
 
     def text(self, letters, x, y):
         if not isinstance(letters, str):
@@ -189,22 +187,22 @@ class Hooman:
             widget.update()
 
     def star(self, x, y, r1, r2, npoints):
-        self._star(self, x, y, r1, r2, npoints)
+        self._star(self, x, y, r1, r2, npoints, self._rotation)
 
     def alpha_ellipse(self, x, y, w, h):
         self._alpha_ellipse(self, x, y, w, h)
     
     def curve_rect(self, x, y, w, h, curve):
-        self._curve_rect(self, x, y, w, h, curve)
+        self._curve_rect(self, x, y, w, h, curve, self._rotation)
     
-    def arrow(self, x, y, size, angle):
-        self._arrow(self, x, y, size, angle)
+    def arrow(self, x, y, width, height):
+        self._arrow(self, x, y, width, height, self._rotation)
     
     def heart(self, x, y, w, h):
-        self._heart(self, x, y, w, h)
+        self._heart(self, x, y, w, h, self._rotation)
 
-    def regular_polygon(self, x, y, w, h, num_of_points):
-        self._reg_poly(self, x, y, w, h, num_of_points, self._rotation)
+    def regular_polygon(self, x, y, w, h, num_of_points, angle_offset = 0):
+        self._reg_poly(self, x, y, w, h, num_of_points, self._rotation, angle_offset)
     
     def rotate(self, angle):
         self._rotation = angle
