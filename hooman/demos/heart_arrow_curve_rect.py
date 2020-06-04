@@ -25,11 +25,11 @@ while hapi.is_running:
     hapi.rotate(hapi.mouseX())
     
     hapi.fill(hapi.color['red'])
-    hapi.heart(100, 200, hapi.mouseX()//4, hapi.mouseY()//4)
+    hapi.heart(10, 200, hapi.mouseX()//4, hapi.mouseY()//4)
     
-    #hapi.arrow(100, 200, hapi.mouseX(), hapi.mouseY()//2)
+    hapi.arrow(300, 200, hapi.mouseX(), hapi.mouseY()//2)
 
-    #hapi.curve_rect(100, 200, 200, 100, hapi.mouseY()//5)
+    hapi.curve_rect(10, 10, 200, 100, hapi.mouseY()//5)
 
     hapi.event_loop()
 
