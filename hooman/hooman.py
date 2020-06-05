@@ -5,18 +5,21 @@ from math import pi
 from math import cos
 from math import sin
 
-from ui import Button
+from .ui import Button
 
-from shapes import star
-from shapes import alpha_ellipse
-from shapes import curve_rect
-from shapes import arrow
-from shapes import heart
-from shapes import regular_polygon
-from shapes import supershape
-from shapes import smooth_star
-from shapes import flowing_star
-from shapes import oil_drop
+from .shapes import star
+from .shapes import alpha_ellipse
+from .shapes import curve_rect
+from .shapes import arrow
+from .shapes import heart
+from .shapes import regular_polygon
+from .shapes import supershape
+from .shapes import smooth_star
+from .shapes import flowing_star
+from .shapes import oil_drop
+from .shapes import cross_hair
+
+from .formula import constrain
 
 
 class Hooman:
@@ -27,6 +30,7 @@ class Hooman:
         self.PI = pi
         self.sin = sin
         self.cos = cos
+        self.constrain = constrain
         
         self.colors = {
             'red': (255, 0, 0),
@@ -73,6 +77,8 @@ class Hooman:
         self._smooth_star = smooth_star
         self._flowing_star = flowing_star
         self._oil_drop = oil_drop
+        self._cross_hair = cross_hair
+        
 
     def fill(self, col):
         if isinstance(col, int):
@@ -218,3 +224,6 @@ class Hooman:
 
     def flowing_star(self, x_coord, y_coord, size_x, size_y, fill=False):
         self._flowing_star(self, x_coord, y_coord, size_x, size_y, fill=fill)
+
+    def cross_hair(self, coord):
+        self._cross_hair(self, coord)

@@ -1,5 +1,11 @@
 
 
+### 0.3.1
+
+- supershapes
+- constrain
+- cross_hair
+
 ### 0.2.8
 
 - star shape added
