@@ -1,4 +1,6 @@
-# hooman
+# hooman ![](https://img.shields.io/pypi/dm/hooman)
+
+
 ~ pygame for humans
 
 ```
