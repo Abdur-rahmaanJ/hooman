@@ -18,6 +18,10 @@ from .shapes import smooth_star
 from .shapes import flowing_star
 from .shapes import oil_drop
 from .shapes import ellipse
+from .shapes import cross_hair
+
+from .formula import constrain
+
 
 
 class Hooman:
@@ -28,6 +32,7 @@ class Hooman:
         self.PI = pi
         self.sin = sin
         self.cos = cos
+        self.constrain = constrain
         
         self.colors = {
             'red': (255, 0, 0),
@@ -74,6 +79,8 @@ class Hooman:
         self._smooth_star = smooth_star
         self._flowing_star = flowing_star
         self._oil_drop = oil_drop
+        self._cross_hair = cross_hair
+        
 
     def fill(self, col):
         if isinstance(col, int):
@@ -217,8 +224,12 @@ class Hooman:
     def oil_drop(self, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
         self._oil_drop(self, x_coord, y_coord, size_x, size_y, n1, fill=fill)
 
-    def flowing_star(self, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
+def flowing_star(self, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
         self._flowing_star(self, x_coord, y_coord, size_x, size_y, n1, fill=fill)
+
+    def cross_hair(self, coord):
+        self._cross_hair(self, coord)
+    
     
     def manual_ellipse(self, x, y, w, h, a):
         ellipse(self, x, y, w, h, self._rotation, a)
@@ -240,3 +251,4 @@ class Hooman:
             else:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x,y))
+

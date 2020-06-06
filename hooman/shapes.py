@@ -5,7 +5,7 @@ from math import pi
 from math import cos
 from math import sin
 from math import radians
-
+from math import sqrt
 
 def star(hapi, x, y, r1, r2, npoints, rotation):
     '''
@@ -126,9 +126,9 @@ def heart(hapi, x, y, w, h, rotation):
     hapi.ellipse(ellippse1[0], ellippse1[1], abs(w), abs(circle_h))  
     #pygame.draw.circle(hapi.screen, (0,0,255), (int(start[0]), int(start[1])), 5)
 
-from math import sqrt
 
-def regular_polygon(hapi, x, y, w, h, n, rotation = 0, angle_offset = 0):
+
+def regular_polygon(hapi, x, y, w, h, n, rotation=0, angle_offset=0):
     if n < 3:
         n = 3
     
@@ -313,3 +313,11 @@ def flowing_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
     }
     flowing_star_options['n1'] = n1
     supershape(hapi, x_coord, y_coord, size_x, size_y, flowing_star_options, hapi._rotation, fill=fill)
+
+
+def cross_hair(hapi, coord):
+    x = coord[0]
+    y = coord[1]
+    hapi.line(x, 0, x, hapi.HEIGHT)
+    hapi.line(0, y, hapi.WIDTH, y)
+
