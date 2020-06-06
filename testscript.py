@@ -10,37 +10,21 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 
-def handle_events(event):
-    if event.type == pygame.QUIT:
-        hapi.is_running = False
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_ESCAPE:
-            hapi.is_running = False
+slider_options = {
+    'background_color': hapi.color['grey'],
+    'slider_color': (200, 200, 200),
+    'range_value': [100, 200]
+}
 
-
-hapi.handle_events = handle_events
-
-
-def fake_slider(pos, x, y, width):
-    size = 10
-    hapi.fill(hapi.color['grey'])
-    hapi.rect(x, y, width, size)
-    hapi.fill((200, 200, 200))
-    hapi.rect(pos, y, size, size)
+real_slider = hapi.slider(50, 300, 400, 30, slider_options)
 
 while hapi.is_running:
     hapi.background(bg_col)
     
-    fake_slider(hapi.mouseX(), 0, 450, hapi.WIDTH)
+    hapi.fill(hapi.color['blue'])
+    hapi.text(real_slider.value(), 10, 10)
 
-    reflected_val = hapi.constrain(hapi.mouseX(), 0, 500, 0, 255)
-    reflected_col = (reflected_val, reflected_val, reflected_val)
-    hapi.fill(reflected_col)
-    hapi.rect(10, 10, 100, 100)
-
-    reflected_val2 = hapi.constrain(hapi.mouseX(), 0, 500, 100, 200)
-    fake_slider(reflected_val2, 100, 200, 100)
-
+    real_slider.update()
     hapi.flip_display()
     hapi.event_loop()
 
