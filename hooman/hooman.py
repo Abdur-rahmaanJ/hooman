@@ -6,6 +6,8 @@ from math import cos
 from math import sin
 
 from .ui import Button
+from .ui import Slider
+from .ui import TextBox
 
 from .shapes import star
 from .shapes import alpha_ellipse
@@ -17,9 +19,11 @@ from .shapes import supershape
 from .shapes import smooth_star
 from .shapes import flowing_star
 from .shapes import oil_drop
+from .shapes import ellipse
 from .shapes import cross_hair
 
 from .formula import constrain
+
 
 
 class Hooman:
@@ -39,7 +43,8 @@ class Hooman:
             'black': (0, 0, 0),
             'white': (255, 255, 255),
             'yellow': (255, 255, 0),
-            'grey': (100, 100, 100)
+            'grey': (100, 100, 100),
+            'light_grey': (200, 200, 200)
         }
         self.colours = self.colors
         self.color = self.colors
@@ -188,6 +193,16 @@ class Hooman:
         self._all_widgets.append(b)
         return b
 
+    def text_box(self, *args, **kwargs):
+        t = TextBox(*args, **kwargs)
+        self._all_widgets.append(t)
+        return t
+
+    def slider(self, *args, **kwargs):
+        s = Slider(self, *args, **kwargs)
+        self._all_widgets.append(s)
+        return s
+
     def update_ui(self):
         for widget in self._all_widgets:
             widget.update()
@@ -211,19 +226,42 @@ class Hooman:
         self._reg_poly(self, x, y, w, h, num_of_points, self._rotation, angle_offset)
     
     def rotate(self, angle):
-        self._rotation = angle
+        self._rotation = angle % 360
 
     def supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False):
-        self._supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False)
+        self._supershape(self, x_coord, y_coord, size_x, size_y, param_options,
+                         self._rotation, fill=False)
 
     def smooth_star(self, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
         self._smooth_star(self, x_coord, y_coord, size_x, size_y, n1=n1, fill=fill)
 
-    def oil_drop(self, x_coord, y_coord, size_x, size_y, fill=False):
-        self._oil_drop(self, x_coord, y_coord, size_x, size_y, fill=fill)
+    def oil_drop(self, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
+        self._oil_drop(self, x_coord, y_coord, size_x, size_y, n1, fill=fill)
 
-    def flowing_star(self, x_coord, y_coord, size_x, size_y, fill=False):
-        self._flowing_star(self, x_coord, y_coord, size_x, size_y, fill=fill)
+    def flowing_star(self, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
+        self._flowing_star(self, x_coord, y_coord, size_x, size_y, n1, fill=fill)
 
     def cross_hair(self, coord):
         self._cross_hair(self, coord)
+
+    def manual_ellipse(self, x, y, w, h, a):
+        ellipse(self, x, y, w, h, self._rotation, a)
+
+    def gradient_rect(self, x, y, w, h, start_col, end_col, direction=0, bias=0.5):
+        val = w if direction == 0 else h
+        val = 1 if val == 0 else val
+        sr, sg, sb = start_col
+        er, eg, eb = end_col
+        dr, dg, db = (er-sr)/val, (eg-sg)/val, (eb-sb)/val
+        if direction == 0:
+            surf = pygame.Surface((w, 1))
+        else:
+            surf = pygame.Surface((1, h))
+        for i in range(val):
+            col = (int(sr + dr*i), int(sg + dg*i), int(sb + db*i))
+            if direction == 0:
+                surf.set_at((i, 0), col)
+            else:
+                surf.set_at((0, i), col)
+        self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
+
