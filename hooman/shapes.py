@@ -7,6 +7,8 @@ from math import sin
 from math import radians
 from math import sqrt
 
+from pygame.gfxdraw import textured_polygon as poly
+
 def star(hapi, x, y, r1, r2, npoints, rotation):
     '''
     https://processing.org/examples/star.html
@@ -162,7 +164,7 @@ def regular_polygon(hapi, x, y, w, h, n, rotation=0, angle_offset=0):
     hapi.end_shape(hapi._stroke_weight)
 
 
-def gradient_rect(w, h, start_col, end_col, direction = 0):
+def gradient_rect(w, h, start_col, end_col, direction=0):
     val = w if direction == 0 else h
     val = 1 if val == 0 else val
     sr, sg, sb = start_col
@@ -180,15 +182,15 @@ def gradient_rect(w, h, start_col, end_col, direction = 0):
             surf.set_at((0, i), col)
     return pygame.transform.scale(surf, (w, h))
 
-from pygame.gfxdraw import textured_polygon as poly
+
 def ellipse(hapi, x, y, w, h, rotation, a):
-    
+
     midpoint = pygame.Vector2(x + w//2, y + h//2)
-    
+
     resolution = 5
-    
+
     points = []
-    
+
     highest_h = 0
     highest_w = 0
     for angle in range(360*resolution):
@@ -196,9 +198,9 @@ def ellipse(hapi, x, y, w, h, rotation, a):
         d = pygame.Vector2(sin(angle)*w//2, cos(angle)*h//2).rotate(rotation)
         highest_h = int(max(highest_h, d[1]))
         highest_w = int(max(highest_w, d[0]))
-        
+
         points.append(midpoint + d)
-    #print(highest_w, highest_h)
+    # print(highest_w, highest_h)
     poly(hapi.screen, points, gradient_rect(highest_w*2, highest_h*2, 
                                             hapi.color['green'], 
                                             hapi.color['red']),
@@ -283,6 +285,7 @@ def smooth_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
     smooth_star_options['n1'] = n1
     supershape(hapi, x_coord, y_coord, size_x, size_y, smooth_star_options, hapi._rotation, fill=fill)
 
+
 def oil_drop(hapi, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
     '''
     n1 between 0 and 1
@@ -298,7 +301,6 @@ def oil_drop(hapi, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
     }
     oil_drop_options['n1'] = n1
     supershape(hapi, x_coord, y_coord, size_x, size_y, oil_drop_options, hapi._rotation, fill=fill)
-
 
 
 def flowing_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
@@ -320,4 +322,3 @@ def cross_hair(hapi, coord):
     y = coord[1]
     hapi.line(x, 0, x, hapi.HEIGHT)
     hapi.line(0, y, hapi.WIDTH, y)
-

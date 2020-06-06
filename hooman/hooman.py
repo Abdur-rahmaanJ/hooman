@@ -197,7 +197,7 @@ class Hooman:
         t = TextBox(*args, **kwargs)
         self._all_widgets.append(t)
         return t
-    
+
     def slider(self, *args, **kwargs):
         s = Slider(self, *args, **kwargs)
         self._all_widgets.append(s)
@@ -229,7 +229,8 @@ class Hooman:
         self._rotation = angle % 360
 
     def supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False):
-        self._supershape(self, x_coord, y_coord, size_x, size_y, param_options, self._rotation, fill=False)
+        self._supershape(self, x_coord, y_coord, size_x, size_y, param_options,
+                         self._rotation, fill=False)
 
     def smooth_star(self, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
         self._smooth_star(self, x_coord, y_coord, size_x, size_y, n1=n1, fill=fill)
@@ -262,5 +263,5 @@ class Hooman:
                 surf.set_at((i, 0), col)
             else:
                 surf.set_at((0, i), col)
-        self.screen.blit(pygame.transform.scale(surf, (w, h)), (x,y))
+        self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
 

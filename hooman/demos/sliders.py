@@ -9,7 +9,7 @@ bg_col = (255, 255, 255)
 
 slider_options = {
     'background_color': hapi.color['grey'],
-    'slider_color': (200,200,200)
+    'slider_color': (200, 200, 200)
 }
 
 real_slider = hapi.slider(50, 300, 400, 30, slider_options)
@@ -34,7 +34,6 @@ while hapi.is_running:
     hapi.fill(int(real_slider.val * 255))
     hapi.rect(10, 10, 100, 100)
 
-    
     real_slider.update()
     slider_2.set_value(real_slider.val)
     slider_2.update()

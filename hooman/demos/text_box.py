@@ -29,7 +29,6 @@ hapi.handle_events = handle_events
 while hapi.is_running:
     hapi.background(bg_col)
 
-    
     text_box.update()
 
     hapi.flip_display()
