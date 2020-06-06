@@ -161,6 +161,50 @@ def regular_polygon(hapi, x, y, w, h, n, rotation = 0, angle_offset = 0):
 
     hapi.end_shape(hapi._stroke_weight)
 
+
+def gradient_rect(w, h, start_col, end_col, direction = 0):
+    val = w if direction == 0 else h
+    val = 1 if val == 0 else val
+    sr, sg, sb = start_col
+    er, eg, eb = end_col
+    dr, dg, db = (er-sr)/val, (eg-sg)/val, (eb-sb)/val
+    if direction == 0:
+        surf = pygame.Surface((w, 1))
+    else:
+        surf = pygame.Surface((1, h))
+    for i in range(val):
+        col = (int(sr + dr*i), int(sg + dg*i), int(sb + db*i))
+        if direction == 0:
+            surf.set_at((i, 0), col)
+        else:
+            surf.set_at((0, i), col)
+    return pygame.transform.scale(surf, (w, h))
+
+from pygame.gfxdraw import textured_polygon as poly
+def ellipse(hapi, x, y, w, h, rotation, a):
+    
+    midpoint = pygame.Vector2(x + w//2, y + h//2)
+    
+    resolution = 5
+    
+    points = []
+    
+    highest_h = 0
+    highest_w = 0
+    for angle in range(360*resolution):
+        angle = radians(angle/resolution)
+        d = pygame.Vector2(sin(angle)*w//2, cos(angle)*h//2).rotate(rotation)
+        highest_h = int(max(highest_h, d[1]))
+        highest_w = int(max(highest_w, d[0]))
+        
+        points.append(midpoint + d)
+    #print(highest_w, highest_h)
+    poly(hapi.screen, points, gradient_rect(highest_w*2, highest_h*2, 
+                                            hapi.color['green'], 
+                                            hapi.color['red']),
+         int(max(cos(-2*hapi.PI*rotation/180)*w - w, 0)), 0)
+
+
 #
 # Supershapes from http://paulbourke.net/geometry/supershape/
 # With help from Daniel Shiefman
@@ -187,7 +231,7 @@ def r_val(theta, n1, n2, n3, m, a, b):
     return 1/part3
 
 
-def supershape(hapi, x_coord, y_coord, size_x, size_y, param_options, fill=False):
+def supershape(hapi, x_coord, y_coord, size_x, size_y, param_options, rotation, fill=False):
     options = {
         'n1':0.20,
         'n2':1.7,
@@ -212,12 +256,12 @@ def supershape(hapi, x_coord, y_coord, size_x, size_y, param_options, fill=False
     b = options['b']
     phi = options['phi']
     
-    
+    rotation = radians(rotation)
     hapi.begin_shape()
     for angle in numpy.arange(0, hapi.PI*phi, 0.01):
         r = r_val(angle, n1, n2, n3, m, a, b)
-        x = pivot_x + size_x * r * hapi.cos(angle)
-        y = pivot_y + size_y * r * hapi.sin(angle)
+        x = pivot_x + size_x * r * hapi.cos(angle + rotation)
+        y = pivot_y + size_y * r * hapi.sin(angle + rotation)
 
         hapi.vertex((x, y))
     hapi.end_shape(fill=fill)
@@ -237,9 +281,9 @@ def smooth_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
         'phi':2
     }
     smooth_star_options['n1'] = n1
-    supershape(hapi, x_coord, y_coord, size_x, size_y, smooth_star_options, fill=fill)
+    supershape(hapi, x_coord, y_coord, size_x, size_y, smooth_star_options, hapi._rotation, fill=fill)
 
-def oil_drop(hapi, x_coord, y_coord, size_x, size_y, fill=False):
+def oil_drop(hapi, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
     '''
     n1 between 0 and 1
     '''
@@ -252,11 +296,12 @@ def oil_drop(hapi, x_coord, y_coord, size_x, size_y, fill=False):
         'b':1,
         'phi':12
     }
-    supershape(hapi, x_coord, y_coord, size_x, size_y, oil_drop_options, fill=fill)
+    oil_drop_options['n1'] = n1
+    supershape(hapi, x_coord, y_coord, size_x, size_y, oil_drop_options, hapi._rotation, fill=fill)
 
 
 
-def flowing_star(hapi, x_coord, y_coord, size_x, size_y, fill=False):
+def flowing_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
     flowing_star_options = {
         'n1':0.3,
         'n2':0.3,
@@ -266,4 +311,5 @@ def flowing_star(hapi, x_coord, y_coord, size_x, size_y, fill=False):
         'b':1,
         'phi':12
     }
-    supershape(hapi, x_coord, y_coord, size_x, size_y, flowing_star_options, fill=fill)
+    flowing_star_options['n1'] = n1
+    supershape(hapi, x_coord, y_coord, size_x, size_y, flowing_star_options, hapi._rotation, fill=fill)
