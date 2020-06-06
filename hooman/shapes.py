@@ -44,8 +44,6 @@ def curve_rect(hapi, x, y, width, height, curve, rotation):
     curve *= min(width, height)
     curve = int(curve)
     
-    print(curve)
-    
     shape_fill = hapi._fill + (hapi._alpha,)
     '''
     surf = pygame.Surface((width, height), pygame.SRCALPHA)

@@ -4,6 +4,7 @@ Edit: https://github.com/Abdur-rahmaanJ
 '''
 
 import pygame
+from .formula import constrain
 
 class Button:
 
@@ -271,7 +272,8 @@ class Slider:
             'background_color': (255, 255, 255),
             'slider_width': None,
             'slider_color': (200, 200, 200),
-            'starting_value': 0.5
+            'starting_value': None,
+            'value_range': [0,1]
         }
         options.update(params)
 
@@ -281,9 +283,14 @@ class Slider:
         self.w = w
         self.h = h
         self.bg = options['background_color']
+        self.val_range = options['value_range']
         self.slider_bg = options['slider_color']
-        self.slider_w = options['slider_width'] if options['slider_width'] else h
-        self.val = options['starting_value']
+        self.slider_w = options['slider_width'] if options['slider_width'] is not None else h
+        if options['starting_value'] is not None:
+            self.val = constrain(options['starting_value'],self.val_range[0],
+                                 self.val_range[1], 0, 1)
+        else:
+            self.val = (self.val_range[1] - self.val_range[0])/2
         self.slider_rect = pygame.Rect(
             self.x + self.val * (self.w - self.slider_w),
             self.y,
@@ -316,7 +323,7 @@ class Slider:
         self._draw()
 
     def value(self):
-        return self.val
+        return constrain(self.val, 0, 1, self.val_range[0], self.val_range[1])
 
     def set_value(self, val):
         self.val = val
@@ -426,7 +433,7 @@ class TextBox:
     def _draw(self):
         # draw background
         pygame.draw.rect(self.surface, self.background, 
-                             (self.x, self.y, self.w, self.h*self.lines))
+                         (self.x, self.y, self.w, self.h*self.lines))
         # draw all text
         for line,text in enumerate(self.text):
             if len(text) != 0:
