@@ -7,7 +7,7 @@ import pygame
 
 class Button:
 
-    def __init__(self, x, y, text, param_options):
+    def __init__(self, x, y, text, param_options = {}):
         self.x = x
         self.y = y
         self.w = 1
@@ -263,3 +263,223 @@ def curve_square(width, height, curve, color=(0, 0, 0)):
     pygame.draw.circle(surf, color, (curve, height - curve), curve)
     pygame.draw.circle(surf, color, (width - curve, height - curve), curve)
     return surf
+
+
+class Slider:
+    def __init__(self, hapi, x, y, w, h, params = {}):
+        options = {
+            'background_color': (255, 255, 255),
+            'slider_width': None,
+            'slider_color': (200, 200, 200),
+            'starting_value': 0.5
+        }
+        options.update(params)
+        
+        self.hapi = hapi
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.bg = options['background_color']
+        self.slider_bg = options['slider_color']
+        self.slider_w = options['slider_width'] if options['slider_width'] else h
+        self.val = options['starting_value']
+        self.slider_rect = pygame.Rect(
+            self.x + self.val * (self.w - self.slider_w),
+            self.y,
+            self.slider_w,
+            self.h
+        )
+        self.clicked_on = False
+        self.prev_click = False
+    
+    def _draw(self):
+        pygame.draw.rect(self.hapi.screen, self.bg, 
+                         (self.x, self.y, self.w, self.h))
+        
+        pygame.draw.rect(self.hapi.screen, self.slider_bg, self.slider_rect)
+    
+    def update(self):
+        mouse_pos = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()[0]
+        if self.slider_rect.collidepoint(mouse_pos):
+            if click:
+                self.clicked_on = True
+        if self.clicked_on:
+            self.val = (mouse_pos[0] - self.x)/self.w
+            self.val = max(min(self.val, 1), 0)
+            self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
+            if not click:
+                self.clicked_on = False
+        
+        self._draw()
+    
+    def value(self):
+        return self.val
+    
+    def set_value(self, val):
+        self.val = val
+        self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
+
+
+class TextBox:
+    def __init__(self,x, y, w, h = 0, param_options = {}):
+        options = {
+            'lines': 1, 
+            'text': "", 
+            'background_color': (255, 255, 255), 
+            'font_size': 30, 
+            'font': "Calibri", 
+            'text_colour': (0 ,0 ,0), 
+            'surface': None, 
+            'margin': 2, 
+            'cursor': True,
+            'Enter_action': None, 
+            'calculateSize': False
+        }
+        options.update(param_options)
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.cursor = options['cursor']
+        self.current_line = 0
+        self.current_col = len(options['text'])
+        self.lines = options['lines']
+        self.font = pygame.font.Font(pygame.font.match_font(options['font']),
+                                     options['font_size'])
+        self.text_colour = options['text_colour']
+        self.text = [list(options['text'])]
+        self.char_length = [self._get_text_width(x) for x in self.text]
+        self.background = options['background_color']
+        print(self.background)
+        self.surface = options['surface'] if options['surface'] else pygame.display.get_surface()
+        self.margin = options['margin']
+        self.Enter_action = options['Enter_action']        
+        if self.surface == None:
+            raise ValueError("No surface to blit to")        
+        #if no surface is supplied, get window
+        if self.surface == None:
+            self.surface = pygame.display.get_surface()
+            if self.surface == None:
+                raise ValueError("No surface to blit to")
+        if options['calculateSize'] or self.h == 0:
+            self.h = self._get_font_height() + h
+
+
+    #get the width of the text using the font
+    def _get_text_width(self,text):
+        text = "".join(text)
+        if len(text) == 0:
+            return 0
+        obj = self.font.render(text, True, (0 ,0 ,0))
+        return obj.get_width()
+
+
+    #returns the height of the font
+    def _get_font_height(self):
+        obj = self.font.render(" ", True, (0 ,0 ,0))
+        return obj.get_height()
+
+
+    #call this when the user presses a key down, supply the event from `pygame.event.get()`
+    def key_down(self,e):
+        #when backspace is pressed, delete last char
+        if e.unicode == "":
+            #if nothing in line, delete line
+            if len(self.text[self.current_line]) == 0:
+                if self.current_line > 0:
+                    del self.text[self.current_line]
+                    self.current_line -= 1
+                    self.current_col = len(self.text[self.current_line])
+            else:   
+                del self.text[self.current_line][-1]
+                self.current_col -= 1
+        #if key is enter, create line
+        elif e.key == 13:
+            if self.Enter_action:
+                self.Enter_action()
+            elif self.current_line < self.lines - 1:
+                self.current_line += 1
+                self.text.append([""])
+                self.char_length.append([0])
+                self.current_col = 0
+        #if key is a charachter, put on screen
+        elif e.unicode != "":
+            if len(self.text[self.current_line]) > 0:
+                if self.text[self.current_line][-1] == "":
+                    del self.text[self.current_line][-1]
+            self.text[self.current_line] = self.text[self.current_line][:self.current_col] + [e.unicode] + self.text[self.current_line][self.current_col:]
+            self.current_col += 1
+        #if the down arrow is pressed
+        elif e.key == 274:
+            self.current_line += 1 if self.current_line < len(self.text)-1 else 0
+            self.current_col = min(self.current_col, len(self.text[self.current_line]))
+        #if the up arrow is pressed
+        elif e.key == 273:
+            self.current_line -= 1 if self.current_line > 0 else 0
+            self.current_col = min(self.current_col, len(self.text[self.current_line]))
+        #if the right arrow is pressed
+        elif e.key == 275:
+            self.current_col += 1 if len(self.text[self.current_line]) > self.current_col else 0
+        #if the left arrow is pressed
+        elif e.key == 276:
+            self.current_col -= 1 if 0 < self.current_col else 0
+
+
+    #draw the textbox
+    def _draw(self):
+        #draw background
+        pygame.draw.rect(self.surface, self.background, 
+                             (self.x, self.y, self.w, self.h*self.lines))
+        #draw all text
+        for line,text in enumerate(self.text):
+            if len(text) != 0:
+                txt = "".join(text)
+                obj = self.font.render(txt, True, self.text_colour)
+                self.surface.blit(obj, (self.x + self.margin, self.y + (self.h*line)))
+        #draw cursor
+        if self.cursor:
+            total = 0
+            total = self._get_text_width(
+                self.text[self.current_line][:self.current_col])
+            pygame.draw.line(self.surface,(0, 0, 0),
+                             (self.x + total, 
+                              self.y + (self.h*self.current_line)),
+                             (self.x + total, self.y + (self.h*(self.current_line+1))), 2)
+            #print(self.current_col)
+
+
+    #update should be called every frame, it draws the textbox
+    def update(self):
+        self._draw()
+
+
+    #get the text of a specific line or lines
+    def get_lines(self, lines=-1, return_as_string = False):
+        pas = False
+        #if user gives an int, check if it is -1 for all lines, else get specific line
+        if isinstance(lines, int):
+            if lines == -1:
+                lines = (0, self.lines)
+                pas = True
+            if not pas:
+                if 0 > lines or self.lines < lines:
+                    raise IndexError("line index not in range")
+                if len(self.text) < lines:
+                    return ""
+                return "".join(self.text[lines])
+        #if user wants a range of lines, get lines
+        if isinstance(lines, tuple):
+            if lines[0] < 0 or lines[0] > self.lines or lines[1] < 0 or lines[1] > self.lines or lines[0] > lines[1]:
+                raise IndexError("line index is out of range: " + str(lines) + " (0, " + str(str(self.lines)))
+            string = []
+            for x in range(lines[0], lines[1]):
+                if len(self.text) > x:
+                    string.append("".join(self.text[x]))
+                else:
+                    string.append("")
+            if return_as_string:
+                return "\n".join(string)
+            return string
+
