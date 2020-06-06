@@ -1,5 +1,6 @@
 import time
 
+
 class Timer:
     def __init__(self, callback, seconds=0, minutes=0):
         self.callback = callback
@@ -13,4 +14,4 @@ class Timer:
         return False
 
     def __str__(self):
-        return "Timer: %d seconds remaining" %(self.length - (time.time() - self.start_time)) 
+        return "Timer: %d seconds remaining" %(self.length - (time.time() - self.start_time))

@@ -87,7 +87,7 @@ class Hooman:
         self._cross_hair = cross_hair
         
         self._timers = []
-        
+
 
     def fill(self, col):
         if isinstance(col, int):
@@ -271,7 +271,7 @@ class Hooman:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
 
-    def timer(self, callback, seconds = 0, minutes = 0):
+    def timer(self, callback, seconds=0, minutes=0):
         self._timers.append(Timer(callback, seconds, minutes))
 
     def _timer_update(self):

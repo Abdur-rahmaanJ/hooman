@@ -343,9 +343,9 @@ class Slider:
         if self.step == 0:
             return val
         else:
-            a = constrain(val,0,1,self.val_range[0],self.val_range[1])
+            a = constrain(val, 0, 1, self.val_range[0], self.val_range[1])
             b = a//self.step * self.step
-            c = constrain(b, self.val_range[0], self.val_range[1],0,1)
+            c = constrain(b, self.val_range[0], self.val_range[1], 0, 1)
             # print(val, a, b, c)
             return c
 
