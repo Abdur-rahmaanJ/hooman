@@ -831,6 +831,12 @@ button = hapi.button(150, 250, "Click Me",
 - starting_value - the starting value of the slider, by default it is in the middle of the range
 - value_range - the range that the slider ranges between, by default it is between 0 and 1
 
+#### Methods
+
+- update() - this updates the slider and draws it on screen, this should be called every frame
+- value() - this returns the current value of the slider
+- set_value(value) - given a integer or float, this sets the value and moves the slider
+
 ## .textbox
 
 `.textbox(x, y, w, h=0, [optional parameters])`
@@ -854,4 +860,16 @@ button = hapi.button(150, 250, "Click Me",
 - cursor - a cursor to show you where you are typing, by default it is on
 - Enter_action - a function that gets called when enter is pressed
 - calculateSize - when True, it will calculate the height based off the height of the text
+
+#### Methods
+
+- update() - this updates the textbox and draws it on screen, this should be called every frame
+- get_lines(lines=1, return_as_string=False) - this returns the text in the textbox, lines can be the line number (starting from 1) or a range of lines eg. `(1,4)` gets lines 1 to 4, when return_as_string is False, it will return each line in a list
+- key_down(event) - when a KEYDOWN event happens, giving it to this method updates the textbox
+```
+def handle_events(event):
+    if event.type == pygame.KEYDOWN:
+        .keydown(event)
+```
+
 
