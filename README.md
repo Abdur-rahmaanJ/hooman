@@ -617,6 +617,97 @@ pygame.quit()
 - w - width
 - h - height
 
+## .regular_polygon
+
+`.regular_polygon(x, y, w, h, npoints, angle_offset)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- npoints - the number of points/corners of the polygon eg. 4 is a square
+- angle_offset - the first point will be drawn from the top, this moves it to θ degrees anti-clockwise
+
+## .supershape
+
+- note see paulbourke.net/geometry/supershape/ on how to use supershape
+- there is also presets for this below
+
+`.supershape(x, y, w, h, options)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- options - optional options for the shape 
+
+#### optional options
+
+- n1
+- n2
+- n3
+- m
+- a
+- b
+- phi
+
+## .smooth_star
+
+note this is a preset for supershape
+
+`.smooth_star(x, y, w, h, n1=0.20, fill=False)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- n1 - controls the smoothness of the star, this is between 0 and 1
+- fill - when set to False, only the outline will be drawn
+
+## .oil_drop
+
+note this is a preset for supershape
+
+`.oil_drop(x, y, w, h, n1=0.3, fill=False)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- n1 - controls the size of the drop, must be between 0 and 1
+- fill - when set to False, only the outline will be drawn
+
+## .flowing_star
+
+note this is a preset for supershape
+
+`.flowing_star(x, y, w, h, n1=0.3, fill=False)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- n1 - controls the inflation of the shape, must be between 0 and 1
+- fill - when set to False, only the outline will be drawn
+
+## .gradient_rect
+
+`.gradient_rect(x, y, w, h, start_col, end_col, direction=0)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- start_col - this is the color it starts with
+- end_col - this is the color it ends with
+- direction - the direction of the gradient, 0 is horizontal where it starts on the left and 1 is vertical where is starts on the top
+
+## .cross_hair
+
+`.cross_hair(coord)`
+
+- coord - the x and y position of the center of the cross_hairs
+
 ## Interactivity
 
 ## .mouseX
@@ -680,7 +771,7 @@ Create a button with `hapi.button(x, y, text, [optional paramters])`
 #### Optional Parameters
 
 - surface - the surface you want the button on, by default it is the main window
-- background - the color of the utton background
+- background_color - the color of the button background
 - hover_background_color - the color of the button background when the mouse is over the button
 - font - the font of the text, by default it is Calibri
 - font_size - the size of the text, by default it is 30
@@ -721,4 +812,46 @@ button = hapi.button(150, 250, "Click Me",
 - width() - this returns the width of the button
 - height() - this returns the height of the button
 - create_button() - this applies any changes to the button
+
+## .slider
+
+`.slider(x, y, w, h, [optional parameters])`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- optional parameters - a dictionary of optional options 
+
+#### optional parameters
+
+- background_color - the background color of the slider
+- slider_width - the width of slider, by default it is the same as the height
+- slider_color - the color of the slider
+- starting_value - the starting value of the slider, by default it is in the middle of the range
+- value_range - the range that the slider ranges between, by default it is between 0 and 1
+
+## .textbox
+
+`.textbox(x, y, w, h=0, [optional parameters])`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height of each line
+- optional parameters - a dictionary of optional options
+
+#### optional parameters
+
+- lines - the amount of lines the textbox has
+- text - the starting text it has
+- background_color - the color of the background
+- font_size - the size of the text font
+- font - the font of the text
+- text_color - the color of the text
+- surface - the surface to put the textbox on, by default it is the main window
+- margin - the offset from the left side that the text starts from
+- cursor - a cursor to show you where you are typing, by default it is on
+- Enter_action - a function that gets called when enter is pressed
+- calculateSize - when True, it will calculate the height based off the height of the text
 
