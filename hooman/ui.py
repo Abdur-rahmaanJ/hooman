@@ -6,6 +6,7 @@ Edit: https://github.com/Abdur-rahmaanJ
 import pygame
 from .formula import constrain
 
+
 class Button:
 
     def __init__(self, x, y, text, param_options={}):
@@ -273,7 +274,9 @@ class Slider:
             'slider_width': None,
             'slider_color': (200, 200, 200),
             'starting_value': None,
-            'value_range': [0,1]
+            'value_range': [0,1],
+            'slider_height': h,
+            'step': 0
         }
         options.update(params)
 
@@ -284,18 +287,21 @@ class Slider:
         self.h = h
         self.bg = options['background_color']
         self.val_range = options['value_range']
+        val_dif = self.val_range[1] - self.val_range[0]
         self.slider_bg = options['slider_color']
+        self.slider_h = options['slider_height']
+        self.step = options['step']
         self.slider_w = options['slider_width'] if options['slider_width'] is not None else h
         if options['starting_value'] is not None:
             self.val = constrain(options['starting_value'],self.val_range[0],
                                  self.val_range[1], 0, 1)
         else:
-            self.val = (self.val_range[1] - self.val_range[0])/2
+            self.val = 0.5
         self.slider_rect = pygame.Rect(
             self.x + self.val * (self.w - self.slider_w),
-            self.y,
+            self.y + (self.h - self.slider_h)//2,
             self.slider_w,
-            self.h
+            self.slider_h
         )
         self.clicked_on = False
         self.prev_click = False
@@ -316,6 +322,7 @@ class Slider:
         if self.clicked_on:
             self.val = (mouse_pos[0] - self.x)/self.w
             self.val = max(min(self.val, 1), 0)
+            self.val = self._get_val(self.val)
             self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
             if not click:
                 self.clicked_on = False
@@ -323,11 +330,24 @@ class Slider:
         self._draw()
 
     def value(self):
-        return constrain(self.val, 0, 1, self.val_range[0], self.val_range[1])
+        val = constrain(self.val, 0, 1, self.val_range[0], self.val_range[1])
+        if isinstance(self.step, int) and self.step != 0:
+            val = int(val)
+        return val
 
     def set_value(self, val):
-        self.val = val
+        self.val = constrain(val, self.val_range[0], self.val_range[1], 0, 1)
         self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
+
+    def _get_val(self, val):
+        if self.step == 0:
+            return val
+        else:
+            a = constrain(val,0,1,self.val_range[0],self.val_range[1])
+            b = a//self.step * self.step
+            c = constrain(b, self.val_range[0], self.val_range[1],0,1)
+            # print(val, a, b, c)
+            return c
 
 class TextBox:
     def __init__(self,x, y, w, h=0, param_options={}):
