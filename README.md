@@ -572,13 +572,50 @@ pygame.quit()
 
 ## .heart
 
+`.heart(x, y, w, h)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+
 ## .star
+
+`.star(x, y, r1, r2, npoints)`
+
+- x - x coordinate
+- y - y coordinate
+- r1 - radius on the x axis, same as half width
+- r2 - radius on the y axis, same as half height
+- npoints - the number of points of the star, this is a minimum of 2
 
 ## .curve_rect
 
+`.curve_rect(x, y, w, h, curve)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+- curve - the percentage of curve with 0 being no curve and 100 being full curve
+
 ## .arrow
 
+`.arrow(x, y, w, h)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
+
 ## .alpha_ellipse
+
+`.alpha_ellipse(x, y, w, h)`
+
+- x - x coordinate
+- y - y coordinate
+- w - width
+- h - height
 
 ## Interactivity
 
