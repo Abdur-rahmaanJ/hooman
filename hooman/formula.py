@@ -9,5 +9,5 @@ def constrain(val, start, end, realstart, realend):
         return start
     if val > end:
         return end
-    v = (val / (end-start)) * (realend-realstart)
+    v = ((val - start) / (end-start)) * (realend-realstart)
     return realstart + v
