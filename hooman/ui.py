@@ -6,7 +6,6 @@ Edit: https://github.com/Abdur-rahmaanJ
 import pygame
 from .formula import constrain
 
-
 class Button:
 
     def __init__(self, x, y, text, param_options={}):
