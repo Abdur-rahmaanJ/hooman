@@ -373,7 +373,7 @@ class TextBox:
             self.h = self._get_font_height() + h
 
     # get the width of the text using the font
-    def _get_text_width(self,text):
+    def _get_text_width(self, text):
         text = "".join(text)
         if len(text) == 0:
             return 0
@@ -435,7 +435,7 @@ class TextBox:
         pygame.draw.rect(self.surface, self.background, 
                          (self.x, self.y, self.w, self.h*self.lines))
         # draw all text
-        for line,text in enumerate(self.text):
+        for line, text in enumerate(self.text):
             if len(text) != 0:
                 txt = "".join(text)
                 obj = self.font.render(txt, True, self.text_colour)
