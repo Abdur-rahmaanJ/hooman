@@ -292,14 +292,13 @@ class Slider:
         )
         self.clicked_on = False
         self.prev_click = False
-
+        
 
     def _draw(self):
-        pygame.draw.rect(self.hapi.screen, self.bg, 
+        pygame.draw.rect(self.hapi.screen, self.bg,
                          (self.x, self.y, self.w, self.h))
 
         pygame.draw.rect(self.hapi.screen, self.slider_bg, self.slider_rect)
-
 
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -316,15 +315,12 @@ class Slider:
 
         self._draw()
 
-
     def value(self):
         return self.val
-
 
     def set_value(self, val):
         self.val = val
         self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
-
 
 class TextBox:
     def __init__(self,x, y, w, h=0, param_options={}):
@@ -356,7 +352,7 @@ class TextBox:
         self.text = [list(options['text'])]
         self.char_length = [self._get_text_width(x) for x in self.text]
         self.background = options['background_color']
-        self.surface = options['surface'] if options['surface'] else pygame.display.get_surface()
+        self.surface = options['surface'] if options['surface'] is not None else pygame.display.get_surface()
         self.margin = options['margin']
         self.Enter_action = options['Enter_action']
         if self.surface == None:
@@ -369,7 +365,6 @@ class TextBox:
         if options['calculateSize'] or self.h == 0:
             self.h = self._get_font_height() + h
 
-
     # get the width of the text using the font
     def _get_text_width(self,text):
         text = "".join(text)
@@ -378,12 +373,10 @@ class TextBox:
         obj = self.font.render(text, True, (0, 0, 0))
         return obj.get_width()
 
-
     # returns the height of the font
     def _get_font_height(self):
         obj = self.font.render(" ", True, (0 ,0 ,0))
         return obj.get_height()
-
 
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
     def key_down(self, e):
@@ -400,7 +393,7 @@ class TextBox:
                 self.current_col -= 1
         # if key is enter, create line
         elif e.key == 13:
-            if self.Enter_action:
+            if self.Enter_action is not None:
                 self.Enter_action()
             elif self.current_line < self.lines - 1:
                 self.current_line += 1
@@ -429,7 +422,6 @@ class TextBox:
         elif e.key == 276:
             self.current_col -= 1 if 0 < self.current_col else 0
 
-
     # draw the textbox
     def _draw(self):
         # draw background
@@ -446,16 +438,14 @@ class TextBox:
             total = 0
             total = self._get_text_width(
                 self.text[self.current_line][:self.current_col])
-            pygame.draw.line(self.surface,(0, 0, 0),
+            pygame.draw.line(self.surface, (0, 0, 0),
                              (self.x + total,
                               self.y + (self.h*self.current_line)),
                              (self.x + total, self.y + (self.h*(self.current_line+1))), 2)
 
-
     # update should be called every frame, it draws the textbox
     def update(self):
         self._draw()
-
 
     # get the text of a specific line or lines
     def get_lines(self, lines=-1, return_as_string=False):

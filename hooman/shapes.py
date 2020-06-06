@@ -201,8 +201,8 @@ def ellipse(hapi, x, y, w, h, rotation, a):
 
         points.append(midpoint + d)
     # print(highest_w, highest_h)
-    poly(hapi.screen, points, gradient_rect(highest_w*2, highest_h*2, 
-                                            hapi.color['green'], 
+    poly(hapi.screen, points, gradient_rect(highest_w*2, highest_h*2,
+                                            hapi.color['green'],
                                             hapi.color['red']),
          int(max(cos(-2*hapi.PI*rotation/180)*w - w, 0)), 0)
 
@@ -286,7 +286,7 @@ def smooth_star(hapi, x_coord, y_coord, size_x, size_y, n1=0.20, fill=False):
     supershape(hapi, x_coord, y_coord, size_x, size_y, smooth_star_options, hapi._rotation, fill=fill)
 
 
-def oil_drop(hapi, x_coord, y_coord, size_x, size_y, n1 = 0.3, fill=False):
+def oil_drop(hapi, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
     '''
     n1 between 0 and 1
     '''
