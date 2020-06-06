@@ -24,8 +24,6 @@ from .shapes import cross_hair
 
 from .formula import constrain
 
-from .time import Timer
-
 
 
 class Hooman:
@@ -67,7 +65,7 @@ class Hooman:
         self._font = pygame.font.Font(self._font_name, self._font_size)
 
         self.sysfont = "comicsansms"
-        self._font_size = 10
+        self.font_size = 10
         self.pygame = pygame
         self.mouse_test_x = 0
         self.clock = pygame.time.Clock()
@@ -86,8 +84,6 @@ class Hooman:
         self._oil_drop = oil_drop
         self._cross_hair = cross_hair
         
-        self._timers = []
-
 
     def fill(self, col):
         if isinstance(col, int):
@@ -126,7 +122,7 @@ class Hooman:
         self._stroke_weight = 0
 
     def font_size(self, font_size):
-        self._font_size = font_size
+        self.font_size = font_size
 
     def set_alpha(self, alpha):
         self._alpha = alpha
@@ -141,7 +137,7 @@ class Hooman:
     def text(self, letters, x, y):
         if not isinstance(letters, str):
             letters = str(letters)
-        font = pygame.font.SysFont(self.sysfont, self._font_size)
+        font = pygame.font.SysFont(self.sysfont, self.font_size)
         text = font.render(letters, True, self._fill)
         self.screen.blit(text, (x, y))
 
@@ -188,8 +184,6 @@ class Hooman:
             self.is_running = False
 
     def event_loop(self):
-        if len(self._timers) > 0:
-            self._timer_update()
         self.mouse_test_x = self.mouseX()
         for event in pygame.event.get():
             self.handle_events(event)
@@ -271,12 +265,3 @@ class Hooman:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
 
-    def timer(self, callback, seconds=0, minutes=0):
-        self._timers.append(Timer(callback, seconds, minutes))
-
-    def _timer_update(self):
-        l = len(self._timers) - 1
-        for i, timer in enumerate(reversed(self._timers)):
-            t = timer.update()
-            if t:
-                del self._timers[l - i]
