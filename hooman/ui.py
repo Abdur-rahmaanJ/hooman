@@ -273,14 +273,14 @@ class Slider:
             'slider_width': None,
             'slider_color': (200, 200, 200),
             'starting_value': None,
-            'value_range': [0,1],
+            'value_range': [0, 1],
             'slider_height': h,
             'step': 0
         }
         for key, val in params.items():
             if key not in options:
                 raise TypeError(key + ' is not an option, have you spelt it correctly')
-        
+
         options.update(params)
 
         self.hapi = hapi
