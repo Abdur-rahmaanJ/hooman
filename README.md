@@ -6,6 +6,9 @@
 ```
 pip install hooman
 ```
+
+discord: https://discord.gg/Q23ATve
+
 # demos
 
 

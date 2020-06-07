@@ -267,9 +267,9 @@ def curve_square(width, height, curve, color=(0, 0, 0)):
 
 
 class Slider:
-    def __init__(self, hapi, x, y, w, h, params={}):
+    def __init__(self, hapi, x, y, w, h, params):
         options = {
-            'background_color': (255, 255, 255),
+            'background_color': (100, 100, 100),
             'slider_width': None,
             'slider_color': (200, 200, 200),
             'starting_value': None,
