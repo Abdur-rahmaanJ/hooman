@@ -280,6 +280,7 @@ class Slider:
         for key, val in params.items():
             if key not in options:
                 raise TypeError(key + ' is not an option, have you spelt it correctly')
+
         options.update(params)
 
         self.hapi = hapi
