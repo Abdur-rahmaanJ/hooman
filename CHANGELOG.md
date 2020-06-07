@@ -1,4 +1,7 @@
 
+### 0.3.2
+
+minute second and clock
 
 ### 0.3.1
 
