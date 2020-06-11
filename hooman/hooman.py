@@ -28,6 +28,8 @@ from .formula import constrain
 
 from .time import Timer
 
+from .charts import barchart
+
 
 
 class Hooman:
@@ -92,6 +94,11 @@ class Hooman:
         
         self._timers = []
 
+        self._barchart = barchart
+
+    #
+    # colors
+    #
 
     def fill(self, col):
         if isinstance(col, int):
@@ -126,14 +133,35 @@ class Hooman:
     def stroke_size(self, weight):
         self._stroke_weight = weight
 
+    def set_alpha(self, alpha):
+        self._alpha = alpha
+
+    #
+    # size
+    #
+
     def no_stroke(self):
         self._stroke_weight = 0
 
     def font_size(self, font_size):
         self._font_size = font_size
 
-    def set_alpha(self, alpha):
-        self._alpha = alpha
+    #
+    # transforms
+    #
+
+    def rotate(self, angle):
+        self._rotation = angle % 360
+
+    def push_matrix(self):
+        self.temp_rotation = self._rotation
+
+    def pop_matrix(self):
+        self._rotation = self.temp_rotation
+
+    #
+    # shapes
+    #
 
     def ellipse(self, x, y, width, height):
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
@@ -147,6 +175,7 @@ class Hooman:
             letters = str(letters)
         font = pygame.font.SysFont(self.sysfont, self._font_size)
         text = font.render(letters, True, self._fill)
+        text = pygame.transform.rotate(text, self._rotation)
         self.screen.blit(text, (x, y))
 
     def arc(self, x, y, width, height, start_angle, end_angle):
@@ -171,51 +200,8 @@ class Hooman:
         else:
             pygame.draw.polygon(self.screen, self._fill, coords, self._stroke_weight)
 
-    def mouseX(self):
-        x, y = pygame.mouse.get_pos()
-        return x
-
-    def mouseY(self):
-        x, y = pygame.mouse.get_pos()
-        return y
-
-    def flip_display(self):
-        pygame.display.flip()
-        if self.bg_col is not None:
-            self.background(self.bg_col)
-
     def line(self, x1, y1, x2, y2):
         pygame.draw.line(self.screen, self._stroke, [x1, y1], [x2, y2], self._stroke_weight)
-
-    def handle_events(self, event):
-        if event.type == pygame.QUIT:
-            self.is_running = False
-
-    def event_loop(self):
-        if len(self._timers) > 0:
-            self._timer_update()
-        self.mouse_test_x = self.mouseX()
-        for event in pygame.event.get():
-            self.handle_events(event)
-
-    def button(self, *args, **kwargs):
-        b = Button(*args, **kwargs)
-        self._all_widgets.append(b)
-        return b
-
-    def text_box(self, *args, **kwargs):
-        t = TextBox(*args, **kwargs)
-        self._all_widgets.append(t)
-        return t
-
-    def slider(self, *args, **kwargs):
-        s = Slider(self, *args, **kwargs)
-        self._all_widgets.append(s)
-        return s
-
-    def update_ui(self):
-        for widget in self._all_widgets:
-            widget.update()
 
     def star(self, x, y, r1, r2, npoints):
         self._star(self, x, y, r1, r2, npoints, self._rotation)
@@ -235,8 +221,7 @@ class Hooman:
     def regular_polygon(self, x, y, w, h, num_of_points, angle_offset = 0):
         self._reg_poly(self, x, y, w, h, num_of_points, self._rotation, angle_offset)
     
-    def rotate(self, angle):
-        self._rotation = angle % 360
+
 
     def supershape(self, x_coord, y_coord, size_x, size_y, param_options, fill=False):
         self._supershape(self, x_coord, y_coord, size_x, size_y, param_options,
@@ -251,8 +236,6 @@ class Hooman:
     def flowing_star(self, x_coord, y_coord, size_x, size_y, n1=0.3, fill=False):
         self._flowing_star(self, x_coord, y_coord, size_x, size_y, n1, fill=fill)
 
-    def cross_hair(self, coord):
-        self._cross_hair(self, coord)
 
     def manual_ellipse(self, x, y, w, h, a):
         ellipse(self, x, y, w, h, self._rotation, a)
@@ -274,6 +257,67 @@ class Hooman:
             else:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
+    #
+    # interactivity
+    #
+
+    def mouseX(self):
+        x, y = pygame.mouse.get_pos()
+        return x
+
+    def mouseY(self):
+        x, y = pygame.mouse.get_pos()
+        return y
+
+    def cross_hair(self, coord):
+        self._cross_hair(self, coord)
+    #
+    # pygame
+    #
+
+    def flip_display(self):
+        pygame.display.flip()
+        if self.bg_col is not None:
+            self.background(self.bg_col)
+
+    def handle_events(self, event):
+        if event.type == pygame.QUIT:
+            self.is_running = False
+
+    def event_loop(self):
+        if len(self._timers) > 0:
+            self._timer_update()
+        self.mouse_test_x = self.mouseX()
+        for event in pygame.event.get():
+            self.handle_events(event)
+
+    #
+    # ui
+    #
+
+    def button(self, *args, **kwargs):
+        b = Button(*args, **kwargs)
+        self._all_widgets.append(b)
+        return b
+
+    def text_box(self, *args, **kwargs):
+        t = TextBox(*args, **kwargs)
+        self._all_widgets.append(t)
+        return t
+
+    def slider(self, *args, **kwargs):
+        s = Slider(self, *args, **kwargs)
+        self._all_widgets.append(s)
+        return s
+
+    def update_ui(self):
+        for widget in self._all_widgets:
+            widget.update()
+
+
+    #
+    # time
+    #
 
     def timer(self, callback, seconds=0, minutes=0):
         self._timers.append(Timer(callback, seconds, minutes))
@@ -296,3 +340,10 @@ class Hooman:
     def second(self):
         now = datetime.datetime.now()
         return now.second
+
+    #
+    # charts
+    #
+
+    def barchart(self, x, y, w, h, params):
+        self._barchart(self, x, y, w, h, params)
