@@ -5,6 +5,7 @@ from math import pi
 from math import cos
 from math import sin
 from math import sqrt
+import datetime
 
 from .ui import Button
 from .ui import Slider
@@ -291,8 +292,6 @@ class Hooman:
             t = timer.update()
             if t:
                 del self._timers[l - i]
-<<<<<<< Updated upstream
-=======
 
     def hour(self):
         now = datetime.datetime.now()
@@ -310,4 +309,3 @@ class Hooman:
         s = slider_with_text(self, slider, params)
         self._all_widgets.append(s)
         return s
->>>>>>> Stashed changes
