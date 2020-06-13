@@ -8,11 +8,11 @@ from .formula import constrain
 
 class Button:
 
-    def __init__(self, x, y, text, param_options={}):
+    def __init__(self, x, y, w, h, text, param_options={}):
         self.x = x
         self.y = y
-        self.w = 1
-        self.h = 1
+        self.w = w
+        self.h = h
         self.text = text
 
         options = {
@@ -32,7 +32,7 @@ class Button:
             'hover_image': None,
             'enlarge': False,
             'enlarge_amount': 1.1,
-            'calculate_size': 1.1,
+            'calculate_size': False,
             'dont_generate': False,
             'font_colour': (0, 0, 0),
             'background_color': (255, 255, 255),
@@ -71,7 +71,9 @@ class Button:
             self.surface = pygame.display.get_surface()
             if self.surface is None:
                 raise ValueError("No surface to blit to")
-
+        
+        if self.hover_bg_colour is None:
+            self.hover_bg_colour
         self.font = pygame.font.Font(pygame.font.match_font(font),font_size)
 
         self.image = image.copy() if image else None
@@ -125,10 +127,10 @@ class Button:
         elif self.hover_image is None or self.draw:
             self.hover_image = self.image.copy()
             if not self.outline is None:
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.outline.s))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0 ,0 ,self.outline.s, self.h))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.w, -self.outline.s))
-                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.outline.s, -self.h))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0, 0, self.w, self.outline_amount))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (0 ,0 ,self.outline_amount, self.h))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.w, -self.outline_amount))
+                pygame.draw.rect(self.hover_image,(0, 0, 0, 255), (self.w, self.h, -self.outline_amount, -self.h))
             self.hover_image.convert_alpha()
             self.image.convert_alpha()
         # enlarge the image, no matter if user gives an image or not
@@ -275,7 +277,8 @@ class Slider:
             'starting_value': None,
             'value_range': [0, 1],
             'slider_height': h,
-            'step': 0
+            'step': 0,
+            'image': None
         }
         for key, val in params.items():
             if key not in options:
@@ -289,6 +292,11 @@ class Slider:
         self.w = w
         self.h = h
         self.bg = options['background_color']
+        if options['image'] is not None:
+            self.image = pygame.Surface((self.w, self.h))
+            self.image.blit(options['image'], (0,0))
+        else:
+            self.image = None
         self.val_range = options['value_range']
         val_dif = self.val_range[1] - self.val_range[0]
         self.slider_bg = options['slider_color']
@@ -311,7 +319,10 @@ class Slider:
         
 
     def _draw(self):
-        pygame.draw.rect(self.hapi.screen, self.bg,
+        if self.image is not None:
+            self.hapi.screen.blit(self.image, (self.x,self.y))
+        else:
+            pygame.draw.rect(self.hapi.screen, self.bg,
                          (self.x, self.y, self.w, self.h))
 
         pygame.draw.rect(self.hapi.screen, self.slider_bg, self.slider_rect)
@@ -504,3 +515,77 @@ class TextBox:
             if return_as_string:
                 return "\n".join(string)
             return string
+
+class slider_with_text():
+    def __init__(self, hapi, slider, params = {}):
+        options = {
+            'font': 'calibri',
+            'font_size': 20,
+            'font_color': (0, 0, 0),
+            'padding_y': 2,
+            'padding_x': 0,
+            'pivot': 'top_left',
+            'accuracy': 0 #decimal points
+        }
+
+        if not isinstance(slider, Slider):
+            raise TypeError('\'slider\' arg is not a slider widget')
+
+        for key, item in params.items():
+            if key not in options:
+                raise TypeError(
+                    key + ' is not an option, have you spelt it correctly')
+
+        options.update(params)
+
+        self.font = pygame.font.Font(pygame.font.match_font(options['font']),
+                                     options['font_size'])
+        self.font_col = options['font_color']
+        self.rounder = options['accuracy']
+        self.pivot = options['pivot']
+        if self.pivot not in ['top_left', 'top_right, bottom_left',
+                              'bottom_right', 'top', 'bottom', 'left', 'right']:
+            raise TypeError('option: \'pivot\' is not a valid pivot point')
+
+        self.slider = slider
+        self.hapi = hapi
+        self.y = slider.y
+        self.val = 0
+        if 'top' in self.pivot:
+            self.y -= options['padding_y'] + self._get_text_height()
+        elif 'bottom' in self.pivot:
+            self.y += options['padding_y'] + slider.h
+        self.x = slider.x
+        if 'left' in self.pivot:
+            self.x -= options['padding_x']
+        elif 'right' in self.pivot:
+            self.x += slider.w + options['padding_x']
+        else:
+            self.x += slider.w//2 + options['padding_x']
+
+    def update(self):
+        self.slider.update()
+        self.val = round(self.slider.value(),self.rounder)
+        if self.rounder == 0:
+            self.val = int(self.val)
+        self._draw()
+
+    def _draw(self):
+        val = str(self.val)
+        obj = self.font.render(val, True, self.font_col)
+        if 'left' in self.pivot:
+            x = self.x - obj.get_width()
+        elif not 'right' in self.pivot:
+            x =  self.x - obj.get_width()//2
+        else:
+            x = self.x
+        if 'top' in self.pivot:
+            y = self.y - obj.get_height()
+        y = self.y
+        self.hapi.screen.blit(obj, (x, y))
+
+    def _get_text_height(self):
+        return self.font.render(' ', True, (0, 0, 0)).get_height()
+
+    def value(self):
+        return self.slider.value()
