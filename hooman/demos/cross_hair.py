@@ -15,14 +15,15 @@ def handle_events(event):
         if event.key == pygame.K_ESCAPE:
             hapi.is_running = False
 
+
 hapi.handle_events = handle_events
 
 while hapi.is_running:
     hapi.background(bg_col)
-    
-    hapi.stroke(hapi.color['red'])
+
+    hapi.stroke(hapi.color["red"])
     hapi.stroke_size(2)
-    
+
     mouse_coord = (hapi.mouseX(), hapi.mouseY())
     hapi.cross_hair(mouse_coord)
 

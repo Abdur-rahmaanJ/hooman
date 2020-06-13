@@ -8,8 +8,8 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 slider_options = {
-    'background_color': hapi.color['grey'],
-    'slider_color': (200, 200, 200)
+    "background_color": hapi.color["grey"],
+    "slider_color": (200, 200, 200),
 }
 
 real_slider = hapi.slider(50, 300, 400, 30, slider_options)

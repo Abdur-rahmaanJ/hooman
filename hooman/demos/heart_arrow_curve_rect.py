@@ -7,6 +7,7 @@ hapi = Hooman(window_width, window_height)
 
 bg_col = (255, 255, 255)
 
+
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
@@ -21,15 +22,15 @@ clock = pygame.time.Clock()
 
 while hapi.is_running:
     hapi.background(bg_col)
-    
-    hapi.rotate(hapi.mouseX())
-    
-    hapi.fill(hapi.color['red'])
-    hapi.heart(10, 200, hapi.mouseX()//4, hapi.mouseY()//4)
-    
-    hapi.arrow(300, 200, hapi.mouseX(), hapi.mouseY()//2)
 
-    hapi.curve_rect(10, 10, 200, 100, hapi.mouseY()//5)
+    hapi.rotate(hapi.mouseX())
+
+    hapi.fill(hapi.color["red"])
+    hapi.heart(10, 200, hapi.mouseX() // 4, hapi.mouseY() // 4)
+
+    hapi.arrow(300, 200, hapi.mouseX(), hapi.mouseY() // 2)
+
+    hapi.curve_rect(10, 10, 200, 100, hapi.mouseY() // 5)
 
     hapi.event_loop()
 

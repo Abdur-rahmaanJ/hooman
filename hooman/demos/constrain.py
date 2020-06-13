@@ -23,14 +23,15 @@ hapi.handle_events = handle_events
 
 def fake_slider(pos, x, y, width):
     size = 10
-    hapi.fill(hapi.color['grey'])
+    hapi.fill(hapi.color["grey"])
     hapi.rect(x, y, width, size)
     hapi.fill((200, 200, 200))
     hapi.rect(pos, y, size, size)
 
+
 while hapi.is_running:
     hapi.background(bg_col)
-    
+
     fake_slider(hapi.mouseX(), 0, 450, hapi.WIDTH)
 
     reflected_val = hapi.constrain(hapi.mouseX(), 0, 500, 0, 255)

@@ -1,7 +1,5 @@
+from .hooman import Hooman
+from .formula import *
 
-
-from .hooman import(
-    Hooman
-    )
-
-__version__ = '0.3.2'
+version_info = (0, 3, 4)
+__version__ = ".".join([str(v) for v in version_info])

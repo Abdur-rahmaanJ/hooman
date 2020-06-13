@@ -5,26 +5,28 @@ import pygame
 window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
 
-red_blue = hapi.gradient(300, 30, hapi.color['blue'], hapi.color['red']).convert()
+red_blue = hapi.gradient(300, 30, hapi.color["blue"], hapi.color["red"]).convert()
 
-green_blue = hapi.gradient(300, 30, hapi.color['green'], hapi.color['blue']).convert()
+green_blue = hapi.gradient(300, 30, hapi.color["green"], hapi.color["blue"]).convert()
 
-yellow_black = hapi.gradient(300, 30, hapi.color['yellow'], hapi.color['black']).convert()
+yellow_black = hapi.gradient(
+    300, 30, hapi.color["yellow"], hapi.color["black"]
+).convert()
 
-black_white = hapi.gradient(300, 30, hapi.color['black'], hapi.color['white']).convert()
+black_white = hapi.gradient(300, 30, hapi.color["black"], hapi.color["white"]).convert()
 
-slider = hapi.slider(100, 300, 300, 30,
-                     {'image': red_blue,
-                      'slider_height': 60,
-                      'value_range': [0, 255]}
-                     )
+slider = hapi.slider(
+    100, 300, 300, 30, {"image": red_blue, "slider_height": 60, "value_range": [0, 255]}
+)
 
-color_slider = hapi.slider(150, 400, 200, 20,
-                           {'slider_height': 40,
-                            'value_range': [0, 3],
-                            'step': 1,
-                            'starting_value': 0}
-                           )
+color_slider = hapi.slider(
+    150,
+    400,
+    200,
+    20,
+    {"slider_height": 40, "value_range": [0, 3], "step": 1, "starting_value": 0},
+)
+
 
 def handle_events(event):
     if event.type == pygame.QUIT:
@@ -43,7 +45,7 @@ while hapi.is_running:
         hapi.background((slider.value(), 0, 255 - slider.value()))
         slider.image = red_blue
     elif color_slider.value() == 1:
-        hapi.background((0,slider.value(), 255 - slider.value()))
+        hapi.background((0, slider.value(), 255 - slider.value()))
         slider.image = green_blue
     elif color_slider.value() == 2:
         hapi.background((255 - slider.value(), 255 - slider.value(), 0))
@@ -51,7 +53,7 @@ while hapi.is_running:
     elif color_slider.value() == 3:
         hapi.background(slider.value())
         slider.image = black_white
-    
+
     slider.update()
     color_slider.update()
 

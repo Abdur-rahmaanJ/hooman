@@ -17,7 +17,9 @@ class Timer:
         return False
 
     def __str__(self):
-        return "Timer: %d seconds remaining" % (self.length - (time.time() - self.start_time))
+        return "Timer: %d seconds remaining" % (
+            self.length - (time.time() - self.start_time)
+        )
 
     def __bool__(self):
         return self.finsished

@@ -1,7 +1,7 @@
-'''
+"""
 Author: Abdur-Rahmaan Janhangeer
 Github: https://github.com/Abdur-rahmaanJ
-'''
+"""
 
 from hooman import Hooman
 
@@ -9,9 +9,11 @@ import pygame
 
 hapi = Hooman(500, 500)
 
+
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
+
 
 hapi.handle_events = handle_events
 
