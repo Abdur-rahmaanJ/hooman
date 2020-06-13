@@ -27,6 +27,7 @@ from .shapes import cross_hair
 from .shapes import gradient_rect
 
 from .formula import constrain
+from .formula import round_to_num
 
 from .time import Timer
 
@@ -42,6 +43,7 @@ class Hooman:
         self.cos = cos
         self.constrain = constrain
         self.sqrt = sqrt
+        self.round_to = round_to_num
         
         self.colors = {
             'red': (255, 0, 0),
