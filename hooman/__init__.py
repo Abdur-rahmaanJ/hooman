@@ -4,4 +4,5 @@ from .hooman import(
     Hooman
     )
 
-__version__ = '0.3.2'
+version_info = (0, 3, 3)
+__version__ = ".".join([str(v) for v in version_info])

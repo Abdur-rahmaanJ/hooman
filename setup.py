@@ -7,15 +7,23 @@ https://github.com/pypa/sampleproject
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 from os import path
+import os
+import sys
+from hooman import __version__ # thanks gunicorn
 
 here = path.abspath(path.dirname(__file__))
+
+if sys.argv[-1] == 'publish': # requests
+    os.system('python setup.py sdist') # bdist_wheel
+    os.system('twine upload dist/* --skip-existing')
+    sys.exit()
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 setup(
     name='hooman',  # Required
-    version='0.3.2',  # Required
+    version=__version__,  # Required
     description='Pygame for humans',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)

@@ -29,6 +29,7 @@ from .formula import constrain
 from .time import Timer
 
 from .charts import barchart
+from .charts import linechart
 
 
 
@@ -95,6 +96,7 @@ class Hooman:
         self._timers = []
 
         self._barchart = barchart
+        self._linechart = linechart
 
     #
     # colors
@@ -347,3 +349,6 @@ class Hooman:
 
     def barchart(self, x, y, w, h, params):
         self._barchart(self, x, y, w, h, params)
+
+    def linechart(self, x, y, w, h, params):
+        self._linechart(self, x, y, w, h, params)
