@@ -4,10 +4,14 @@ def constrain(val, start, end, realstart, realend):
     # return realstart + v
     # if val < start, val = start
     # if val > end, val = end
-    
+
     if val < start:
         return start
     if val > end:
         return end
-    v = ((val - start) / (end-start)) * (realend-realstart)
+    v = ((val - start) / (end - start)) * (realend - realstart)
     return realstart + v
+
+
+def round_to_num(x, base=1):
+    return base * round(x / base)

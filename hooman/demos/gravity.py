@@ -1,7 +1,7 @@
-'''
+"""
 Original Author: https://github.com/jimmy-print
 Edit: https://github.com/Abdur-rahmaanJ
-'''
+"""
 
 from hooman import Hooman
 
@@ -16,6 +16,7 @@ dy = 0
 gravity_acceleration = 1
 jump_strength = 20
 
+
 def handle_events(event):
     global dy
     if event.type == pygame.QUIT:
@@ -25,6 +26,7 @@ def handle_events(event):
             hapi.is_running = False
         if event.key == pygame.K_SPACE:
             dy = -jump_strength
+
 
 hapi.handle_events = handle_events
 
@@ -45,6 +47,6 @@ while hapi.is_running:
 
     hapi.flip_display()
 
-    clock.tick(60) # slows down gravity acceleration
+    clock.tick(60)  # slows down gravity acceleration
 
 pygame.quit()

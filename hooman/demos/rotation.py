@@ -18,16 +18,14 @@ hapi.handle_events = handle_events
 
 clock = pygame.time.Clock()
 
-hapi.set_background(hapi.color['white'])
+hapi.set_background(hapi.color["white"])
 
 while hapi.is_running:
-    
-    
-    hapi.fill(hapi.colour['green'])
-    hapi.regular_polygon(100,200,50,50,hapi.mouseX()//50)
-    hapi.rotate(hapi.mouseY()//2)
 
-    
+    hapi.fill(hapi.colour["green"])
+    hapi.regular_polygon(100, 200, 50, 50, hapi.mouseX() // 50)
+    hapi.rotate(hapi.mouseY() // 2)
+
     hapi.event_loop()
 
     hapi.flip_display()

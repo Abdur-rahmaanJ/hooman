@@ -25,11 +25,11 @@ clock = pygame.time.Clock()
 
 while hapi.is_running:
     hapi.background(bg_col)
-    
-    hapi.fill(hapi.color['red'])
-    
-    #hapi.text(n1, 10+hapi.mouseX(), 10+hapi.mouseY())
-    
+
+    hapi.fill(hapi.color["red"])
+
+    # hapi.text(n1, 10+hapi.mouseX(), 10+hapi.mouseY())
+
     hapi.smooth_star(100, 100, 100, 100)
     hapi.oil_drop(100, 250, 100, 100)
     hapi.flowing_star(100, 350, 100, 100)

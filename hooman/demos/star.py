@@ -8,9 +8,6 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 
-
-
-
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
@@ -25,9 +22,9 @@ clock = pygame.time.Clock()
 
 while hapi.is_running:
     hapi.background(bg_col)
-    
-    hapi.fill(hapi.color['red'])
-    hapi.star(100, 100, 30, 70, hapi.mouseX()//10)
+
+    hapi.fill(hapi.color["red"])
+    hapi.star(100, 100, 30, 70, hapi.mouseX() // 10)
 
     hapi.event_loop()
 
