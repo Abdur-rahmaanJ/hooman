@@ -1,4 +1,6 @@
 import pygame
+import pygame.gfxdraw
+
 from math import pi
 from math import cos
 from math import sin
@@ -26,6 +28,7 @@ from .shapes import gradient_rect
 
 from .formula import constrain
 from .formula import round_to_num
+from .formula import distance
 
 from .time import Timer
 
@@ -39,11 +42,14 @@ class Hooman:
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.PI = pi
+        self.center_x = WIDTH//2
+        self.center_y = HEIGHT//2
         self.sin = sin
         self.cos = cos
         self.constrain = constrain
         self.sqrt = sqrt
         self.round_to = round_to_num
+        self.dist = distance
 
         self.colors = {
             "red": (255, 0, 0),
@@ -219,36 +225,6 @@ class Hooman:
             self.screen, self._stroke, [x1, y1], [x2, y2], self._stroke_weight
         )
 
-    def handle_events(self, event):
-        if event.type == pygame.QUIT:
-            self.is_running = False
-
-    def event_loop(self):
-        if len(self._timers) > 0:
-            self._timer_update()
-        self.mouse_test_x = self.mouseX()
-        for event in pygame.event.get():
-            self.handle_events(event)
-
-    def button(self, x, y, w, h, text, params={}):
-        b = Button(x, y, w, h, text, params)
-        self._all_widgets.append(b)
-        return b
-
-    def text_box(self, *args, **kwargs):
-        t = TextBox(*args, **kwargs)
-        self._all_widgets.append(t)
-        return t
-
-    def slider(self, x, y, w, h, params={}):
-        s = Slider(self, x, y, w, h, params)
-        self._all_widgets.append(s)
-        return s
-
-    def update_ui(self):
-        for widget in self._all_widgets:
-            widget.update()
-
     def star(self, x, y, r1, r2, npoints):
         self._star(self, x, y, r1, r2, npoints, self._rotation)
 
@@ -308,6 +284,10 @@ class Hooman:
             else:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
+
+    def fill_arc(self, x, y, radius, startangle, endangle):
+        for r in range(radius):
+            pygame.gfxdraw.arc(self.screen, x, y, r, startangle, endangle, self._fill)
 
     #
     # interactivity
