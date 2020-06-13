@@ -5,6 +5,8 @@ import pygame
 window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
 
+red_blue = hapi.gradient(300, 30, hapi.color['blue'], hapi.color['red']).convert()
+
 green_blue = hapi.gradient(300, 30, hapi.color['green'], hapi.color['blue']).convert()
 
 yellow_black = hapi.gradient(300, 30, hapi.color['yellow'], hapi.color['black']).convert()
@@ -24,11 +26,6 @@ color_slider = hapi.slider(150, 400, 200, 20,
                             'starting_value': 0}
                            )
 
-slider = hapi.slider_with_text(slider, 
-                               {'pivot': 'top',
-                                'padding_y': 12}
-                               )
-
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
@@ -46,7 +43,7 @@ while hapi.is_running:
         hapi.background((slider.value(), 0, 255 - slider.value()))
         slider.image = red_blue
     elif color_slider.value() == 1:
-        hapi.background((0,255 - slider.value(), slider.value()))
+        hapi.background((0,slider.value(), 255 - slider.value()))
         slider.image = green_blue
     elif color_slider.value() == 2:
         hapi.background((255 - slider.value(), 255 - slider.value(), 0))
@@ -54,11 +51,10 @@ while hapi.is_running:
     elif color_slider.value() == 3:
         hapi.background(slider.value())
         slider.image = black_white
-
+    
     slider.update()
     color_slider.update()
 
-    hapi.flip_display()
     hapi.event_loop()
 
     hapi.flip_display()

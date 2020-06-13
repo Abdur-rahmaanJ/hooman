@@ -10,6 +10,7 @@ import datetime
 from .ui import Button
 from .ui import Slider
 from .ui import TextBox
+from .ui import slider_with_text
 
 from .shapes import star
 from .shapes import alpha_ellipse
@@ -23,6 +24,7 @@ from .shapes import flowing_star
 from .shapes import oil_drop
 from .shapes import ellipse
 from .shapes import cross_hair
+from .shapes import gradient_rect
 
 from .formula import constrain
 
@@ -89,6 +91,7 @@ class Hooman:
         self._flowing_star = flowing_star
         self._oil_drop = oil_drop
         self._cross_hair = cross_hair
+        self._gradient = gradient_rect
         
         self._timers = []
 
@@ -112,7 +115,7 @@ class Hooman:
                 self._stroke = (col[0], col[1], col[2])
 
     def background(self, col):
-        if isinstance(col, int):
+        if isinstance(col, int) or isinstance(col, float):
             self.screen.fill((col, col, col))
         elif isinstance(col, list) or isinstance(col, tuple):
             if len(col) == 1:
@@ -198,8 +201,8 @@ class Hooman:
         for event in pygame.event.get():
             self.handle_events(event)
 
-    def button(self, *args, **kwargs):
-        b = Button(*args, **kwargs)
+    def button(self, x, y, w, h, text, params={}):
+        b = Button(x, y, w, h, text, params)
         self._all_widgets.append(b)
         return b
 
@@ -208,8 +211,8 @@ class Hooman:
         self._all_widgets.append(t)
         return t
 
-    def slider(self, *args, **kwargs):
-        s = Slider(self, *args, **kwargs)
+    def slider(self, x, y, w, h, params={}):
+        s = Slider(self, x, y, w, h, params)
         self._all_widgets.append(s)
         return s
 
@@ -274,9 +277,14 @@ class Hooman:
             else:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
+    
+    def gradient(self, w, h, start_col, end_col, direction=0):
+        return self._gradient(w, h, start_col, end_col, direction)
 
-    def timer(self, callback, seconds=0, minutes=0):
-        self._timers.append(Timer(callback, seconds, minutes))
+    def timer(self, callback = None, seconds=0, minutes=0):
+        t = Timer(callback, seconds, minutes)
+        self._timers.append(t)
+        return t
 
     def _timer_update(self):
         l = len(self._timers) - 1
@@ -296,3 +304,8 @@ class Hooman:
     def second(self):
         now = datetime.datetime.now()
         return now.second
+
+    def slider_with_text(self, slider, params = {}):
+        s = slider_with_text(self, slider, params)
+        self._all_widgets.append(s)
+        return s
