@@ -11,6 +11,8 @@ yellow_black = hapi.gradient(300, 30, hapi.color['yellow'], hapi.color['black'])
 
 black_white = hapi.gradient(300, 30, hapi.color['black'], hapi.color['white']).convert()
 
+red_blue = hapi.gradient(300, 30, hapi.color['red'], hapi.color['blue']).convert()
+
 slider = hapi.slider(100, 300, 300, 30,
                      {'image': red_blue,
                       'slider_height': 60,
@@ -43,25 +45,23 @@ clock = pygame.time.Clock()
 
 while hapi.is_running:
     if color_slider.value() == 0:
-        hapi.background((slider.value(), 0, 255 - slider.value()))
-        slider.image = red_blue
+        hapi.background((255 - slider.value(), 0, slider.value()))
+        slider.slider.image = red_blue
     elif color_slider.value() == 1:
         hapi.background((0,255 - slider.value(), slider.value()))
-        slider.image = green_blue
+        slider.slider.image = green_blue
     elif color_slider.value() == 2:
         hapi.background((255 - slider.value(), 255 - slider.value(), 0))
-        slider.image = yellow_black
+        slider.slider.image = yellow_black
     elif color_slider.value() == 3:
         hapi.background(slider.value())
-        slider.image = black_white
+        slider.slider.image = black_white
 
     slider.update()
     color_slider.update()
 
     hapi.flip_display()
     hapi.event_loop()
-
-    hapi.flip_display()
 
     clock.tick(60)
 

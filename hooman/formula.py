@@ -11,3 +11,6 @@ def constrain(val, start, end, realstart, realend):
         return end
     v = ((val - start) / (end-start)) * (realend-realstart)
     return realstart + v
+
+def round_to_num(x, base=1):
+    return base * round(x/base)
