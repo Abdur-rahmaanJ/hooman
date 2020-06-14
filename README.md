@@ -390,6 +390,61 @@ while hapi.is_running:
 pygame.quit()
 ```
 
+graphs
+
+![](assets/graphs.png)
+
+```python
+from hooman import Hooman
+from collections import OrderedDict
+import pygame
+import random
+
+window_width, window_height = 500, 500
+hapi = Hooman(window_width, window_height)
+
+bg_col = (255, 255, 255)
+
+
+
+while hapi.is_running:
+    hapi.background(bg_col)
+
+    hapi.piechart(100, 100, 50, [
+        ['a', 20, hapi.color['red']],
+        ['b', 30, hapi.color['blue']],
+        ['c', 40, hapi.color['yellow']],
+        ['d', 60, hapi.color['green']],
+        ['e', 30, hapi.color['black']]
+    ], start_rad=20)
+
+    hapi.barchart(
+        190, 30, 200, 200, {
+        "data": {"a": 10, "b": 20, "c": 90}, 
+        "mouse_line": True
+        }
+    )
+
+    hapi.linechart(
+        30,
+        270,
+        200,
+        100,
+        {
+            "data": [[0, 0], [100, 100], [200, 20], [300, 200]],
+            "mouse_line": True,
+            "range_y": [0, 200],
+            "range_x": [0, 300],
+        },
+    )
+
+    hapi.event_loop()
+    hapi.flip_display()
+
+pygame.quit()
+
+```
+
 # All Demos
 
 - [Buttons.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/Buttons.py)
@@ -410,6 +465,8 @@ pygame.quit()
 - [super_shape.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/super_shape.py)
 - [text_box.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/text_box.py)
 - [transparent_circles.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/transparent_circles.py)
+
+- more...
 
 # Docs
 
