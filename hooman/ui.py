@@ -73,7 +73,7 @@ class Button:
                 raise ValueError("No surface to blit to")
 
         if self.hover_bg_colour is None:
-            self.hover_bg_colour
+            self.hover_bg_colour = self.background_color
         self.font = pygame.font.Font(pygame.font.match_font(font), font_size)
 
         self.image = image.copy() if image else None
@@ -296,8 +296,9 @@ class Button:
         return
 
 
-# this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
+# this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 100
 def curve_square(width, height, curve, color=(0, 0, 0)):
+    curve /= 200
     if not 0 <= curve <= 1:
         raise ValueError("curve value out of range, must be between 0 and 1")
     curve *= min(width, height)
