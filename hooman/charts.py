@@ -107,11 +107,6 @@ def linechart(hapi, x, y, w, h, params):
         hapi.stroke_size(2)
         hapi.stroke(options["line_color"])
         try:
-            # x1 = hapi.constrain(d[0], options['range_x'][0], options['range_x'][1], 0, w)
-            # y1 = hapi.constrain(d[1], options['range_y'][0], options['range_y'][1], 0, h)
-            # x2 = hapi.constrain(options['data'][i+1][0], options['range_x'][0], options['range_x'][1], 0, w)
-            # y2 = hapi.constrain(options['data'][i+1][1], options['range_y'][0], options['range_y'][1], 0, h)
-            # hapi.line(x1, x2, y1, y2)
             x1 = hapi.constrain(
                 d[0], options["range_x"][0], options["range_x"][1], x, x + w
             )
@@ -166,3 +161,18 @@ def linechart(hapi, x, y, w, h, params):
         hapi.line(limit_x, y, limit_x, y + h)
         tex = "{} {}".format(limit_x, limit_y)
         hapi.text(tex, 100, 100)
+
+def piechart(hapi, x, y, radius, data, start_rad=0):
+    first_run = True
+    total = 0
+    if first_run:
+        for d in data:
+            total += d[1]
+        first_run = False
+
+    previous_a = 0
+    for i,d in enumerate(data):
+        hapi.fill(d[2])
+        end_a = previous_a + (d[1]/total)*360
+        hapi.fill_arc(x, y, radius, previous_a, end_a, start_rad=start_rad)
+        previous_a = end_a

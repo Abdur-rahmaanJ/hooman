@@ -34,6 +34,7 @@ from .time import Timer
 
 from .charts import barchart
 from .charts import linechart
+from .charts import piechart
 
 
 class Hooman:
@@ -105,6 +106,7 @@ class Hooman:
 
         self._barchart = barchart
         self._linechart = linechart
+        self._piechart = piechart
 
     #
     # colors
@@ -285,9 +287,9 @@ class Hooman:
                 surf.set_at((0, i), col)
         self.screen.blit(pygame.transform.scale(surf, (w, h)), (x, y))
 
-    def fill_arc(self, x, y, radius, startangle, endangle):
-        for r in range(radius):
-            pygame.gfxdraw.arc(self.screen, x, y, r, startangle, endangle, self._fill)
+    def fill_arc(self, x, y, radius, startangle, endangle, start_rad=0):
+        for r in range(start_rad, radius):
+            pygame.gfxdraw.arc(self.screen, x, y, r, int(startangle), int(endangle), self._fill)
 
     #
     # interactivity
@@ -389,3 +391,16 @@ class Hooman:
 
     def linechart(self, x, y, w, h, params):
         self._linechart(self, x, y, w, h, params)
+
+    def piechart(self, x, y, radius, data, start_rad=0):
+        '''
+        data in the format:
+            [
+            ['a', 20, hapi.color['red']],
+            ['b', 30, hapi.color['blue']],
+            ['c', 40, hapi.color['yellow']],
+            ['d', 60, hapi.color['green']],
+            ['e', 30, hapi.color['black']]
+        ]
+        '''
+        self._piechart(self, x, y, radius, data, start_rad=start_rad)
