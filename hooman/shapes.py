@@ -171,6 +171,8 @@ def regular_polygon(hapi, x, y, w, h, n, rotation=0, angle_offset=0):
     # h = 2*h/cos(angle_offset)
     # w = (r/h) * w
     # h = (r/w) * h
+    w -= 1
+    h -= 1
     w *= sqrt(2)
     h *= sqrt(2)
 
