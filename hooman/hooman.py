@@ -11,6 +11,7 @@ from .ui import Button
 from .ui import Slider
 from .ui import TextBox
 from .ui import slider_with_text
+from .ui import Scroll
 
 from .shapes import star
 from .shapes import alpha_ellipse
@@ -354,6 +355,10 @@ class Hooman:
         self._all_widgets.append(s)
         return s
 
+    def scroll(self, param_options = {}):
+        s = Scroll(self, param_options)
+        self._all_widgets.append(s)
+        return s
     #
     # time
     #
