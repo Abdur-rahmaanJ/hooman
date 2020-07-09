@@ -1,4 +1,4 @@
-# hooman ![](https://img.shields.io/pypi/dm/hooman)
+# hooman [![Downloads](https://pepy.tech/badge/hooman)](https://pepy.tech/project/hooman)
 
 ~ pygame for humans
 
