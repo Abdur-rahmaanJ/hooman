@@ -8,6 +8,10 @@ pip install hooman
 
 discord: https://discord.gg/Q23ATve
 
+# tutorials
+
+- [Building A Color Picker](https://dev.to/abdurrahmaanj/building-a-color-picker-in-pygame-using-hooman-307m)
+
 # demos
 
 ![](assets/color_change.gif)
