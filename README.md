@@ -921,6 +921,62 @@ button = hapi.button(150, 250, "Click Me",
 -   value() - this returns the current value of the slider
 -   set_value(value) - given a integer or float, this sets the value and moves the slider
 
+## .slider_with_text
+
+`.slider_with_text(slider, [optianl parameters])`
+
+- slider - a `.slider` widget
+- optional parameters - a dictionary of optional options
+
+#### optional parameters
+
+- font -  the font of the text, by default it is Calibri
+- font_size - the size of the text, by default it is 20
+- font_color - the color of the text, by defualt it is black
+- padding_x - how far off the horizontal sides of the slider should the text be drawn, in pixels, by default it is 0
+- padding_y - how far off the vertical sides of the slider should the text be drawn, in pixels, by default it is 0
+- pivot - where the text is located in relation to the slider, this can be "top", "top_left", "bottom_right" etc, default is "top_left"
+- accuracy - how many decimal points the value has, by default it is 0
+
+#### Methods
+
+- update() - this updates the text and the given slider
+- value() - this returns the value of the given slider
+
+## .scroll
+
+`.scroll([optional parameters])`
+
+-   optional parameters - a dictionary of optional options
+
+#### optional parameters
+
+- starting_x - the starting position of the horizontal scroll
+- starting_y - the starting position of the vertical scroll
+- range_x - the amount of extra pixels the scroll moves the screen by for the horizontal
+- range_y - the amount of extra pixel the scroll moves the screen by for the vertical
+- bar_color - the color of the bar, background of the slider
+- slider_color - the color of the slider, the forground of the slider
+
+#### Methods
+
+-update() - this updates the scroll widget
+
+#### how to use the scroll
+
+- use `scroll_widget[0]` to get the amount of horizontal scroll and
+`scroll_widget[1]` to get the amount of vertical scroll
+
+eg.
+```
+scroll_obj = hapi.scroll(params)
+
+while hapi.running:
+    hapi.rect(100 + scroll_obj[0], 100 + scroll_obj[1], 50, 50)
+    scroll_obj.update()
+```
+
+
 ## .textbox
 
 `.textbox(x, y, w, h=0, [optional parameters])`
@@ -956,6 +1012,8 @@ def handle_events(event):
     if event.type == pygame.KEYDOWN:
         .keydown(event)
 ```
+
+
 
 # Contributing Notes
 
