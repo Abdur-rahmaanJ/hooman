@@ -1,10 +1,10 @@
 
 
-<h1 align="center">
+<p align="center">
   <br>
   <a href="https://github.com/Abdur-rahmaanJ/hooman"><img src="assets/hooman.png" alt="Hooman"></a>
   <br>
-</h1>
+</p>
 
 
 # hooman [![Downloads](https://pepy.tech/badge/hooman)](https://pepy.tech/project/hooman)
