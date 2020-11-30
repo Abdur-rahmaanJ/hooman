@@ -1,3 +1,12 @@
+
+
+<h1 align="center">
+  <br>
+  <a href="https://github.com/Abdur-rahmaanJ/hooman"><img src="assets/hooman.png" alt="Hooman"></a>
+  <br>
+</h1>
+
+
 # hooman [![Downloads](https://pepy.tech/badge/hooman)](https://pepy.tech/project/hooman)
 
 ~ pygame for humans
