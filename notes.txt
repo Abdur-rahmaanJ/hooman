@@ -1,0 +1,2 @@
+[ ] conics
+[ ] check fourrier transform + Laplace

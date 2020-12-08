@@ -15,7 +15,274 @@
 pip install hooman
 ```
 
-discord: https://discord.gg/Q23ATve
+join discord: https://discord.gg/Q23ATve
+
+The package for clearer, shorter and cleaner PyGame codebases!
+
+# hooman is powerful!
+
+See a [snake game](https://www.edureka.co/blog/snake-game-with-pygame/) taken from edureka:
+
+```python
+import pygame
+import time
+import random
+
+pygame.init()
+
+white = (255, 255, 255)
+yellow = (255, 255, 102)
+black = (0, 0, 0)
+red = (213, 50, 80)
+green = (0, 255, 0)
+blue = (50, 153, 213)
+
+dis_width = 600
+dis_height = 400
+
+dis = pygame.display.set_mode((dis_width, dis_height))
+pygame.display.set_caption('Snake Game by Edureka')
+
+clock = pygame.time.Clock()
+
+snake_block = 10
+snake_speed = 15
+
+font_style = pygame.font.SysFont("bahnschrift", 25)
+score_font = pygame.font.SysFont("comicsansms", 35)
+
+def Your_score(score):
+    value = score_font.render("Your Score: " + str(score), True, yellow)
+    dis.blit(value, [0, 0])
+
+def our_snake(snake_block, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
+
+def message(msg, color):
+    mesg = font_style.render(msg, True, color)
+    dis.blit(mesg, [dis_width / 6, dis_height / 3])
+
+def gameLoop():
+    game_over = False
+    game_close = False
+ 
+    x1 = dis_width / 2
+    y1 = dis_height / 2
+ 
+    x1_change = 0
+    y1_change = 0
+ 
+    snake_List = []
+    Length_of_snake = 1
+ 
+    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+
+    while not game_over:
+
+        while game_close == True:
+            dis.fill(blue)
+            message("You Lost! Press C-Play Again or Q-Quit", red)
+            Your_score(Length_of_snake - 1)
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q:
+                        game_over = True
+                        game_close = False
+                    if event.key == pygame.K_c:
+                        gameLoop()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x1_change = -snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    x1_change = snake_block
+                    y1_change = 0
+                elif event.key == pygame.K_UP:
+                    y1_change = -snake_block
+                    x1_change = 0
+                elif event.key == pygame.K_DOWN:
+                    y1_change = snake_block
+                    x1_change = 0
+
+        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
+            game_close = True
+        x1 += x1_change
+        y1 += y1_change
+        dis.fill(blue)
+        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+        snake_Head = []
+        snake_Head.append(x1)
+        snake_Head.append(y1)
+        snake_List.append(snake_Head)
+        if len(snake_List) > Length_of_snake:
+            del snake_List[0]
+
+        for x in snake_List[:-1]:
+            if x == snake_Head:
+                game_close = True
+
+        our_snake(snake_block, snake_List)
+        Your_score(Length_of_snake - 1)
+
+        pygame.display.update()
+
+        if x1 == foodx and y1 == foody:
+            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
+            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+            Length_of_snake += 1
+
+        clock.tick(snake_speed)
+
+    pygame.quit()
+    quit()
+
+gameLoop()
+```
+
+Then see a hooman snippet written by [TheBigKahuna353](https://github.com/TheBigKahuna353)
+
+```python
+import hooman
+import random
+import pygame
+
+WIDTH, HEIGHT = 600, 600
+
+hapi = hooman.Hooman(WIDTH, HEIGHT)
+
+btn_style = {'outline': True,
+             'background_color': (255, 0, 0),
+             'curve': 70,
+             'outline_thickness': 3}
+
+slider_style = {'background_color': (200, 200, 200),
+                'slider_height': 60,
+                'slider_color': (240, 240, 240)
+                }
+
+class Game:
+    def __init__(self):
+        self.current_screen = self.Main_menu
+        hapi.handle_events = self.Events
+
+        self.menu_btn_start = hapi.button(200, 200, 200, 50, "Start", btn_style)
+        self.menu_btn_quit = hapi.button(200, 400, 200, 50, "Quit", btn_style)
+        self.settings_btn = hapi.button(200, 300, 200, 50, 'Settings', btn_style)
+
+        slider_style.update({'value_range': [5, 30],
+                                 'step': 1,
+                                 'starting_value': 20})
+        self.rows_slider = hapi.slider(300, 200, 200, 30, slider_style)
+        self.rows_slider = hapi.slider_with_text(self.rows_slider)
+        
+        slider_style.update({'value_range': [0.01, 1],
+                             'step': 0,
+                             'starting_value': 0.1})
+        self.speed_slider = hapi.slider(300, 300, 200, 30, slider_style)
+        self.speed_slider = hapi.slider_with_text(self.speed_slider, {'accuracy': 2})
+        self.slider_names = ['num of rows', 'speed']
+        self.back_btn = hapi.button(200, 400, 200, 50, "Back", btn_style)
+
+        self.size = WIDTH//self.rows_slider.value()
+
+        self.start_pos = 5, 5
+        self.head = [x * self.size for x in self.start_pos]
+        self.body = []
+        self.food_pos = [random.randint(0, WIDTH) // self.size * self.size for x in range(2)]
+        self.direction = [0, 0]
+        self.move = hapi.timer(seconds=self.speed_slider.value())
+
+    def Start(self):
+        while hapi.is_running:
+            self.current_screen()
+
+            hapi.flip_display()
+            hapi.event_loop()
+
+    def Main(self):
+        hapi.background(hapi.color['black'])
+        hapi.fill(hapi.color['yellow'])
+        hapi.rect(self.head[0]+1, self.head[1]+1, self.size-2, self.size-2)
+        for x, y in self.body:
+            hapi.rect(x+1, y+1, self.size-2, self.size-2)
+        if self.move:
+            for i in range(len(self.body) -1, 0, -1):
+                self.body[i] = self.body[i - 1]
+            if len(self.body) > 0:
+                self.body[0] = self.head            
+            self.head = [self.head[i] + self.direction[i] for i in range(2)]
+            self.move = hapi.timer(seconds=self.speed_slider.value())
+            if self.head in self.body:
+                self.Died()
+            elif self.head[0] >= WIDTH or self.head[0] < 0 or self.head[1] < 0 or self.head[1] >= HEIGHT:
+                self.Died()            
+            if self.head == self.food_pos:
+                self.body.append(self.head[:])
+                self.food_pos = [random.randint(0, WIDTH) // self.size * self.size for x in range(2)]
+        hapi.fill(hapi.color['green'])
+        hapi.rect(self.food_pos[0], self.food_pos[1], self.size-1, self.size-1)
+
+    def Died(self):
+        self.head = [x * self.size for x in self.start_pos]
+        self.body = []
+        self.food_pos = [random.randint(0, WIDTH) // self.size * self.size for x in range(2)]
+        self.direction = [0, 0]
+        self.current_screen = self.Main_menu
+
+    def Settings(self):
+        hapi.background(hapi.color['white'])
+        self.speed_slider.update()
+        self.rows_slider.update()
+        hapi.fill(hapi.color['black'])
+        hapi.font_size(30)
+        hapi.text(self.slider_names[0], 100, 200)
+        hapi.text(self.slider_names[1], 100, 300)
+        if self.back_btn.update():
+            self.current_screen = self.Main_menu
+
+    def Main_menu(self):
+        hapi.background(hapi.color['white'])
+        hapi.fill(hapi.color['black'])
+        hapi.font_size(50)
+        hapi.text("Snake", 220, 30)
+        if self.menu_btn_quit.update():
+            hapi.is_running = False
+        if self.menu_btn_start.update():
+            self.current_screen = self.Main
+        if self.settings_btn.update():
+            self.current_screen = self.Settings
+
+    def Events(self, event):
+        if event.type == pygame.QUIT:
+            hapi.is_running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.unicode == "a" or event.key == 276:
+                self.direction = [-self.size, 0]
+            elif event.unicode == "d" or event.key == 275:
+                self.direction = [self.size, 0]
+            elif event.unicode == "w" or event.key == 273:
+                self.direction = [0, -self.size]
+            elif event.unicode == "s" or event.key == 274:
+                self.direction = [0, self.size]
+
+if __name__ == '__main__':
+    game = Game()
+    game.Start()
+
+```
+
+For about the same number of lines you get a powerful 
+game!!! Complete with menus, interfaces and settings:
+
+![](assets/snake.gif)
 
 # tutorials
 
@@ -139,10 +406,9 @@ pygame.quit()
 
 buttons
 
-![](assets/demo_buttons.png)
+![](assets/hooman_buttons.gif)
 
 ```python
-
 from hooman import Hooman
 
 import pygame
@@ -152,51 +418,58 @@ hapi = Hooman(window_width, window_height)
 
 bg_col = (255, 255, 255)
 
-#the function that gets called when the button is clicked on
+# the function that gets called when the button is clicked on
 def button_clicked(this):
     if this.y == 250:
         this.y = 300
     else:
         this.y = 250
 
-    print(this.y)
-
-
 
 grey_style = {
-    'background_color':(200, 200, 200),
-    'curve':0.1,
-    'padding_x':5,
-    'padding_y':5,
-    'font_size':15
-    }
+    "background_color": (200, 200, 200),
+    "hover_background_color": (220, 220, 220),
+    "curve": 0.1,
+    "padding_x": 5,
+    "padding_y": 5,
+    "font_size": 15,
+}
 
-button1 = hapi.button(150, 150, "Click Me",
-    grey_style
-)
 
-def button_hover(this):
-    hapi.background(hapi.color['green'])
+def button_hover_enter(this):
+    hapi.set_background(hapi.color["green"])
+
+
+def button_hover_exit(this):
+    hapi.set_background(hapi.color["white"])
+
+
 stylex = grey_style.copy()
-stylex['on_hover'] = button_hover
+stylex["on_hover_enter"] = button_hover_enter
+stylex["on_hover_exit"] = button_hover_exit
 
-buttonx = hapi.button(150, 10, "Hover Me",
-    stylex
+button1 = hapi.button(150, 150, 100, 100, "Click Me", grey_style)
+
+buttonx = hapi.button(150, 10, 100, 100, "Hover Me", stylex)
+
+button2 = hapi.button(
+    150,
+    250, 100, 100,
+    "No Click Me",
+    {
+        "background_color": (200, 200, 200),
+        "hover_background_color": (220, 220, 220),
+        "outline": True,
+        "outline_color": (200, 200, 200),
+        "outline_thickness": 5,
+        "curve": 0.3,
+        "on_click": button_clicked,
+        "padding_x": 40,
+        "padding_y": 10,
+        "font_size": 15,
+    },
 )
 
-button2 = hapi.button(150, 250, "No Click Me",
-    {
-    'background_color':(200, 200, 200),
-    'outline':hapi.outline({
-            'color':(200, 200, 200),
-            'amount':5
-            }),
-    'curve':0.3,
-    'on_click':button_clicked,
-    'padding_x':40,
-    'padding_y':10,
-    'font_size':15
-    })
 
 def handle_events(event):
     if event.type == pygame.QUIT:
@@ -210,11 +483,13 @@ hapi.handle_events = handle_events
 
 clock = pygame.time.Clock()
 
-while hapi.is_running:
-    hapi.background(bg_col)
+hapi.set_background(hapi.colour["white"])
 
-    if button1.update(): #if the button was clicked
+while hapi.is_running:
+
+    if button1.update():  # if the button was clicked
         bg_col = (255, 0, 0) if bg_col == (255, 255, 255) else (255, 255, 255)
+        hapi.set_background(bg_col)
 
     # for i in range(5):
     #     x = hapi.button(10+i*80, hapi.mouseY(), "Click Me",
@@ -233,6 +508,8 @@ while hapi.is_running:
 pygame.quit()
 
 ```
+
+![](assets/transparent_circles.png)
 
 transparent circles
 

@@ -42,13 +42,13 @@ stylex = grey_style.copy()
 stylex["on_hover_enter"] = button_hover_enter
 stylex["on_hover_exit"] = button_hover_exit
 
-button1 = hapi.button(150, 150, "Click Me", grey_style)
+button1 = hapi.button(150, 150, 100, 100, "Click Me", grey_style)
 
-buttonx = hapi.button(150, 10, "Hover Me", stylex)
+buttonx = hapi.button(150, 10, 100, 100, "Hover Me", stylex)
 
 button2 = hapi.button(
     150,
-    250,
+    250, 100, 100,
     "No Click Me",
     {
         "background_color": (200, 200, 200),
