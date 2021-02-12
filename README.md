@@ -19,6 +19,8 @@ join discord: https://discord.gg/Q23ATve
 
 The package for clearer, shorter and cleaner PyGame codebases!
 
+Fun fact: Codementor.io [tweeted about Hooman](https://twitter.com/CodementorIO/status/1306295790441246725?s=20) tagged #LearnPython #100DaysOfCode
+
 # hooman is powerful!
 
 See a [snake game](https://www.edureka.co/blog/snake-game-with-pygame/) taken from edureka:
