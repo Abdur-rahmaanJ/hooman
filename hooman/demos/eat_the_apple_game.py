@@ -47,6 +47,7 @@ while hapi.is_running:
     hapi.ellipse((hapi.mouseX() - 25), (hapi.mouseY() - 25), 50, 50)
 
     hapi.fill(hapi.color["red"])
+    hapi.font_size(30)
     hapi.text(score, 5, 5)
 
     if (hapi.mouseX() < (apple[0] + 24)) and (hapi.mouseX() > (apple[0] - 24)) and (hapi.mouseY() < (apple[1] + 24)) and (hapi.mouseY() > (apple[1] - 24)):

@@ -81,6 +81,7 @@ class Hooman:
         self._font_name = "freesansbold.ttf"
         self._font_size = 32
         self._font = pygame.font.Font(self._font_name, self._font_size)
+        self._matrix_stack = []
 
         self.sysfont = "comicsansms"
         self._font_size = 10
@@ -170,10 +171,10 @@ class Hooman:
         self._rotation = angle % 360
 
     def push_matrix(self):
-        self.temp_rotation = self._rotation
+        self._matrix_stack.append(self._rotation)
 
     def pop_matrix(self):
-        self._rotation = self.temp_rotation
+        self._rotation = self._matrix_stack.pop()
 
     #
     # shapes

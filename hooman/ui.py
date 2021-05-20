@@ -39,6 +39,7 @@ class Button:
             "curve": 0,
             "padding_x": 0,
             "padding_y": 0,
+            "centered": False
         }
         options.update(param_options)
 
@@ -65,6 +66,7 @@ class Button:
         self.hover_image = options["hover_image"]
         self.enlarge = options["enlarge"]
         self.enlarge_amount = options["enlarge_amount"]
+        self.center = options['centered']
 
         # if no surface is supplied, try getting main screen
         if self.surface is None:
@@ -83,7 +85,7 @@ class Button:
         if self.enlarge:
             if self.text != "":
                 self.enlarge_font = pygame.font.Font(
-                    pygame.font.match_font(font), int(font_size * enlarge_amount)
+                    pygame.font.match_font(font), int(font_size * self.enlarge_amount)
                 )
         self.hover = False
 
@@ -102,6 +104,9 @@ class Button:
                             "cannot calculate width and height without text"
                         )
             self._Generate_images()
+        if self.center:
+            self.x -= self.w//2
+            self.y -= self.h//2
 
     def _Generate_images(self):
         # generate images
@@ -296,11 +301,11 @@ class Button:
         return
 
 
-# this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 100
+# this creates a curved rect, given a w,h and the curve amount, bewtween 0 and 1
 def curve_square(width, height, curve, color=(0, 0, 0)):
-    curve /= 200
     if not 0 <= curve <= 1:
         raise ValueError("curve value out of range, must be between 0 and 1")
+    curve /= 2
     curve *= min(width, height)
     curve = int(curve)
     surf = pygame.Surface((width, height), pygame.SRCALPHA)
@@ -423,7 +428,8 @@ class Slider:
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
         if self.slider_rect.collidepoint(mouse_pos):
-            if click:
+            # check for click, if held down, action only gets called once
+            if click and not self.prev_click:
                 self.clicked_on = True
         if self.clicked_on:
             if self.direction == 'horizontal':
@@ -436,8 +442,9 @@ class Slider:
                 self.val = max(min(self.val, 1), 0)
                 self.val = self._get_val(self.val)
                 self.slider_rect.y = self.y + self.val * (self.h - self.slider_h)
-            if not click:
-                self.clicked_on = False
+        if not click:
+            self.clicked_on = False   
+        self.prev_click = click
         self._draw()
 
     def Move(self, x = 0, y = 0, dx = 0, dy = 0):
@@ -478,7 +485,7 @@ class Slider:
             return val
         else:
             a = constrain(val, 0, 1, self.val_range[0], self.val_range[1])
-            b = round_to(a, self.step)
+            b = self.hapi.round_to(a, self.step)
             c = constrain(b, self.val_range[0], self.val_range[1], 0, 1)
             # print(val, a, b, c)
             return c

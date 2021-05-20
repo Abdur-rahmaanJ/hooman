@@ -25,7 +25,6 @@ clock = pygame.time.Clock()
 background_color = (0, 255, 255)
 while hapi.is_running:
     hapi.background(background_color)
-    hapi.event_loop()
 
     num_of_stars = window_width // 100
     random_colors = sample(list(hapi.color.values()), num_of_stars)
@@ -37,6 +36,7 @@ while hapi.is_running:
             hapi.star(x, y, 40, 20, 10)
 
         hapi.flip_display()
+        hapi.event_loop()
         clock.tick(10)
 
 pygame.quit()

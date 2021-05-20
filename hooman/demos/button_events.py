@@ -39,7 +39,7 @@ def button_hover_exit(this):
 grey_style = {
     "background_color": (200, 200, 200),
     "hover_background_color": (220, 220, 220),
-    "curve": 0.1,
+    "curve": 100,
     "padding_x": 5,
     "padding_y": 5,
     "font_size": 15,
@@ -49,7 +49,7 @@ grey_style = {
 }
 
 
-button2 = hapi.button(150, 250, "No Click Me", grey_style)
+button2 = hapi.button(150, 250, 0, 0, "No Click Me", grey_style)
 
 
 def handle_events(event):

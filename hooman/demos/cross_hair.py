@@ -1,6 +1,7 @@
 from hooman import Hooman
 from math import pow
 from math import sqrt
+import pygame
 
 window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
