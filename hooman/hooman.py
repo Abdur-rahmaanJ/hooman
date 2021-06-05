@@ -115,6 +115,7 @@ class Hooman:
     #
 
     def fill(self, col):
+        """The color to fill drawn shapes with"""
         if isinstance(col, int):
             self._fill = (col, col, col)
         elif isinstance(col, list) or isinstance(col, tuple):
@@ -124,6 +125,7 @@ class Hooman:
                 self._fill = (col[0], col[1], col[2])
 
     def stroke(self, col):
+        """The color to draw lines/strokes with"""
         if isinstance(col, int):
             self._stroke = (col, col, col)
         elif isinstance(col, list) or isinstance(col, tuple):
@@ -133,6 +135,7 @@ class Hooman:
                 self._stroke = (col[0], col[1], col[2])
 
     def background(self, col):
+        """Fill the screen with a color"""
         if isinstance(col, int) or isinstance(col, float):
             self.screen.fill((col, col, col))
         elif isinstance(col, list) or isinstance(col, tuple):
@@ -142,15 +145,19 @@ class Hooman:
                 self.screen.fill((col[0], col[1], col[2]))
 
     def gradient(self, w, h, start_col, end_col, direction=0):
+        """returns a pygame.Surface with a gradient between 2 colors"""
         return self._gradient(w, h, start_col, end_col, direction)
 
     def set_background(self, col):
+        """this calls hapi.background every frame with the given color"""
         self.bg_col = col
 
     def stroke_size(self, weight):
+        """The thickness of drawn lines"""
         self._stroke_weight = weight
 
     def set_alpha(self, alpha):
+        """sets the alpha to """
         self._alpha = alpha
 
     #
@@ -184,7 +191,10 @@ class Hooman:
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
 
     def rect(self, x, y, width, height):
-        self.regular_polygon(x, y, width, height, 4, 45)
+        if self._rotation % 360 == 0:
+            pygame.draw.rect(self.screen, self.fill, (x, y, width, height))
+        else:
+            self.regular_polygon(x, y, width, height, 4, 45)
 
     def text(self, letters, x, y):
         if not isinstance(letters, str):
@@ -313,6 +323,7 @@ class Hooman:
     #
 
     def flip_display(self):
+        """updates the screen. This should be called once every frame"""
         pygame.display.flip()
         if self.bg_col is not None:
             self.background(self.bg_col)
@@ -322,6 +333,7 @@ class Hooman:
             self.is_running = False
 
     def event_loop(self):
+        """Get all new events. This should be called once every frame"""
         if len(self._timers) > 0:
             self._timer_update()
         self.mouse_test_x = self.mouseX()
@@ -332,17 +344,17 @@ class Hooman:
     # ui
     #
 
-    def button(self, *args, **kwargs):
+    def button(self, *args, **kwargs) -> Button:
         b = Button(*args, **kwargs)
         self._all_widgets.append(b)
         return b
 
-    def text_box(self, *args, **kwargs):
+    def text_box(self, *args, **kwargs) -> TextBox:
         t = TextBox(*args, **kwargs)
         self._all_widgets.append(t)
         return t
 
-    def slider(self, *args, **kwargs):
+    def slider(self, *args, **kwargs) -> Slider:
         s = Slider(self, *args, **kwargs)
         self._all_widgets.append(s)
         return s
@@ -351,12 +363,12 @@ class Hooman:
         for widget in self._all_widgets:
             widget.update()
 
-    def slider_with_text(self, slider, params={}):
+    def slider_with_text(self, slider, params={}) -> slider_with_text:
         s = slider_with_text(self, slider, params)
         self._all_widgets.append(s)
         return s
 
-    def scroll(self, param_options = {}):
+    def scroll(self, param_options = {}) -> Scroll:
         s = Scroll(self, param_options)
         self._all_widgets.append(s)
         return s
@@ -364,7 +376,7 @@ class Hooman:
     # time
     #
 
-    def timer(self, callback=None, seconds=0, minutes=0):
+    def timer(self, callback=None, seconds=0, minutes=0) -> Timer:
         t = Timer(callback, seconds, minutes)
         self._timers.append(t)
         return t
@@ -376,15 +388,15 @@ class Hooman:
             if t:
                 del self._timers[l - i]
 
-    def hour(self):
+    def hour(self) -> int:
         now = datetime.datetime.now()
         return now.hour
 
-    def minute(self):
+    def minute(self) -> int:
         now = datetime.datetime.now()
         return now.minute
 
-    def second(self):
+    def second(self) -> int:
         now = datetime.datetime.now()
         return now.second
 

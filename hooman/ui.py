@@ -477,7 +477,10 @@ class Slider:
     #sets the value of the slider, moveing the slider object to that position
     def set_value(self, val):
         self.val = constrain(val, self.val_range[0], self.val_range[1], 0, 1)
-        self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
+        if self.direction == "horizontal":
+            self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
+        else:
+            self.slider_rect.y = self.y + self.val * (self.h - self.slider_h)
 
     #if the slider has a step and is not contineous, round to nearest step size
     def _get_val(self, val):
@@ -574,7 +577,7 @@ class TextBox:
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
     def key_down(self, e):
         # when backspace is pressed, delete last char
-        if e.unicode == "":
+        if e.key == pygame.K_BACKSPACE:
             # if nothing in line, delete line
             if len(self.text[self.current_line]) == 0:
                 if self.current_line > 0:
@@ -585,7 +588,7 @@ class TextBox:
                 del self.text[self.current_line][-1]
                 self.current_col -= 1
         # if key is enter, create line
-        elif e.key == 13:
+        elif e.key == pygame.K_RETURN:
             if self.Enter_action is not None:
                 self.Enter_action()
             elif self.current_line < self.lines - 1:
@@ -604,21 +607,24 @@ class TextBox:
                 + self.text[self.current_line][self.current_col :]
             )
             self.current_col += 1
+            #wrapper
+            if self._get_text_width(self.text[self.current_line]) > self.w:
+                self.wrapper(True)
         # if the down arrow is pressed
-        elif e.key == 274:
+        elif e.key == pygame.K_DOWN:
             self.current_line += 1 if self.current_line < len(self.text) - 1 else 0
             self.current_col = min(self.current_col, len(self.text[self.current_line]))
         # if the up arrow is pressed
-        elif e.key == 273:
+        elif e.key == pygame.K_UP:
             self.current_line -= 1 if self.current_line > 0 else 0
             self.current_col = min(self.current_col, len(self.text[self.current_line]))
         # if the right arrow is pressed
-        elif e.key == 275:
+        elif e.key == pygame.K_RIGHT:
             self.current_col += (
                 1 if len(self.text[self.current_line]) > self.current_col else 0
             )
         # if the left arrow is pressed
-        elif e.key == 276:
+        elif e.key == pygame.K_LEFT:
             self.current_col -= 1 if 0 < self.current_col else 0
 
     # draw the textbox
