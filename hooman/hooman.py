@@ -192,7 +192,7 @@ class Hooman:
 
     def rect(self, x, y, width, height):
         if self._rotation % 360 == 0:
-            pygame.draw.rect(self.screen, self.fill, (x, y, width, height))
+            pygame.draw.rect(self.screen, self._fill, (x, y, width, height))
         else:
             self.regular_polygon(x, y, width, height, 4, 45)
 
