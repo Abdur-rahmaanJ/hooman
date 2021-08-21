@@ -10,7 +10,7 @@ bg_col = (255, 255, 255)
 
 scroll = hapi.scroll({'range_y': 400})
 
-slider = hapi.slider(100, 850, 300, 30, {'curve': 80})
+slider = hapi.slider(100, 850, 300, 30, {'curve': 0.8})
 
 while hapi.is_running:
     hapi.background(bg_col)

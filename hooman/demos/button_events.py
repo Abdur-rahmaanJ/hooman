@@ -39,7 +39,7 @@ def button_hover_exit(this):
 grey_style = {
     "background_color": (200, 200, 200),
     "hover_background_color": (220, 220, 220),
-    "curve": 100,
+    "curve": 1,
     "padding_x": 5,
     "padding_y": 5,
     "font_size": 15,
