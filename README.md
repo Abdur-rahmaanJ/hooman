@@ -36,7 +36,7 @@ hapi = hooman.Hooman(WIDTH, HEIGHT)
 
 btn_style = {'outline': True,
              'background_color': (255, 0, 0),
-             'curve': 70,
+             'curve': 0.7,
              'outline_thickness': 3}
 
 slider_style = {'background_color': (200, 200, 200),
