@@ -1,13 +1,8 @@
 from hooman import Hooman
-import time
-
-
 
 window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
 
-
-time.sleep(10)
 
 mouse_x = {
                 "label": "mouse x",
