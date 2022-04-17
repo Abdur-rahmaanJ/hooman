@@ -64,11 +64,16 @@ def linechart(hapi, x, y, w, h, params):
         "tick_size": 5,
         "range_y": [0, 100],
         "range_x": [0, 100],
-        "data": [[10, 20], [10, 15], [80, 30], [90, 10]],
+        "lines":[{
+            "label": "---",
+            "color": (0, 0, 0),
+            "data": [[10, 20], [10, 15], [80, 30], [90, 10]]
+        }],
         "labels": ["apple", "", "", "tree"],
         "line_color": (200, 200, 200),
         "text_color": (100, 100, 100),
         "mouse_line": False,
+        "mouse_line_color": (255, 0, 0),
         "graph_color": (0, 0, 0)
     }
     options.update(params)
@@ -104,44 +109,45 @@ def linechart(hapi, x, y, w, h, params):
         hapi.pop_matrix()
         x_val += (options["range_x"][1] - options["range_x"][0]) // options["ticks_x"]
 
-    for i, d in enumerate(options["data"]):
-        
-        try:
-            x1 = hapi.constrain(
-                d[0], options["range_x"][0], options["range_x"][1], x, x + w
-            )
-            y1 = y + h -hapi.constrain(
-                    d[1], options["range_y"][0], options["range_y"][1], y, y + h
-                ) + y
-           
-            x2 = hapi.constrain(
-                options["data"][i + 1][0],
-                options["range_x"][0],
-                options["range_x"][1],
-                x,
-                x + w,
-            )
-            y2 = y + h -hapi.constrain(
-                    options["data"][i + 1][1],
-                    options["range_y"][0],
-                    options["range_y"][1],
-                    y,
-                    y + h,
-                ) + y
-           
-            # 60 is arbitrary value
-            # hapi.fill(hapi.color['yellow'])
-            # print(x1, y1)
-            hapi.stroke_size(2)
-            hapi.stroke(options["graph_color"])
-            hapi.line(x1, y1, x2, y2)
-            # hapi.line(x1, y1, x2, y2)
-        except IndexError:
-            pass
+    for line in options["lines"]:
+        for i, d in enumerate(line["data"]):
+            
+            try:
+                x1 = hapi.constrain(
+                    d[0], options["range_x"][0], options["range_x"][1], x, x + w
+                )
+                y1 = y + h -hapi.constrain(
+                        d[1], options["range_y"][0], options["range_y"][1], y, y + h
+                    ) + y
+               
+                x2 = hapi.constrain(
+                    line["data"][i + 1][0],
+                    options["range_x"][0],
+                    options["range_x"][1],
+                    x,
+                    x + w,
+                )
+                y2 = y + h -hapi.constrain(
+                        line["data"][i + 1][1],
+                        options["range_y"][0],
+                        options["range_y"][1],
+                        y,
+                        y + h,
+                    ) + y
+               
+                # 60 is arbitrary value
+                # hapi.fill(hapi.color['yellow'])
+                # print(x1, y1)
+                hapi.stroke_size(2)
+                hapi.stroke(line["color"])
+                hapi.line(x1, y1, x2, y2)
+                # hapi.line(x1, y1, x2, y2)
+            except IndexError:
+                pass
 
     if options["mouse_line"]:
         hapi.stroke_size(2)
-        hapi.stroke(hapi.color["red"])
+        hapi.stroke(options["mouse_line_color"])
         limit_y = hapi.mouseY()
         limit_x = hapi.mouseX()
         if limit_y < y:
@@ -157,6 +163,19 @@ def linechart(hapi, x, y, w, h, params):
         hapi.line(limit_x, y, limit_x, y + h)
         #tex = "{} {}".format(limit_x, limit_y)
         #hapi.text(tex, 100, 100)
+
+    # legend
+
+    legend_x_start = x + w + 10
+    legend_y_start = y 
+    legend_y = legend_y_start
+
+    for line in options['lines']:
+        hapi.fill(line['color'])
+        hapi.ellipse(legend_x_start, legend_y, 10, 10)
+        hapi.font_size(15)
+        hapi.text(line['label'], legend_x_start+15, legend_y)
+        legend_y += 10
 
 def piechart(hapi, x, y, radius, data, start_rad=0):
     first_run = True

@@ -1,3 +1,8 @@
+### 0.4.0
+
+
+Enhanced line chart
+
 
 ### 0.3.2
 
