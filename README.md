@@ -613,7 +613,7 @@ pygame.quit()
 
 ```
 
-![](assets/graphs.png)
+![](assets/scatter_chart.png)
 
 
 ```python
