@@ -613,6 +613,8 @@ pygame.quit()
 
 ```
 
+#### scatter plot
+
 ![](assets/scatter_chart.png)
 
 
