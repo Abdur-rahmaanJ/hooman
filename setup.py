@@ -13,6 +13,12 @@ from hooman import __version__  # thanks gunicorn
 
 here = path.abspath(path.dirname(__file__))
 
+
+requires = [
+    'pygame',
+    'numpy'
+]
+
 if sys.argv[-1] == "publish":  # requests
     os.system("python setup.py sdist")  # bdist_wheel
     os.system("twine upload dist/* --skip-existing")
@@ -68,9 +74,7 @@ setup(
     packages=["hooman"],
     include_package_data=True,
     python_requires=">=3.4",
-    install_requires=open(path.join(here, "requirements.txt"), encoding="utf-8")
-    .read()
-    .split("\n"),  # Optional
+    install_requires=requires,  # Optional
     project_urls={  # Optional
         "Bug Reports": "https://github.com/Abdur-RahmaanJ/hooman/issues",
         "Source": "https://github.com/Abdur-RahmaanJ/hooman/",

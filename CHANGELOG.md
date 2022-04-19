@@ -1,3 +1,14 @@
+### 0.5.0
+
+
+Add scatter plot
+
+
+### 0.4.1
+
+Enhanced line chart
+
+
 ### 0.4.0
 
 

@@ -30,12 +30,15 @@ from .shapes import gradient_rect
 from .formula import constrain
 from .formula import round_to_num
 from .formula import distance
+from .formula import rgb_to_hls
+from .formula import hls_to_rgb
 
 from .time import Timer
 
 from .charts import barchart
 from .charts import linechart
 from .charts import piechart
+from .charts import scatterchart
 
 
 class Hooman:
@@ -109,6 +112,11 @@ class Hooman:
         self._barchart = barchart
         self._linechart = linechart
         self._piechart = piechart
+        self._scatterchart = scatterchart
+
+
+        self.hls_to_rgb = hls_to_rgb
+        self.rgb_to_hls = rgb_to_hls
 
     #
     # colors
@@ -422,3 +430,6 @@ class Hooman:
         ]
         '''
         self._piechart(self, x, y, radius, data, start_rad=start_rad)
+
+    def scatterchart(self, x, y, width, height, params):
+        self._scatterchart(self, x, y, width, height, params)

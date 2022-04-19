@@ -613,6 +613,67 @@ pygame.quit()
 
 ```
 
+![](assets/graphs.png)
+
+
+```python
+# https://seaborn.pydata.org/examples/different_scatter_variables.html
+
+from hooman import Hooman
+import pandas as pd
+import os
+
+window_width, window_height = 650, 600
+hapi = Hooman(window_width, window_height)
+
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(base_path, "data", "diamonds.csv"))
+
+data = {k:list(df[k]) for k in df.columns.values.tolist()}
+
+hapi.background(255)
+
+colx = 'carat'
+coly = 'price'
+
+clarity_ranking = ["I1", "SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF"]
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_y": 8,
+            "ticks_x": 5,
+            "mouse_line": False,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "show_axes": True,
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "x": colx,
+            "y": coly,
+            "hue": "clarity",
+            "hue_order": clarity_ranking,
+            "size": "depth",
+            "plot_background": False,
+            "plot_background_grid": True,
+            "plot_background_color": (234,234,242),
+            "plot_background_grid_color": 200,
+            "line_color": 200
+        },
+    )
+
+while hapi.is_running:
+    bg_col = (255, 255, 255)
+
+    hapi.flip_display()
+    hapi.event_loop()
+```
+
 # All Demos
 
 -   [Buttons.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/Buttons.py)
@@ -1180,7 +1241,103 @@ def handle_events(event):
         .keydown(event)
 ```
 
+## Charts
 
+### .barchart
+
+```python
+params = {
+        "ticks_y": 10,
+        "tick_size": 5,
+        "range_y": [0, 100],
+        "data": {"a": 10, "b": 20},
+        "bin_color": (255, 99, 97),
+        "line_color": (200, 200, 200),
+        "text_color": (100, 100, 100),
+        "mouse_line": False,
+    }
+hapi.barchart(x, y, w, h, params)
+```
+
+
+### .linechart
+
+```python
+params = {
+    "ticks_y": 10,
+    "ticks_x": 10,
+    "tick_size": 5,
+    "range_y": [0, 100],
+    "range_x": [0, 100],
+    "lines":[{
+            "label": "---",
+            "color": (255, 0, 0),
+            "data": [[1,1]],
+            "values_window": 200
+        }],
+    "labels": ["apple", "", "", "tree"],
+    "line_color": (200, 200, 200),
+    "text_color": (100, 100, 100),
+    "mouse_line": False,
+    "mouse_line_color": (255, 0, 0),
+    "graph_color": (0, 0, 0),
+    "show_axes": True,
+    "show_ticks_x": True,
+    "show_ticks_y": True,
+    "x_axis_label": "x_axis_label",
+    "y_axis_label": "y_axis_label",
+    "plot_background": True,
+    "plot_background_grid": True,
+    "plot_background_color": (234,234,242),
+    "plot_background_grid_color": 255
+}
+hapi.linechart(x, y, w, h, params)
+```
+
+
+### .scatterchart
+
+```python
+params = {
+    "ticks_y": 10,
+    "ticks_x": 10,
+    "tick_size": 5,
+    "range_y": [0, 100],
+    "range_x": [0, 100],
+    "data": { # just add in the format <column name>: values
+        "carat": [0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23], 
+        "cut": ["Ideal", "Premium", "Good", "Premium", "Good", "Very Good", "Very Good", "Very Good", "Fair"],
+        "color": ["E", "E", "E", "I", "J", "J", "I", "H", "E", "H"],
+        "clarity": ["SI2", "SI1", "VS1", "VS2", "SI2", "VVS2", "VVS1", "SI1", "VS2", "VS1"],
+        "depth": [61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4],
+        "table": [55, 61, 65, 58, 58, 57, 57, 55, 61, 61],
+        "price": [326, 326, 327, 334, 335, 336, 336, 337, 337, 338],
+        "x": [3.95, 3.89, 4.05, 4.2, 4.34, 3.94, 3.95, 4.07, 3.87, 4],
+        "y": [3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05],
+        "z": [2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39]
+    },
+    "hue": "clarity",
+    "size": "depth",
+    "text_color": (100, 100, 100),
+    "mouse_line": False,
+    "mouse_line_color": (255, 0, 0),
+    "graph_color": (0, 0, 0),
+    "show_axes": True,
+    "show_ticks_x": True,
+    "show_ticks_y": True,
+    "x": "price",
+    "y": "carat",
+    "plot_background": True,
+    "plot_background_grid": True,
+    "plot_background_color": (234,234,242),
+    "plot_background_grid_color": 255,
+    "line_color": 200,
+    "strong_color": (107, 107, 255),
+    "light_color": (235, 235, 255)
+}
+hapi.scatterchart(hapi, x, y, w, h, params)
+
+```
 
 # Contributing Notes
 

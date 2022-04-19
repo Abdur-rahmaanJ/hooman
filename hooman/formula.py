@@ -1,4 +1,5 @@
 import math
+import colorsys
 
 def constrain(val, start, end, realstart, realend):
     # mouseX 0 width 0 255
@@ -26,3 +27,14 @@ def distance(coord1, coord2):
     squared_sums = math.pow(x2-x1, 2) + math.pow(y2-y1, 2)
     d = math.pow(squared_sums, 0.5)
     return d
+
+
+def rgb_to_hls(r, g, b):
+    r, g, b = [x/255.0 for x in (r, g, b)]
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    return h, l, s
+
+def hls_to_rgb(h, l, s):
+    r, g, b = colorsys.hls_to_rgb(h, l, s)
+    r, g, b = [x*255.0 for x in (r, g, b)]
+    return r, g, b
