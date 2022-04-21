@@ -1,3 +1,11 @@
+
+### 0.6.0
+
+- Enhanced line chart
+- Enhanced scatter plot
+- Add scatter plot hist
+
+
 ### 0.5.0
 
 

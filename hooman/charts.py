@@ -1,5 +1,8 @@
 import copy
 
+
+from .check import check
+
 def barchart(hapi, x, y, w, h, params):
     options = {
         "ticks_y": 10,
@@ -84,9 +87,9 @@ def linechart(hapi, x, y, w, h, params):
         "x_axis_label": "x_axis_label",
         "y_axis_label": "y_axis_label",
         "plot_background": True,
-        "plot_background_grid": True,
+        "plot_grid": True,
         "plot_background_color": (234,234,242),
-        "plot_background_grid_color": 255
+        "plot_grid_color": 255
     }
     options.update(params)
     hapi.stroke_size(2)
@@ -102,9 +105,9 @@ def linechart(hapi, x, y, w, h, params):
     # --- plot background grid ---
 
 
-    if options["plot_background_grid"]:
+    if options["plot_grid"]:
 
-        hapi.stroke(options["plot_background_grid_color"])
+        hapi.stroke(options["plot_grid_color"])
 
         # --- vertical
         bg_grid_x1 = x 
@@ -292,8 +295,9 @@ def scatterchart(hapi, x, y, w, h, params):
             "y": [3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05],
             "z": [2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39]
         },
-        "hue": "clarity",
-        "size": "depth",
+        "hue": None,
+        "hue_order": [],
+        "size": None,
         "text_color": (100, 100, 100),
         "mouse_line": False,
         "mouse_line_color": (255, 0, 0),
@@ -304,12 +308,16 @@ def scatterchart(hapi, x, y, w, h, params):
         "x": "price",
         "y": "carat",
         "plot_background": True,
-        "plot_background_grid": True,
+        "plot_grid": True,
         "plot_background_color": (234,234,242),
-        "plot_background_grid_color": 255,
+        "plot_grid_color": 255,
         "line_color": 200,
         "strong_color": (107, 107, 255),
-        "light_color": (235, 235, 255)
+        "light_color": (235, 235, 255),
+        "type": "normal",
+        "kind": "rect",
+        "hist_color": "b",
+        "hist_color_invert": False
     }
     options.update(params)
 
@@ -324,13 +332,216 @@ def scatterchart(hapi, x, y, w, h, params):
         hapi.fill(options["plot_background_color"])
         hapi.rect(x, y, w, h)
 
-    # --- plot background grid ---
+    # --- mouse line ---
+
+    if options["mouse_line"]:
+        hapi.stroke_size(2)
+        hapi.stroke(options["mouse_line_color"])
+        limit_y = hapi.mouseY()
+        limit_x = hapi.mouseX()
+        if limit_y < y:
+            limit_y = y
+        elif limit_y > y + h:
+            limit_y = y + h
+        if limit_x < x:
+            limit_x = x
+        elif limit_x > x + w:
+            limit_x = x + w
+
+        hapi.line(x, limit_y, x + w, limit_y)
+        hapi.line(limit_x, y, limit_x, y + h)
+
+
+    # --- scatter ---
+
+    xvals = options['data'][options['x']]
+    yvals = options['data'][options['y']]
+    # print(xvals[:10], yvals[:10])
+    # hapi.set_alpha(100)
+
+    
+
+    
+
+    if options["hue"]:
+        strong_blue = options['strong_color']
+        light_blue = options['light_color']
+        strong_blue_hls = hapi.rgb_to_hls(*strong_blue)
+        light_blue_hls = hapi.rgb_to_hls(*light_blue)
+        l_strong = strong_blue_hls[1]
+        l_light = light_blue_hls[1]
+
+        delta_l = l_strong - l_light
+        steps = len(options["hue_order"])
+        delta_change = delta_l / steps 
+
+        c_map = {}
+
+        color_l = l_strong
+
+        legend_y = y+10
+        hapi.fill(0)
+        hapi.text(options['hue'], x+w+10, y)
+        for c in options['hue_order']:
+            color_hue = hapi.hls_to_rgb(strong_blue_hls[0], color_l, strong_blue_hls[2])
+            c_map[c] = color_hue
+            color_l += delta_change
+
+        # --- legend
+
+        # --- --- hue
+
+            hapi.fill(color_hue)
+            hapi.ellipse(x+w+10, legend_y, 10, 10)
+            hapi.text(c, x+w+10+15, legend_y)
+            legend_y += 10
+
+
+    hue = options['hue']
+
+    
+
+
+    # --- --- size
+
+    if options["size"]:
+        min_size = min(options['data'][options['size']])
+        max_size = max(options['data'][options['size']])
+
+        hapi.fill(0)
+        legend_y += 10
+        hapi.text(options['size'], x+w+10, legend_y)
+        legend_y += 10
+
+        d_size = (max_size - min_size)/5
+        start_size = min_size
+        ellipse_size = 0
+        for i in range(5):
+            ellipse_size = i+1
+            hapi.ellipse(x+w+10, legend_y, ellipse_size, ellipse_size)
+            hapi.text(round(start_size, 2), x+w+15, legend_y)
+            start_size += d_size
+            legend_y += 10
+
+        ellipse_size += 1
+        hapi.ellipse(x+w+10, legend_y, ellipse_size, ellipse_size)
+        hapi.text(round(start_size, 2), x+w+15, legend_y)
+
+    # /--- legend
+
+
+    # --- actual plotting
+
+    if options["type"] == "normal":
+        for i, vx in enumerate(xvals):
+            if options['hue']:
+                current_hue = options['data'][options['hue']][i]
+                current_color = c_map[current_hue]
+            else:
+                current_color = options["graph_color"]
+
+            hapi.fill(current_color)
+            
+            ex = hapi.constrain(
+                vx,
+                options["range_x"][0],
+                options["range_x"][1],
+                x,
+                x + w,
+            )
+            ey = y + h -hapi.constrain(
+                    yvals[i],
+                    options["range_y"][0],
+                    options["range_y"][1],
+                    y,
+                    y + h,
+                ) + y
+
+
+            if options['size']:
+                size = options['data'][options['size']][i]
+                ellipse_size = (size/max_size)*5
+            else:
+                ellipse_size = 5
+            hapi.ellipse(ex, ey, ellipse_size, ellipse_size)
+    elif options["type"] == "hist":
+
+        range_x = (max(options['data'][options['x']]) - min(options['data'][options['x']])) // options["ticks_x"]
+        range_y = (max(options['data'][options['y']]) - min(options['data'][options['y']])) // options["ticks_y"]
+
+        m = {}
+
+        # for xi in range(options['ticks_x']+1):
+        #     for yi in range(options['ticks_y']+1):
+        #         m[str(xi*range_x)+'-'+str(yi*range_y)] = 0
+
+        total = 0
+        for x_point, y_point in zip(options['data'][options['x']], options['data'][options['y']]):
+            xi = x_point / ((options['range_x'][1] - options['range_x'][0])/options['ticks_x'])
+            yi = y_point / ((options['range_y'][1] - options['range_y'][0])/options['ticks_y'])
+
+            yi = options['ticks_y'] - yi
+
+            xi = int(xi)
+            yi = int(yi)
+
+            
+            if (xi, yi) not in m:
+                m[(xi, yi)] = 1 
+                total += 1
+            else:
+                m[(xi, yi)] += 1
+                total += 1
+
+
+        li = [[k, m[k]] for k in m]
+
+        sorted_li = sorted(li, key=lambda l:l[1], reverse=True)
+
+
+        rect_w = w//options["ticks_x"]
+        rect_h = h//options["ticks_y"]      
+
+        max_key = max(m, key=m.get)
+        max_val = m[max_key]
+        for xi in range(options['ticks_x']):
+            for yi in range(options['ticks_y']):
+                if (xi, yi) in m:
+
+                    if options['hist_color_invert']:
+                        col = (m[(xi, yi)]/max_val) * 255
+                    else:
+                        col = (((max_val-m[(xi, yi)])/max_val)) * 255
+
+                    check('scatterchart', 'hist_color', options['hist_color'])
+                    if options['hist_color'] == 'r':
+                        col_rect = (int(col), 0, 0)
+                    if options['hist_color'] == 'g':
+                        col_rect = (0, int(col), 0)
+                    if options['hist_color'] == 'b':
+                        col_rect = (0, 0, int(col))
+                    hapi.fill(col_rect)
+                else:
+                    hapi.fill(255)
+
+                if options['kind'] == 'rect':
+                    hapi.rect(x+xi*rect_w, y+yi*rect_h, rect_w, rect_h)
+                if options['kind'] == 'round':
+                    hapi.ellipse(x+xi*rect_w, y+yi*rect_h, rect_w, rect_h)
+                elif options['kind'] == 'hex':
+                    err = (1.8*rect_w)
+                    if yi%2 == 0:
+                        hapi.regular_polygon(x+xi*rect_w, y+yi*rect_h, rect_w-err, rect_h, 6)
+                    else:
+                        hapi.regular_polygon(x+xi*rect_w+(err//4), y+yi*rect_h, rect_w-err, rect_h, 6)
+
+    # --- plot grid ---
 
 
     hapi.stroke_size(1)
-    if options["plot_background_grid"]:
+    if options["plot_grid"]:
 
-        hapi.stroke(options["plot_background_grid_color"])
+        hapi.stroke(options["plot_grid_color"])
 
         # --- vertical
         bg_grid_x1 = x 
@@ -358,7 +569,6 @@ def scatterchart(hapi, x, y, w, h, params):
             bg_grid_y1 += (h // options['ticks_y'])
             bg_grid_y2 += (h // options['ticks_y'])
             line_num += 1
-
 
 
     # --- axes ---
@@ -414,119 +624,3 @@ def scatterchart(hapi, x, y, w, h, params):
         x_val += ((options["range_x"][1] - options["range_x"][0]) / options["ticks_x"])
 
         # print(x_val, ((options["range_x"][1] - options["range_x"][0]) / options["ticks_x"]))
-
-
-    # --- mouse line ---
-
-    if options["mouse_line"]:
-        hapi.stroke_size(2)
-        hapi.stroke(options["mouse_line_color"])
-        limit_y = hapi.mouseY()
-        limit_x = hapi.mouseX()
-        if limit_y < y:
-            limit_y = y
-        elif limit_y > y + h:
-            limit_y = y + h
-        if limit_x < x:
-            limit_x = x
-        elif limit_x > x + w:
-            limit_x = x + w
-
-        hapi.line(x, limit_y, x + w, limit_y)
-        hapi.line(limit_x, y, limit_x, y + h)
-
-
-    # --- scatter ---
-
-    xvals = options['data'][options['x']]
-    yvals = options['data'][options['y']]
-    # print(xvals[:10], yvals[:10])
-    # hapi.set_alpha(100)
-
-    strong_blue = options['strong_color']
-    light_blue = options['light_color']
-    strong_blue_hls = hapi.rgb_to_hls(*strong_blue)
-    light_blue_hls = hapi.rgb_to_hls(*light_blue)
-    l_strong = strong_blue_hls[1]
-    l_light = light_blue_hls[1]
-
-    delta_l = l_strong - l_light
-    steps = len(options["hue_order"])
-    delta_change = delta_l / steps 
-
-    c_map = {}
-
-    color_l = l_strong
-
-    legend_y = y+10
-
-    hapi.fill(0)
-    hapi.text(options['hue'], x+w+10, y)
-
-    for c in options['hue_order']:
-        color_hue = hapi.hls_to_rgb(strong_blue_hls[0], color_l, strong_blue_hls[2])
-        c_map[c] = color_hue
-        color_l += delta_change
-
-    # --- legend
-
-    # --- --- hue
-        hapi.fill(color_hue)
-        hapi.ellipse(x+w+10, legend_y, 10, 10)
-        hapi.text(c, x+w+10+15, legend_y)
-        legend_y += 10
-
-
-    hue = options['hue']
-
-    min_size = min(options['data'][options['size']])
-    max_size = max(options['data'][options['size']])
-
-
-    # --- --- size
-    hapi.fill(0)
-    legend_y += 10
-    hapi.text(options['size'], x+w+10, legend_y)
-    legend_y += 10
-
-    d_size = (max_size - min_size)/5
-    start_size = min_size
-    ellipse_size = 0
-    for i in range(5):
-        ellipse_size = i+1
-        hapi.ellipse(x+w+10, legend_y, ellipse_size, ellipse_size)
-        hapi.text(round(start_size, 2), x+w+15, legend_y)
-        start_size += d_size
-        legend_y += 10
-
-    ellipse_size += 1
-    hapi.ellipse(x+w+10, legend_y, ellipse_size, ellipse_size)
-    hapi.text(round(start_size, 2), x+w+15, legend_y)
-
-    # /--- legend
-
-
-    for i, vx in enumerate(xvals):
-        current_hue = options['data'][options['hue']][i]
-        current_color = c_map[current_hue]
-
-        hapi.fill(current_color)
-        depth = options['data'][options['size']][i]
-        ex = hapi.constrain(
-            vx,
-            options["range_x"][0],
-            options["range_x"][1],
-            x,
-            x + w,
-        )
-        ey = y + h -hapi.constrain(
-                yvals[i],
-                options["range_y"][0],
-                options["range_y"][1],
-                y,
-                y + h,
-            ) + y
-
-        # print(ex, ey, vx, yvals[i])
-        hapi.ellipse(ex, ey, (depth/max_size)*5, (depth/max_size)*5)
-    # print('---')

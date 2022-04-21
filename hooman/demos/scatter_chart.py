@@ -26,7 +26,7 @@ hapi.scatterchart(
         500,
         {
         "data": data,
-            "ticks_y": 6,
+            "ticks_y": 8,
             "ticks_x": 5,
             "mouse_line": False,
             "range_y": [min(data[coly]), max(data[coly])],
@@ -42,7 +42,7 @@ hapi.scatterchart(
             "size": "depth",
             "plot_background": False,
             "plot_background_grid": True,
-            # "plot_background_color": (234,234,242),
+            "plot_background_color": (234,234,242),
             "plot_background_grid_color": 200,
             "line_color": 200
         },
