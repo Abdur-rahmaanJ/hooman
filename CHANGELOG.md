@@ -1,3 +1,7 @@
+### 0.7.0
+
+- SVG generation support
+- Keyword arguments supported in addition to dictionary
 
 ### 0.6.0
 

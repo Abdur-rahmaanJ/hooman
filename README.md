@@ -21,6 +21,8 @@ The package for clearer, shorter and cleaner PyGame codebases!
 
 Fun fact: Codementor.io [tweeted about Hooman](https://twitter.com/CodementorIO/status/1306295790441246725?s=20) tagged #LearnPython #100DaysOfCode
 
+NEW: save to svg now supported
+
 # hooman is powerful!
 
 See a snake game by [TheBigKahuna353](https://github.com/TheBigKahuna353)
@@ -164,6 +166,122 @@ For about the same number of lines for a simple snake game, you get one complete
 - [Building A Color Picker](https://dev.to/abdurrahmaanj/building-a-color-picker-in-pygame-using-hooman-307m)
 - [Display most frequent words using PyGame](https://www.pythonkitchen.com/display-most-frequent-words-python-pygame/)
 - [Realtime CPU monitor using PyGame](https://www.pythonkitchen.com/realtime-cpu-monitor-using-pygame/)
+
+# (new) save to svg
+
+```python
+# https://github.com/mwaskom/seaborn-data/blob/master/penguins.csv
+
+from hooman import Hooman
+import pandas as pd
+import os
+
+window_width, window_height = 650, 600
+hapi = Hooman(window_width, window_height, svg=True)
+
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(base_path, "data", "penguins.csv"))
+df = df.fillna(0)
+
+data = {k:list(df[k]) for k in df.columns.values.tolist()}
+
+hapi.background(255)
+
+colx = "bill_length_mm"
+coly = "bill_depth_mm"
+
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_y": 12,
+            "ticks_x": 12,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "show_axes": True,
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "x": colx,
+            "y": coly,
+            "plot_background": False,
+            "plot_grid": False,
+            "line_color": 200,
+            "type": "hist",
+            "hist_color": "g"
+        },
+    )
+
+hapi.save_svg(os.path.join(base_path, 'file.svg'))
+```
+
+# (new) keyword argument same as dictionary
+
+
+```python
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_x": 5,
+            "mouse_line": False,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "x": colx,
+            "y": coly,
+            "hue": "clarity",
+            "hue_order": clarity_ranking,
+            "size": "depth",
+            "plot_background": False,
+            "plot_background_grid": True,
+            "plot_background_color": (234,234,242),
+            "plot_background_grid_color": 200,
+            "line_color": 200
+        }
+    )
+
+# same as
+
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_x": 5,
+            "mouse_line": False,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "hue": "clarity",
+            "hue_order": clarity_ranking,
+            "size": "depth",
+            "plot_background": False,
+            "plot_background_grid": True,
+            "plot_background_color": (234,234,242),
+            "plot_background_grid_color": 200,
+            "line_color": 200
+        },
+        x=colx,
+        y=coly
+    )
+
+# i.e you can mix both or use one option over the other
+
+```
 
 # demos
 

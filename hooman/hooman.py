@@ -40,9 +40,11 @@ from .charts import linechart
 from .charts import piechart
 from .charts import scatterchart
 
+from .svg import SVG
+
 
 class Hooman:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, WIDTH, HEIGHT, svg=False):
         pygame.init()
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
@@ -117,6 +119,9 @@ class Hooman:
 
         self.hls_to_rgb = hls_to_rgb
         self.rgb_to_hls = rgb_to_hls
+
+        self._svg = svg
+        self._svg_commands = []
 
     #
     # colors
@@ -198,9 +203,37 @@ class Hooman:
     def ellipse(self, x, y, width, height):
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
 
+        if self._svg:
+            attributes = {
+                'cx': x,
+                'cy': y,
+                'rx': width/2,
+                'ry': height/2,
+                'fill': f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})',
+                'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                'stroke-width': self._stroke_weight,
+                'transform': f'rotate({self._rotation}, {x}, {y})' # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag('ellipse', attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
+
     def rect(self, x, y, width, height):
         if self._rotation % 360 == 0:
             pygame.draw.rect(self.screen, self._fill, (x, y, width, height))
+            
+            if self._svg:
+                attributes = {
+                    'x': x,
+                    'y': y,
+                    'width': width,
+                    'height': height,
+                    'fill': f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})',
+                    'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                    'stroke-width': self._stroke_weight,
+                    'transform': f'rotate({self._rotation}, {x}, {y})' # "translate(30,40) rotate(45)'
+                }
+                svg_element = SVG.tag('rect', attributes=attributes, self_close=True)
+                self._svg_commands.append(svg_element)
         else:
             self.regular_polygon(x, y, width, height, 4, 45)
 
@@ -211,6 +244,20 @@ class Hooman:
         text = font.render(letters, True, self._fill)
         text = pygame.transform.rotate(text, self._rotation)
         self.screen.blit(text, (x, y))
+
+
+        if self._svg:
+            attributes = {
+                'x': x,
+                'y': y,
+                'font-size': self._font_size,
+                # 'fill': f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})',
+                # 'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                # 'stroke-width': self.stroke_size,
+                'transform': f'rotate({self._rotation}, {x}, {y})' # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag('text', content=letters, attributes=attributes)
+            self._svg_commands.append(svg_element)
 
     def arc(self, x, y, width, height, start_angle, end_angle):
         pygame.draw.arc(
@@ -231,21 +278,67 @@ class Hooman:
     def end_shape(self, fill=1):
         if fill:
             pygame.draw.polygon(self.screen, self._fill, self._polygon_coords)
+            svg_fill = f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})'
         else:
             pygame.draw.polygon(
                 self.screen, self._fill, self._polygon_coords, self._stroke_weight
             )
+            svg_fill = 'none'
+
+        if self._svg:
+            points = []
+            for p in self._polygon_coords:
+                points.append(f'{p[0]},{p[1]}')
+            attributes = {
+                'points': ' '.join(points),
+                'fill': svg_fill,
+                'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                'stroke-width': self._stroke_weight,
+                'transform': f'rotate({self._rotation})' # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag('polygon', attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def polygon(self, coords, fill=1):
         if fill:
             pygame.draw.polygon(self.screen, self._fill, coords)
+            svg_fill = f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})'
         else:
             pygame.draw.polygon(self.screen, self._fill, coords, self._stroke_weight)
+            svg_fill = 'none'
+
+        if self._svg:
+            points = []
+            for p in self._polygon_coords:
+                points.append(f'{p[0]},{p[1]}')
+            attributes = {
+                'points': ' '.join(points),
+                'fill': svg_fill,
+                'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                'stroke-width': self._stroke_weight,
+                'transform': f'rotate({self._rotation})' # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag('polygon', attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def line(self, x1, y1, x2, y2):
         pygame.draw.line(
             self.screen, self._stroke, [x1, y1], [x2, y2], self._stroke_weight
         )
+
+
+        if self._svg:
+            attributes = {
+                'x1': x1,
+                'x2': x2,
+                'y1': y1,
+                'y2': y2,
+                'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                'stroke-width': self._stroke_weight,
+                'transform': f'rotate({self._rotation}, {x1}, {y1})' # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag('line', attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def star(self, x, y, r1, r2, npoints):
         self._star(self, x, y, r1, r2, npoints, self._rotation)
@@ -412,10 +505,12 @@ class Hooman:
     # charts
     #
 
-    def barchart(self, x, y, w, h, params):
+    def barchart(self, x, y, w, h, params, **kwargs):
+        params.update(kwargs)
         self._barchart(self, x, y, w, h, params)
 
-    def linechart(self, x, y, w, h, params):
+    def linechart(self, x, y, w, h, params, **kwargs):
+        params.update(kwargs)
         self._linechart(self, x, y, w, h, params)
 
     def piechart(self, x, y, radius, data, start_rad=0):
@@ -431,5 +526,16 @@ class Hooman:
         '''
         self._piechart(self, x, y, radius, data, start_rad=start_rad)
 
-    def scatterchart(self, x, y, width, height, params):
+    def scatterchart(self, x, y, width, height, params, **kwargs):
+        params.update(kwargs)
         self._scatterchart(self, x, y, width, height, params)
+
+
+    #
+    # svg
+    #
+
+
+    def save_svg(self, path):
+        # print(self._svg_commands)
+        SVG.save(self._svg_commands, path, self.WIDTH, self.HEIGHT)

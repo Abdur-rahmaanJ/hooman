@@ -26,12 +26,10 @@ hapi.scatterchart(
         500,
         {
         "data": data,
-            "ticks_y": 8,
             "ticks_x": 5,
             "mouse_line": False,
             "range_y": [min(data[coly]), max(data[coly])],
             "range_x": [min(data[colx]), max(data[colx])],
-            "show_axes": True,
             "tick_size": 10,
             "show_ticks_x": True,
             "show_ticks_y": True,
@@ -45,7 +43,7 @@ hapi.scatterchart(
             "plot_background_color": (234,234,242),
             "plot_background_grid_color": 200,
             "line_color": 200
-        },
+        }
     )
 
 while hapi.is_running:
