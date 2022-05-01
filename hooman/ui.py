@@ -78,6 +78,7 @@ class Button:
 
         if self.hover_bg_colour is None:
             self.hover_bg_colour = self.background_color
+        
         self.font = pygame.font.Font(pygame.font.match_font(font), font_size)
 
         self.image = image.copy() if image else None
