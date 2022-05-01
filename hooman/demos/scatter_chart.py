@@ -39,10 +39,8 @@ hapi.scatterchart(
             "hue_order": clarity_ranking,
             "size": "depth",
             "plot_background": False,
-            "plot_background_grid": True,
-            "plot_background_color": (234,234,242),
-            "plot_background_grid_color": 200,
-            "line_color": 200
+            "plot_grid": False,
+            "line_color": 200,
         }
     )
 

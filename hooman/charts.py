@@ -1,7 +1,9 @@
 import copy
 
+from .check import check_params
+from .check import check_color
 
-from .check import check
+
 
 def barchart(hapi, x, y, w, h, params):
     options = {
@@ -14,6 +16,7 @@ def barchart(hapi, x, y, w, h, params):
         "text_color": (100, 100, 100),
         "mouse_line": False,
     }
+    check_params(params, options, "bar chart")
     options.update(params)
     hapi.stroke_size(2)
     hapi.stroke(options["line_color"])
@@ -91,6 +94,7 @@ def linechart(hapi, x, y, w, h, params):
         "plot_background_color": (234,234,242),
         "plot_grid_color": 255
     }
+    check_params(params, options, "line chart")
     options.update(params)
     hapi.stroke_size(2)
 
@@ -319,6 +323,8 @@ def scatterchart(hapi, x, y, w, h, params):
         "hist_color": "b",
         "hist_color_invert": False
     }
+
+    check_params(params, options, "scatter chart")
     options.update(params)
 
     hapi.stroke_size(2)

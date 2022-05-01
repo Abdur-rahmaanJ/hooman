@@ -132,6 +132,8 @@ class Hooman:
         if isinstance(col, int):
             self._fill = (col, col, col)
         elif isinstance(col, list) or isinstance(col, tuple):
+            if not len(col) in [1, 3]:
+                sys.exit('Fill takes only 1 or 3 parameters when using a list')
             if len(col) == 1:
                 self._fill = (col[0], col[0], col[0])
             else:
@@ -142,6 +144,8 @@ class Hooman:
         if isinstance(col, int):
             self._stroke = (col, col, col)
         elif isinstance(col, list) or isinstance(col, tuple):
+            if not len(col) in [1, 3]:
+                sys.exit('Fill takes only 1 or 3 parameters when using a list')
             if len(col) == 1:
                 self._stroke = (col[0], col[0], col[0])
             else:
@@ -152,6 +156,8 @@ class Hooman:
         if isinstance(col, int) or isinstance(col, float):
             self.screen.fill((col, col, col))
         elif isinstance(col, list) or isinstance(col, tuple):
+            if not len(col) in [1, 3]:
+                sys.exit('Fill takes only 1 or 3 parameters when using a list')
             if len(col) == 1:
                 self.screen.fill((col[0], col[0], col[0]))
             else:
@@ -163,6 +169,7 @@ class Hooman:
 
     def set_background(self, col):
         """this calls hapi.background every frame with the given color"""
+        
         self.bg_col = col
 
     def stroke_size(self, weight):
@@ -505,11 +512,11 @@ class Hooman:
     # charts
     #
 
-    def barchart(self, x, y, w, h, params, **kwargs):
+    def barchart(self, x, y, w, h, params={}, **kwargs):
         params.update(kwargs)
         self._barchart(self, x, y, w, h, params)
 
-    def linechart(self, x, y, w, h, params, **kwargs):
+    def linechart(self, x, y, w, h, params={}, **kwargs):
         params.update(kwargs)
         self._linechart(self, x, y, w, h, params)
 
@@ -526,7 +533,7 @@ class Hooman:
         '''
         self._piechart(self, x, y, radius, data, start_rad=start_rad)
 
-    def scatterchart(self, x, y, width, height, params, **kwargs):
+    def scatterchart(self, x, y, width, height, params={}, **kwargs):
         params.update(kwargs)
         self._scatterchart(self, x, y, width, height, params)
 

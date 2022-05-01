@@ -5,10 +5,10 @@ Edit: https://github.com/Abdur-rahmaanJ
 
 import pygame
 from .formula import constrain
-
+from .check import check_params
 
 class Button:
-    def __init__(self, x, y, w, h, text, param_options={}):
+    def __init__(self, x, y, w, h, text, params={}):
         self.x = x
         self.y = y
         self.w = w
@@ -41,7 +41,8 @@ class Button:
             "padding_y": 0,
             "centered": False
         }
-        options.update(param_options)
+        check_params(params, options, "button")
+        options.update(params)
 
         self.padding_x = options["padding_x"]
         self.padding_y = options["padding_y"]
@@ -319,7 +320,7 @@ def curve_square(width, height, curve, color=(0, 0, 0)):
 
 
 class Slider:
-    def __init__(self, hapi, x, y, w, h, params):
+    def __init__(self, hapi, x, y, w, h, params={}):
         options = {
             "background_color": (100, 100, 100),
             "slider_width": None,
@@ -333,10 +334,7 @@ class Slider:
             'resize_slider': False,
             'curve': 0
         }
-        for key, val in params.items():
-            if key not in options:
-                raise TypeError(key + " is not an option, have you spelt it correctly")
-
+        check_params(params, options, "slider")
         options.update(params)
 
         self.x = x
@@ -495,7 +493,7 @@ class Slider:
 
 
 class TextBox:
-    def __init__(self, x, y, w, h=0, param_options={}):
+    def __init__(self, x, y, w, h=0, params={}):
         options = {
             "lines": 1,
             "text": "",
@@ -509,7 +507,8 @@ class TextBox:
             "Enter_action": None,
             "calculateSize": False,
         }
-        options.update(param_options)
+        check_params(params, options, "text box")
+        options.update(params)
         self.x = x
         self.y = y
         self.w = w
@@ -712,9 +711,7 @@ class slider_with_text:
         if not isinstance(slider, Slider):
             raise TypeError("'slider' arg is not a slider widget")
 
-        for key, item in params.items():
-            if key not in options:
-                raise TypeError(key + " is not an option, have you spelt it correctly")
+        check_params(params, options, "slider with text")
 
         options.update(params)
 
@@ -779,15 +776,15 @@ class slider_with_text:
         return self.slider.value()
 
 class Scroll:
-    def __init__(self, hapi, param_options = {}):
+    def __init__(self, hapi, params = {}):
         options = {'starting_x': 0,
                    'starting_y': 0,
                    'range_x': 0,
                    'range_y': 0,
                    'bar_color': (200, 200, 200),
                    'slider_color': (150, 150, 150)}
-        
-        options.update(param_options)
+        check_params(params, options, "scroll")
+        options.update(params)
 
         screen_size = pygame.display.get_surface().get_size()
 
