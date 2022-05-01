@@ -10,20 +10,31 @@ bg_col = (255, 255, 255)
 while hapi.is_running:
     hapi.background(bg_col)
 
-    hapi.piechart(hapi.center_x-100, hapi.center_y, 100, [
-        ['a', 20, hapi.color['red']],
-        ['b', 30, hapi.color['blue']],
-        ['c', 40, hapi.color['yellow']],
-        ['d', 60, hapi.color['green']],
-        ['e', 30, hapi.color['black']]
-    ])
-    hapi.piechart(hapi.center_x+100, hapi.center_y, 100, [
-        ['a', 20, hapi.color['red']],
-        ['b', 30, hapi.color['blue']],
-        ['c', 40, hapi.color['yellow']],
-        ['d', 60, hapi.color['green']],
-        ['e', 30, hapi.color['black']]
-    ], start_rad=30)
+    hapi.piechart(
+        hapi.center_x - 100,
+        hapi.center_y,
+        100,
+        [
+            ["a", 20, hapi.color["red"]],
+            ["b", 30, hapi.color["blue"]],
+            ["c", 40, hapi.color["yellow"]],
+            ["d", 60, hapi.color["green"]],
+            ["e", 30, hapi.color["black"]],
+        ],
+    )
+    hapi.piechart(
+        hapi.center_x + 100,
+        hapi.center_y,
+        100,
+        [
+            ["a", 20, hapi.color["red"]],
+            ["b", 30, hapi.color["blue"]],
+            ["c", 40, hapi.color["yellow"]],
+            ["d", 60, hapi.color["green"]],
+            ["e", 30, hapi.color["black"]],
+        ],
+        start_rad=30,
+    )
 
     hapi.event_loop()
     hapi.flip_display()

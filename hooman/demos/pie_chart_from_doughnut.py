@@ -8,7 +8,6 @@ hapi = Hooman(window_width, window_height)
 bg_col = (255, 255, 255)
 
 
-
 while hapi.is_running:
     hapi.background(bg_col)
 

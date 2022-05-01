@@ -42,7 +42,7 @@ while hapi.is_running:
     if hapi.mouseY() > (apple[1] + 24):
         hapi.fill(hapi.color["green"])
         hapi.ellipse((hapi.mouseX() - 25), (hapi.mouseY() - 35), 50, 50)
-    
+
     hapi.fill((255, 255, 255))
     hapi.ellipse((hapi.mouseX() - 25), (hapi.mouseY() - 25), 50, 50)
 
@@ -50,12 +50,25 @@ while hapi.is_running:
     hapi.font_size(30)
     hapi.text(score, 5, 5)
 
-    if (hapi.mouseX() < (apple[0] + 24)) and (hapi.mouseX() > (apple[0] - 24)) and (hapi.mouseY() < (apple[1] + 24)) and (hapi.mouseY() > (apple[1] - 24)):
+    if (
+        (hapi.mouseX() < (apple[0] + 24))
+        and (hapi.mouseX() > (apple[0] - 24))
+        and (hapi.mouseY() < (apple[1] + 24))
+        and (hapi.mouseY() > (apple[1] - 24))
+    ):
         hapi.fill(hapi.color["red"])
         hapi.ellipse((apple[0] - 5), (apple[1] - 5), 10, 10)
 
-    if (hapi.mouseX() < (apple[0] + 9)) and (hapi.mouseX() > (apple[0] - 9)) and (hapi.mouseY() < (apple[1] + 9)) and (hapi.mouseY() > (apple[1] - 9)):
-        apple = (random.randint(10, (hapi.WIDTH - 10)), random.randint(10, (hapi.HEIGHT - 10)))
+    if (
+        (hapi.mouseX() < (apple[0] + 9))
+        and (hapi.mouseX() > (apple[0] - 9))
+        and (hapi.mouseY() < (apple[1] + 9))
+        and (hapi.mouseY() > (apple[1] - 9))
+    ):
+        apple = (
+            random.randint(10, (hapi.WIDTH - 10)),
+            random.randint(10, (hapi.HEIGHT - 10)),
+        )
         score += 1
 
     hapi.flip_display()

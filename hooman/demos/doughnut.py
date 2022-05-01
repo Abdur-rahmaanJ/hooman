@@ -27,8 +27,15 @@ while hapi.is_running:
     hapi.background(bg_col)
 
     hapi.fill(hapi.color["red"])
-    hapi.fill_arc(hapi.center_x, hapi.center_y, 100, start_angle.value(), end_angle.value(), start_rad=30)
-    hapi.text('{}-{}'.format(start_angle.value(), end_angle.value()), 50, 450)
+    hapi.fill_arc(
+        hapi.center_x,
+        hapi.center_y,
+        100,
+        start_angle.value(),
+        end_angle.value(),
+        start_rad=30,
+    )
+    hapi.text("{}-{}".format(start_angle.value(), end_angle.value()), 50, 450)
 
     start_angle.update()
     end_angle.update()

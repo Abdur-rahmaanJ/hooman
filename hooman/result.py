@@ -1,4 +1,3 @@
-
 class Result:
     # Thanks Aaron Luna
     """Represent the outcome of an operation."""
