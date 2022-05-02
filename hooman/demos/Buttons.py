@@ -49,7 +49,8 @@ buttonx = hapi.button(150, 10, 100, 50, "Hover Me", stylex)
 button2 = hapi.button(
     150,
     250,
-    100, 50,
+    100,
+    50,
     "No Click Me",
     {
         "background_color": (200, 200, 200),

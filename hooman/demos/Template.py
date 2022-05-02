@@ -1,4 +1,4 @@
-from hooman import Hooman   # import hooman
+from hooman import Hooman  # import hooman
 
 
 # create the hooman api (hapi)
@@ -12,9 +12,8 @@ while hapi.is_running:
     # this is the game loop
     # everything in here occurs once every frame
 
-    #set the background to white, this should always be the first thing you draw to the screen
-    hapi.background(hapi.color['white'])
-
+    # set the background to white, this should always be the first thing you draw to the screen
+    hapi.background(hapi.color["white"])
 
     # get any new events like a mouse click or a key press, this handles the events
     # and should only be called once every frame

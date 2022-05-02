@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import pygame.gfxdraw
 
@@ -40,15 +42,22 @@ from .charts import linechart
 from .charts import piechart
 from .charts import scatterchart
 
+from .svg import SVG
+
+from .check import check_color
+from .check import verify_color
+from .check import check_value
+from .check import verify_func_param
+
 
 class Hooman:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, WIDTH, HEIGHT, svg=False):
         pygame.init()
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.PI = pi
-        self.center_x = WIDTH//2
-        self.center_y = HEIGHT//2
+        self.center_x = WIDTH // 2
+        self.center_y = HEIGHT // 2
         self.sin = sin
         self.cos = cos
         self.constrain = constrain
@@ -114,9 +123,11 @@ class Hooman:
         self._piechart = piechart
         self._scatterchart = scatterchart
 
-
         self.hls_to_rgb = hls_to_rgb
         self.rgb_to_hls = rgb_to_hls
+
+        self._svg = svg
+        self._svg_commands = []
 
     #
     # colors
@@ -124,44 +135,48 @@ class Hooman:
 
     def fill(self, col):
         """The color to fill drawn shapes with"""
-        if isinstance(col, int):
-            self._fill = (col, col, col)
-        elif isinstance(col, list) or isinstance(col, tuple):
-            if len(col) == 1:
-                self._fill = (col[0], col[0], col[0])
-            else:
-                self._fill = (col[0], col[1], col[2])
+        verify_color([col])
+        self._fill = check_color(col).value
 
     def stroke(self, col):
         """The color to draw lines/strokes with"""
-        if isinstance(col, int):
-            self._stroke = (col, col, col)
-        elif isinstance(col, list) or isinstance(col, tuple):
-            if len(col) == 1:
-                self._stroke = (col[0], col[0], col[0])
-            else:
-                self._stroke = (col[0], col[1], col[2])
+        verify_color([col])
+        self._stroke = check_color(col).value
 
     def background(self, col):
         """Fill the screen with a color"""
-        if isinstance(col, int) or isinstance(col, float):
-            self.screen.fill((col, col, col))
-        elif isinstance(col, list) or isinstance(col, tuple):
-            if len(col) == 1:
-                self.screen.fill((col[0], col[0], col[0]))
-            else:
-                self.screen.fill((col[0], col[1], col[2]))
+
+        verify_color([col])
+        self.screen.fill(check_color(col).value)
+
+        # check_col = check_
 
     def gradient(self, w, h, start_col, end_col, direction=0):
         """returns a pygame.Surface with a gradient between 2 colors"""
-        return self._gradient(w, h, start_col, end_col, direction)
+        param_types = {
+            "w": [int, []],
+            "h": [int, []],
+            "direction": [int, []],
+        }
+        verify_color([start_col, end_col])
+        verify_func_param(self.gradient, param_types, locals())
+        return self._gradient(
+            w, h, check_color(start_col).value, check_color(end_col).value, direction
+        )
 
     def set_background(self, col):
         """this calls hapi.background every frame with the given color"""
-        self.bg_col = col
+
+        verify_color([col])
+        self.bg_col = check_color(col).value
 
     def stroke_size(self, weight):
         """The thickness of drawn lines"""
+        param_types = {
+            "weight": [int, []],
+        }
+        verify_func_param(self.stroke_size, param_types, locals())
+
         self._stroke_weight = weight
 
     def set_alpha(self, alpha):
@@ -176,6 +191,12 @@ class Hooman:
         self._stroke_weight = 0
 
     def font_size(self, font_size):
+        param_types = {
+            "font_size": [int, []],
+        }
+
+        verify_func_param(self.font_size, param_types, locals())
+
         self._font_size = font_size
 
     #
@@ -183,6 +204,10 @@ class Hooman:
     #
 
     def rotate(self, angle):
+        param_types = {
+            "angle": [int, []],
+        }
+        verify_func_param(self.rotate, param_types, locals())
         self._rotation = angle % 360
 
     def push_matrix(self):
@@ -196,23 +221,96 @@ class Hooman:
     #
 
     def ellipse(self, x, y, width, height):
+        param_types = {
+            "x": [[int, float], []],
+            "y": [[int, float], []],
+            "width": [[int, float], []],
+            "height": [[int, float], []],
+        }
+        verify_func_param(self.ellipse, param_types, locals())
+
         pygame.draw.ellipse(self.screen, self._fill, (x, y, width, height))
 
+        if self._svg:
+            attributes = {
+                "cx": x,
+                "cy": y,
+                "rx": width / 2,
+                "ry": height / 2,
+                "fill": f"rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})",
+                "stroke": f"rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})",
+                "stroke-width": self._stroke_weight,
+                "transform": f"rotate({self._rotation}, {x}, {y})",  # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag("ellipse", attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
+
     def rect(self, x, y, width, height):
+        param_types = {
+            "x": [[int, float], []],
+            "y": [[int, float], []],
+            "width": [[int, float], []],
+            "height": [[int, float], []],
+        }
+        verify_func_param(self.rect, param_types, locals())
         if self._rotation % 360 == 0:
             pygame.draw.rect(self.screen, self._fill, (x, y, width, height))
+
+            if self._svg:
+                attributes = {
+                    "x": x,
+                    "y": y,
+                    "width": width,
+                    "height": height,
+                    "fill": f"rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})",
+                    "stroke": f"rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})",
+                    "stroke-width": self._stroke_weight,
+                    "transform": f"rotate({self._rotation}, {x}, {y})",  # "translate(30,40) rotate(45)'
+                }
+                svg_element = SVG.tag("rect", attributes=attributes, self_close=True)
+                self._svg_commands.append(svg_element)
         else:
             self.regular_polygon(x, y, width, height, 4, 45)
 
     def text(self, letters, x, y):
         if not isinstance(letters, str):
             letters = str(letters)
+
+        param_types = {
+            "x": [[int, float], []],
+            "y": [[int, float], []],
+            "letters": [str, []],
+        }
+        verify_func_param(self.text, param_types, locals())
+
         font = pygame.font.SysFont(self.sysfont, self._font_size)
         text = font.render(letters, True, self._fill)
         text = pygame.transform.rotate(text, self._rotation)
         self.screen.blit(text, (x, y))
 
+        if self._svg:
+            attributes = {
+                "x": x,
+                "y": y,
+                "font-size": self._font_size,
+                # 'fill': f'rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})',
+                # 'stroke': f'rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})',
+                # 'stroke-width': self.stroke_size,
+                "transform": f"rotate({self._rotation}, {x}, {y})",  # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag("text", content=letters, attributes=attributes)
+            self._svg_commands.append(svg_element)
+
     def arc(self, x, y, width, height, start_angle, end_angle):
+        param_types = {
+            "x": [[int, float], []],
+            "y": [[int, float], []],
+            "width": [[int, float], []],
+            "height": [[int, float], []],
+            "start_angle": [int, []],
+            "end_angle": [int, []],
+        }
+        verify_func_param(self.arc, param_types, locals())
         pygame.draw.arc(
             self.screen,
             self._fill,
@@ -231,26 +329,85 @@ class Hooman:
     def end_shape(self, fill=1):
         if fill:
             pygame.draw.polygon(self.screen, self._fill, self._polygon_coords)
+            svg_fill = f"rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})"
         else:
             pygame.draw.polygon(
                 self.screen, self._fill, self._polygon_coords, self._stroke_weight
             )
+            svg_fill = "none"
+
+        if self._svg:
+            points = []
+            for p in self._polygon_coords:
+                points.append(f"{p[0]},{p[1]}")
+            attributes = {
+                "points": " ".join(points),
+                "fill": svg_fill,
+                "stroke": f"rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})",
+                "stroke-width": self._stroke_weight,
+                "transform": f"rotate({self._rotation})",  # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag("polygon", attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def polygon(self, coords, fill=1):
         if fill:
             pygame.draw.polygon(self.screen, self._fill, coords)
+            svg_fill = f"rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})"
         else:
             pygame.draw.polygon(self.screen, self._fill, coords, self._stroke_weight)
+            svg_fill = "none"
+
+        if self._svg:
+            points = []
+            for p in self._polygon_coords:
+                points.append(f"{p[0]},{p[1]}")
+            attributes = {
+                "points": " ".join(points),
+                "fill": svg_fill,
+                "stroke": f"rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})",
+                "stroke-width": self._stroke_weight,
+                "transform": f"rotate({self._rotation})",  # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag("polygon", attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def line(self, x1, y1, x2, y2):
+        param_types = {
+            "x1": [[int, float], []],
+            "y1": [[int, float], []],
+            "x2": [[int, float], []],
+            "y2": [[int, float], []],
+        }
+        verify_func_param(self.line, param_types, locals())
         pygame.draw.line(
             self.screen, self._stroke, [x1, y1], [x2, y2], self._stroke_weight
         )
+
+        if self._svg:
+            attributes = {
+                "x1": x1,
+                "x2": x2,
+                "y1": y1,
+                "y2": y2,
+                "stroke": f"rgb({self._stroke[0]},{self._stroke[1]},{self._stroke[2]})",
+                "stroke-width": self._stroke_weight,
+                "transform": f"rotate({self._rotation}, {x1}, {y1})",  # "translate(30,40) rotate(45)'
+            }
+            svg_element = SVG.tag("line", attributes=attributes, self_close=True)
+            self._svg_commands.append(svg_element)
 
     def star(self, x, y, r1, r2, npoints):
         self._star(self, x, y, r1, r2, npoints, self._rotation)
 
     def alpha_ellipse(self, x, y, w, h):
+        param_types = {
+            "x": [[int, float], []],
+            "y": [[int, float], []],
+            "w": [int, []],
+            "h": [int, []],
+        }
+        verify_func_param(self.alpha_ellipse, param_types, locals())
         self._alpha_ellipse(self, x, y, w, h)
 
     def curve_rect(self, x, y, w, h, curve):
@@ -309,7 +466,9 @@ class Hooman:
 
     def fill_arc(self, x, y, radius, startangle, endangle, start_rad=0):
         for r in range(start_rad, radius):
-            pygame.gfxdraw.arc(self.screen, x, y, r, int(startangle), int(endangle), self._fill)
+            pygame.gfxdraw.arc(
+                self.screen, x, y, r, int(startangle), int(endangle), self._fill
+            )
 
     #
     # interactivity
@@ -376,10 +535,11 @@ class Hooman:
         self._all_widgets.append(s)
         return s
 
-    def scroll(self, param_options = {}) -> Scroll:
+    def scroll(self, param_options={}) -> Scroll:
         s = Scroll(self, param_options)
         self._all_widgets.append(s)
         return s
+
     #
     # time
     #
@@ -412,14 +572,16 @@ class Hooman:
     # charts
     #
 
-    def barchart(self, x, y, w, h, params):
+    def barchart(self, x, y, w, h, params={}, **kwargs):
+        params.update(kwargs)
         self._barchart(self, x, y, w, h, params)
 
-    def linechart(self, x, y, w, h, params):
+    def linechart(self, x, y, w, h, params={}, **kwargs):
+        params.update(kwargs)
         self._linechart(self, x, y, w, h, params)
 
     def piechart(self, x, y, radius, data, start_rad=0):
-        '''
+        """
         data in the format:
             [
             ['a', 20, hapi.color['red']],
@@ -428,8 +590,17 @@ class Hooman:
             ['d', 60, hapi.color['green']],
             ['e', 30, hapi.color['black']]
         ]
-        '''
+        """
         self._piechart(self, x, y, radius, data, start_rad=start_rad)
 
-    def scatterchart(self, x, y, width, height, params):
+    def scatterchart(self, x, y, width, height, params={}, **kwargs):
+        params.update(kwargs)
         self._scatterchart(self, x, y, width, height, params)
+
+    #
+    # svg
+    #
+
+    def save_svg(self, path):
+        # print(self._svg_commands)
+        SVG.save(self._svg_commands, path, self.WIDTH, self.HEIGHT)

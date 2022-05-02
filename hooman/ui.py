@@ -6,10 +6,11 @@ Edit: https://github.com/Abdur-rahmaanJ
 import pygame
 from .formula import constrain
 from typing import Union
+from .check import check_params
 
 
 class Button:
-    def __init__(self, x, y, w, h, text, param_options={}):
+    def __init__(self, x, y, w, h, text, params={}):
         self.x = x
         self.y = y
         self.w = w
@@ -41,9 +42,10 @@ class Button:
             "curve": 0,
             "padding_x": 0,
             "padding_y": 0,
-            "centered": False
+            "centered": False,
         }
-        options.update(param_options)
+        check_params(params, options, "button")
+        options.update(params)
 
         for key, val in options.items():
             if key not in options:
@@ -73,7 +75,7 @@ class Button:
         self.hover_image = options["hover_image"]
         self.enlarge = options["enlarge"]
         self.enlarge_amount = options["enlarge_amount"]
-        self.center = options['centered']
+        self.center = options["centered"]
 
         # if no surface is supplied, try getting main screen
         if self.surface is None:
@@ -83,6 +85,7 @@ class Button:
 
         if self.hover_bg_colour is None:
             self.hover_bg_colour = self.background_color
+        
         self.font = pygame.font.Font(pygame.font.match_font(font), font_size)
 
         self.image = image.copy() if image else None
@@ -112,8 +115,8 @@ class Button:
                         )
             self._Generate_images()
         if self.center:
-            self.x -= self.w//2
-            self.y -= self.h//2
+            self.x -= self.w // 2
+            self.y -= self.h // 2
 
     def _Generate_images(self):
         # generate images
@@ -332,7 +335,7 @@ def curve_square(width, height, curve, color=(0, 0, 0)):
 
 
 class Slider:
-    def __init__(self, hapi, x, y, w, h, params):
+    def __init__(self, hapi, x, y, w, h, params={}):
         options = {
             "background_color": (100, 100, 100),
             "slider_width": None,
@@ -342,14 +345,11 @@ class Slider:
             "slider_height": None,
             "step": 0,
             "image": None,
-            'direction': 'horizontal',
-            'resize_slider': False,
-            'curve': 0
+            "direction": "horizontal",
+            "resize_slider": False,
+            "curve": 0,
         }
-        for key, val in params.items():
-            if key not in options:
-                raise TypeError(key + " is not an option, have you spelt it correctly")
-
+        check_params(params, options, "slider")
         options.update(params)
 
         self.x = x
@@ -357,36 +357,38 @@ class Slider:
         self.w = w
         self.h = h
         self.hapi = hapi
-        self.direction = options['direction']
-        if self.direction not in ['horizontal', 'vertical']:
-            raise ValueError('option \'direction\' is not a direction, (%d)' % (self.direction))
+        self.direction = options["direction"]
+        if self.direction not in ["horizontal", "vertical"]:
+            raise ValueError(
+                "option 'direction' is not a direction, (%d)" % (self.direction)
+            )
         self.bg = options["background_color"]
-        #if the user gives an image for slider background, use that instead of drawing one
+        # if the user gives an image for slider background, use that instead of drawing one
         if options["image"] is not None:
             self.image = pygame.Surface((self.w, self.h))
             self.image.blit(options["image"], (0, 0))
         else:
             self.image = None
         self.val_range = options["value_range"]
-        self.curve = options['curve']
-        self.resize = options['resize_slider']
+        self.curve = options["curve"]
+        self.resize = options["resize_slider"]
         val_dif = self.val_range[1] - self.val_range[0]
         self.slider_bg = options["slider_color"]
         self.slider_h = options["slider_height"]
         if self.slider_h is None:
-            if self.direction == 'horizontal':
+            if self.direction == "horizontal":
                 self.slider_h = h
             else:
                 self.slider_h = w
         self.step = options["step"]
-        if self.direction == 'horizontal':
+        if self.direction == "horizontal":
             self.slider_w = (
                 options["slider_width"] if options["slider_width"] is not None else h
             )
         else:
             self.slider_w = (
                 options["slider_width"] if options["slider_width"] is not None else w
-            )            
+            )
         if options["starting_value"] is not None:
             self.val = constrain(
                 options["starting_value"], self.val_range[0], self.val_range[1], 0, 1
@@ -395,14 +397,14 @@ class Slider:
             self.val = 0.5
         if self.resize:
             range_ = self.val_range[1] - self.val_range[0]
-            if self.direction == 'horizontal':
+            if self.direction == "horizontal":
                 if range_ < self.w:
                     self.slider_w = self.w - range_
             else:
                 if range_ < self.h:
-                    self.slider_h = self.h - range_                    
+                    self.slider_h = self.h - range_
         self.screen = pygame.display.get_surface()
-        if self.direction == 'horizontal':
+        if self.direction == "horizontal":
             self.slider_rect = pygame.Rect(
                 self.x + self.val * (self.w - self.slider_w),
                 self.y + (self.h - self.slider_h) // 2,
@@ -419,7 +421,7 @@ class Slider:
         self.clicked_on = False
         self.prev_click = False
 
-    #draw the slider
+    # draw the slider
     def _draw(self):
         if self.image is not None:
             self.hapi.screen.blit(self.image, (self.x, self.y))
@@ -428,15 +430,18 @@ class Slider:
                 self.hapi.screen, self.bg, (self.x, self.y, self.w, self.h)
             )
         else:
-            self.hapi.screen.blit(curve_square(self.w, self.h, self.curve, self.bg),
-                             (self.x, self.y))
+            self.hapi.screen.blit(
+                curve_square(self.w, self.h, self.curve, self.bg), (self.x, self.y)
+            )
         if self.curve == 0:
             pygame.draw.rect(self.hapi.screen, self.slider_bg, self.slider_rect)
         else:
-            self.hapi.screen.blit(curve_square(self.slider_w, self.slider_h,
-                                          self.curve, self.slider_bg), self.slider_rect)
+            self.hapi.screen.blit(
+                curve_square(self.slider_w, self.slider_h, self.curve, self.slider_bg),
+                self.slider_rect,
+            )
 
-    #updates the slider, this should be called every frame
+    # updates the slider, this should be called every frame
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
@@ -445,7 +450,7 @@ class Slider:
             if click and not self.prev_click:
                 self.clicked_on = True
         if self.clicked_on:
-            if self.direction == 'horizontal':
+            if self.direction == "horizontal":
                 self.val = (mouse_pos[0] - self.x) / self.w
                 self.val = max(min(self.val, 1), 0)
                 self.val = self._get_val(self.val)
@@ -456,16 +461,16 @@ class Slider:
                 self.val = self._get_val(self.val)
                 self.slider_rect.y = self.y + self.val * (self.h - self.slider_h)
         if not click:
-            self.clicked_on = False   
+            self.clicked_on = False
         self.prev_click = click
         self._draw()
 
-    def Move(self, x = 0, y = 0, dx = 0, dy = 0):
+    def Move(self, x=0, y=0, dx=0, dy=0):
         self.x = x if x != 0 else self.x
         self.y = y if y != 0 else self.y
         self.x += dx
         self.y += dy
-        if self.direction == 'horizontal':
+        if self.direction == "horizontal":
             self.slider_rect = pygame.Rect(
                 self.x + self.val * (self.w - self.slider_w),
                 self.y + (self.h - self.slider_h) // 2,
@@ -495,7 +500,7 @@ class Slider:
         else:
             self.slider_rect.y = self.y + self.val * (self.h - self.slider_h)
 
-    #if the slider has a step and is not contineous, round to nearest step size
+    # if the slider has a step and is not contineous, round to nearest step size
     def _get_val(self, val):
         if self.step == 0:
             return val
@@ -508,7 +513,7 @@ class Slider:
 
 
 class TextBox:
-    def __init__(self, x, y, w, h=0, param_options={}):
+    def __init__(self, x, y, w, h=0, params={}):
         options = {
             "max_lines": 1000,
             "text": "",
@@ -522,7 +527,8 @@ class TextBox:
             "on_enter": None,
             "calculate_size": False,
         }
-        options.update(param_options)
+        check_params(params, options, "text box")
+        options.update(params)
         self.x = x
         self.y = y
         self.w = w
@@ -568,24 +574,29 @@ class TextBox:
         obj = self.font.render(" ", True, (0, 0, 0))
         return obj.get_height()
 
-    def wrapper(self, change_cur = False):
+    def wrapper(self, change_cur=False):
         for cur_line, line in enumerate(self.text):
-            for i in range(len(''.join(line))):
-                length = self._get_text_width(''.join(line[:i]))
+            for i in range(len("".join(line))):
+                length = self._get_text_width("".join(line[:i]))
                 if length > self.w:
-                    indexs = [i for i, e in enumerate(self.text[cur_line][:i]) if e == " "]
+                    indexs = [
+                        i for i, e in enumerate(self.text[cur_line][:i]) if e == " "
+                    ]
                     if cur_line < self.lines - 1:
                         if len(indexs) == 0:
-                            indexs.append(i-1)
+                            indexs.append(i - 1)
                         if change_cur:
                             self.current_line += 1
                             self.current_col = len(self.text[cur_line]) - indexs[-1] - 1
                         if cur_line < len(self.text):
-                            self.text.append(self.text[cur_line][indexs[-1]+1:])
+                            self.text.append(self.text[cur_line][indexs[-1] + 1 :])
                         else:
-                            self.text[cur_line + 1] = self.text[cur_line][indexs[-1]+1:] + self.text[cur_line]
-                        self.text[cur_line] = self.text[cur_line][:indexs[-1]]
-                        break    
+                            self.text[cur_line + 1] = (
+                                self.text[cur_line][indexs[-1] + 1 :]
+                                + self.text[cur_line]
+                            )
+                        self.text[cur_line] = self.text[cur_line][: indexs[-1]]
+                        break
 
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
     def key_down(self, e: pygame.event.Event):
@@ -620,7 +631,7 @@ class TextBox:
                 + self.text[self.current_line][self.current_col :]
             )
             self.current_col += 1
-            #wrapper
+            # wrapper
             if self._get_text_width(self.text[self.current_line]) > self.w:
                 self.wrapper(True)
         # if the down arrow is pressed
@@ -725,9 +736,7 @@ class slider_with_text:
         if not isinstance(slider, Slider):
             raise TypeError("'Slider' argument is not a slider widget")
 
-        for key, item in params.items():
-            if key not in options:
-                raise TypeError(key + " is not an option, have you spelt it correctly")
+        check_params(params, options, "slider with text")
 
         options.update(params)
 
@@ -791,42 +800,59 @@ class slider_with_text:
     def value(self) -> int:
         return self.slider.value()
 
+
 class Scroll:
-    def __init__(self, hapi, param_options = {}):
-        options = {'starting_x': 0,
-                   'starting_y': 0,
-                   'range_x': 0,
-                   'range_y': 0,
-                   'bar_color': (200, 200, 200),
-                   'slider_color': (150, 150, 150)}
-        
-        options.update(param_options)
+    def __init__(self, hapi, params={}):
+        options = {
+            "starting_x": 0,
+            "starting_y": 0,
+            "range_x": 0,
+            "range_y": 0,
+            "bar_color": (200, 200, 200),
+            "slider_color": (150, 150, 150),
+        }
+        check_params(params, options, "scroll")
+        options.update(params)
 
         screen_size = pygame.display.get_surface().get_size()
 
         self.w, self.h = screen_size
-        #create sliders for x and y axis
+        # create sliders for x and y axis
         self.x_slider = None
         self.y_slider = None
-        if options['range_x'] > 0:
-            self.x_slider = Slider(hapi, 0, self.h - 20, self.w - 20, 20,
-                              {'starting_value': options['starting_x'],
-                               'value_range': [0, options['range_x']],
-                               'slider_color': options['slider_color'],
-                               'background_color': options['bar_color'],
-                               'resize_slider': True
-                               })
-        if options['range_y'] > 0:
-            self.y_slider = Slider(hapi, self.w - 20, 0, 20, self.h - 20,
-                              {'starting_value': options['starting_y'],
-                               'value_range': [0, options['range_y']],
-                               'slider_color': options['slider_color'],
-                               'background_color': options['bar_color'],
-                               'direction': 'vertical',
-                               'resize_slider': True
-                               })        
+        if options["range_x"] > 0:
+            self.x_slider = Slider(
+                hapi,
+                0,
+                self.h - 20,
+                self.w - 20,
+                20,
+                {
+                    "starting_value": options["starting_x"],
+                    "value_range": [0, options["range_x"]],
+                    "slider_color": options["slider_color"],
+                    "background_color": options["bar_color"],
+                    "resize_slider": True,
+                },
+            )
+        if options["range_y"] > 0:
+            self.y_slider = Slider(
+                hapi,
+                self.w - 20,
+                0,
+                20,
+                self.h - 20,
+                {
+                    "starting_value": options["starting_y"],
+                    "value_range": [0, options["range_y"]],
+                    "slider_color": options["slider_color"],
+                    "background_color": options["bar_color"],
+                    "direction": "vertical",
+                    "resize_slider": True,
+                },
+            )
 
-    #this is updates the sliders, this should be called every frame
+    # this is updates the sliders, this should be called every frame
     def update(self):
         if self.x_slider is not None:
             self.x_slider.update()
