@@ -5,6 +5,7 @@ Edit: https://github.com/Abdur-rahmaanJ
 
 import pygame
 from .formula import constrain
+from typing import Union
 
 
 class Button:
@@ -28,6 +29,7 @@ class Button:
             "on_hover_enter": None,
             "on_hover_exit": None,
             "on_hover": None,
+            "on_hold": None,
             "image": None,
             "hover_image": None,
             "enlarge": False,
@@ -42,6 +44,10 @@ class Button:
             "centered": False
         }
         options.update(param_options)
+
+        for key, val in options.items():
+            if key not in options:
+                raise TypeError(key + " is not an option, have you spelt it correctly")
 
         self.padding_x = options["padding_x"]
         self.padding_y = options["padding_y"]
@@ -60,6 +66,7 @@ class Button:
         self.on_hover_enter = options["on_hover_enter"]
         self.on_hover_exit = options["on_hover_exit"]
         self.on_hover = options["on_hover"]
+        self.on_hold = options["on_hold"]
         image = options["image"]
         dont_generate = options["dont_generate"]
         self.caclulateSize = options["calculate_size"]
@@ -211,7 +218,7 @@ class Button:
         self.h = txt.get_height() + self.h + self.padding_y * 2
 
     # return a pygame.Rect of the button
-    def get_rect(self):
+    def get_rect(self) -> pygame.Rect:
         return pygame.Rect(self.x, self.y, self.w, self.h)
 
     # this is what will be shown when print(button)
@@ -229,21 +236,30 @@ class Button:
         self._Generate_images()
 
     # update the button, this should get called every frame
-    def update(self):
+    def update(self) -> bool:
         click = pygame.mouse.get_pressed()[0]
         mouse_pos = pygame.mouse.get_pos()
         returnee = False
         # check if mouse over button
         if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.w:
             if mouse_pos[1] > self.y and mouse_pos[1] < self.y + self.h:
+                # on_hover_enter event
                 if self.hover == False:
                     if self.on_hover_enter:
                         self.on_hover_enter(self)
-                self.hover = True
 
-                # check for click, if held down, action only gets called once
+                self.hover = True
+                # on_hover event
+                if self.on_hover:
+                    self.on_hover(self)
+
+                # check for click, if held down, action only gets called once AT MOUSEUP
+
+                #check to see if the click started on the button
                 if click and not self.prev_clicked_state:
                     self.clicked_on = True
+
+                # wait till the user stops clicking to call on_click
                 if self.prev_clicked_state and self.clicked_on and click == False:
                     if self.on_click:
                         """
@@ -266,9 +282,6 @@ class Button:
                 if self.on_hover_exit:
                     self.on_hover_exit(self)
             self.hover = False
-        if self.hover:
-            if self.on_hover:
-                self.on_hover(self)
         self.prev_clicked_state = click
         # draw
         self._draw()
@@ -290,12 +303,12 @@ class Button:
         else:
             self.surface.blit(self.image, (self.x, self.y))
 
-    def width(self):
+    def width(self) -> int:
         txt = self.font.render(self.text, False, (0, 0, 0))
         w = txt.get_width() + self.w + self.padding_x * 2
         return w
 
-    def height(self):
+    def height(self) -> int:
         txt = self.font.render(self.text, False, (0, 0, 0))
         h = txt.get_height() + self.h + self.padding_y * 2
         return
@@ -468,14 +481,14 @@ class Slider:
             )
 
     #returns the value the slider is at
-    def value(self):
+    def value(self) -> int:
         val = constrain(self.val, 0, 1, self.val_range[0], self.val_range[1])
         if isinstance(self.step, int) and self.step != 0:
             val = int(val)
         return val
 
     #sets the value of the slider, moveing the slider object to that position
-    def set_value(self, val):
+    def set_value(self, val: Union[float, int]):
         self.val = constrain(val, self.val_range[0], self.val_range[1], 0, 1)
         if self.direction == "horizontal":
             self.slider_rect.x = self.x + self.val * (self.w - self.slider_w)
@@ -497,7 +510,7 @@ class Slider:
 class TextBox:
     def __init__(self, x, y, w, h=0, param_options={}):
         options = {
-            "lines": 1,
+            "max_lines": 1000,
             "text": "",
             "background_color": (255, 255, 255),
             "font_size": 30,
@@ -506,8 +519,8 @@ class TextBox:
             "surface": None,
             "margin": 2,
             "cursor": True,
-            "Enter_action": None,
-            "calculateSize": False,
+            "on_enter": None,
+            "calculate_size": False,
         }
         options.update(param_options)
         self.x = x
@@ -531,7 +544,7 @@ class TextBox:
             else pygame.display.get_surface()
         )
         self.margin = options["margin"]
-        self.Enter_action = options["Enter_action"]
+        self.Enter_action = options["on_enter"]
         if self.surface == None:
             raise ValueError("No surface to blit to")
         # if no surface is supplied, get window
@@ -575,7 +588,7 @@ class TextBox:
                         break    
 
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
-    def key_down(self, e):
+    def key_down(self, e: pygame.event.Event):
         # when backspace is pressed, delete last char
         if e.key == pygame.K_BACKSPACE:
             # if nothing in line, delete line
@@ -649,7 +662,7 @@ class TextBox:
                 self.surface,
                 (0, 0, 0),
                 (self.x + total, self.y + (self.h * self.current_line)),
-                (self.x + total, self.y + (self.h * (self.current_line + 1))),
+                (self.x + total, self.y + self._get_font_height() + (self.h * (self.current_line))),
                 2,
             )
 
@@ -710,7 +723,7 @@ class slider_with_text:
         }
 
         if not isinstance(slider, Slider):
-            raise TypeError("'slider' arg is not a slider widget")
+            raise TypeError("'Slider' argument is not a slider widget")
 
         for key, item in params.items():
             if key not in options:
@@ -775,7 +788,7 @@ class slider_with_text:
     def _get_text_height(self):
         return self.font.render(" ", True, (0, 0, 0)).get_height()
 
-    def value(self):
+    def value(self) -> int:
         return self.slider.value()
 
 class Scroll:
@@ -821,7 +834,7 @@ class Scroll:
             self.y_slider.update()
     
     #returns the scroll amount given an index e.g. 'scrollx = scroll[0]'
-    def __getitem__(self, index):
+    def __getitem__(self, index : int):
         if index == 0:
             return -self.x_slider.value()
         elif index == 1:
