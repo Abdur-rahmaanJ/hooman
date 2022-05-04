@@ -1,4 +1,7 @@
 import sys
+import os 
+import shutil
+import uuid
 
 import pygame
 import pygame.gfxdraw
@@ -128,6 +131,9 @@ class Hooman:
 
         self._svg = svg
         self._svg_commands = []
+
+        self.session_id = uuid.uuid1()
+        self._session_vars = {}
 
     #
     # colors
@@ -604,3 +610,59 @@ class Hooman:
     def save_svg(self, path):
         # print(self._svg_commands)
         SVG.save(self._svg_commands, path, self.WIDTH, self.HEIGHT)
+
+
+    #
+    # img
+    #
+
+
+    def save(self, path):
+        self.pygame.image.save(self.screen, path)
+
+
+    #
+    # video
+    #
+
+    def record(self):
+        if 'record_counter' not in self._session_vars:
+            self._session_vars['record_counter'] = 1
+
+        if self._session_vars['record_counter'] == 1:
+            try:
+                shutil.rmtree( 'hoomanvid' )
+            except FileNotFoundError:
+                pass
+
+        try:
+            os.mkdir('hoomanvid')
+        except:
+            pass
+        self.save(f"hoomanvid/{self._session_vars['record_counter']}.png")
+        self._session_vars['record_counter'] += 1
+
+    def save_record(self, path):
+        
+        try:
+            import ffmpeg
+        except:
+            try:
+                shutil.rmtree( 'hoomanvid' )
+            except FileNotFoundError:
+                pass
+            sys.exit("You need to pip install ffmpeg-python and ensure ffmpeg is installed to use this feature")
+        
+        (
+            ffmpeg
+            .input('hoomanvid/*.png', pattern_type='glob', framerate=25)
+            .output(path)
+            .run()
+        )
+
+        try:
+            shutil.rmtree( 'hoomanvid' )
+        except FileNotFoundError:
+            pass
+
+        
