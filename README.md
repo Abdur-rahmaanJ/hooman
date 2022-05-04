@@ -170,18 +170,12 @@ For about the same number of lines for a simple snake game, you get one complete
 # (new) record video
 
 ```python
-"""
-Author: Abdur-Rahmaan Janhangeer
-Github: https://github.com/Abdur-rahmaanJ
-"""
-
 from hooman import Hooman
 
 import pygame
 
 hapi = Hooman(500, 500)
 
-counter = 1
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
