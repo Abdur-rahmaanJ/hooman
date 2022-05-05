@@ -1,3 +1,12 @@
+### 0.8.2
+
+- Integrate mode
+- Fix screen record bug
+
+### 0.8.0
+
+- Screen recorder
+
 ### 0.7.0
 
 - SVG generation support

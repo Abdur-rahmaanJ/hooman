@@ -54,13 +54,26 @@ from .check import verify_func_param
 
 
 class Hooman:
-    def __init__(self, WIDTH, HEIGHT, svg=False):
+    def __init__(self, WIDTH=None, HEIGHT=None, svg=False, integrate=False, screen=None):
         pygame.init()
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.PI = pi
-        self.center_x = WIDTH // 2
-        self.center_y = HEIGHT // 2
+
+        if not integrate:
+            self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
+        else:
+            self.screen = screen
+
+        if not integrate:
+            self.center_x = WIDTH // 2
+            self.center_y = HEIGHT // 2
+        else:
+            x, y = self.screen.get_size()
+            self.WIDTH = x
+            self.HEIGHT = y
+            self.center_x = x // 2 
+            self.center_y = y // 2
         self.sin = sin
         self.cos = cos
         self.constrain = constrain
@@ -83,7 +96,8 @@ class Hooman:
         self.colour = self.colors
 
         self.set_caption = pygame.display.set_caption
-        self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
+
+
         self.is_running = True
         self.bg_col = None
         self.set_caption("hooman window")
@@ -627,9 +641,9 @@ class Hooman:
 
     def record(self):
         if 'record_counter' not in self._session_vars:
-            self._session_vars['record_counter'] = 1
+            self._session_vars['record_counter'] = 0
 
-        if self._session_vars['record_counter'] == 1:
+        if self._session_vars['record_counter'] == 0:
             try:
                 shutil.rmtree( 'hoomanvid' )
             except FileNotFoundError:
@@ -643,6 +657,19 @@ class Hooman:
         self._session_vars['record_counter'] += 1
 
     def save_record(self, path):
+
+        if ('record_counter' not in self._session_vars):
+            sys.exit('You must .record before using .save_record')
+
+        max_records = len(str(self._session_vars['record_counter']))
+
+        for file in os.listdir('hoomanvid'):
+            # print(f'hoomanvid/{file}', f'hoomanvid/{file.zfill(max_records)}')
+            
+            if not file.startswith('__'):
+                newfilename = file.strip('.png').zfill(max_records)
+                os.rename(f'hoomanvid/{file}', f'hoomanvid/{newfilename}.png')
+
         
         try:
             import ffmpeg
