@@ -199,7 +199,7 @@ while hapi.is_running:
     
 
 pygame.quit()
-hapi.save_record('mov.mp4')
+hapi.save_record('mov.mp4', framerate=25)
 ```
 
 # (new) screenshot
