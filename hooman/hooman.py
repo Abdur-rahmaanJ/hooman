@@ -656,7 +656,7 @@ class Hooman:
         self.save(f"hoomanvid/{self._session_vars['record_counter']}.png")
         self._session_vars['record_counter'] += 1
 
-    def save_record(self, path):
+    def save_record(self, path, framerate=25):
 
         if ('record_counter' not in self._session_vars):
             sys.exit('You must .record before using .save_record')
