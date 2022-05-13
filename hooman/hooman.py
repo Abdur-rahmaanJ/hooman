@@ -682,7 +682,7 @@ class Hooman:
         
         (
             ffmpeg
-            .input('hoomanvid/*.png', pattern_type='glob', framerate=25)
+            .input('hoomanvid/*.png', pattern_type='glob', framerate=framerate)
             .output(path)
             .run()
         )
