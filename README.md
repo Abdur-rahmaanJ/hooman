@@ -25,7 +25,7 @@ NEW: save to svg now supported
 
 # Examples of possibilities:
 
-[Examples](https://github.com/Kirastel/hooman/blob/master/Examples%20of%20possibilities.md)
+[Examples](https://github.com/Kirastel/hooman/)
 
 
 # All Demos
