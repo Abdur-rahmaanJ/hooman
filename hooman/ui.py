@@ -542,7 +542,7 @@ class TextBox:
         self.cursor = options["cursor"]
         self.current_line = 0
         self.current_col = len(options["text"])
-        self.lines = options["lines"]
+        self.lines = options["max_lines"]
         self.font = pygame.font.Font(
             pygame.font.match_font(options["font"]), options["font_size"]
         )
