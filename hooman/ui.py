@@ -239,9 +239,14 @@ class Button:
         self._Generate_images()
 
     # update the button, this should get called every frame
-    def update(self) -> bool:
+    def update(self, global_pos = None) -> bool:
         click = pygame.mouse.get_pressed()[0]
         mouse_pos = pygame.mouse.get_pos()
+        if global_pos is not None:
+            mouse_pos = (
+                mouse_pos[0] - global_pos[0],
+                mouse_pos[1] - global_pos[1],
+            )
         returnee = False
         # check if mouse over button
         if mouse_pos[0] > self.x and mouse_pos[0] < self.x + self.w:
@@ -526,6 +531,7 @@ class TextBox:
             "cursor": True,
             "on_enter": None,
             "calculate_size": False,
+            "typing": False,
         }
         check_params(params, options, "text box")
         options.update(params)
@@ -560,6 +566,7 @@ class TextBox:
                 raise ValueError("No surface to blit to")
         if options["calculateSize"] or self.h == 0:
             self.h = self._get_font_height() + h
+        self.typing = options["typing"]
 
     # get the width of the text using the font
     def _get_text_width(self, text):
@@ -600,6 +607,9 @@ class TextBox:
 
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
     def key_down(self, e: pygame.event.Event):
+        #if not selected, don't do anything
+        if not self.typing:
+            return
         # when backspace is pressed, delete last char
         if e.key == pygame.K_BACKSPACE:
             # if nothing in line, delete line
@@ -664,7 +674,7 @@ class TextBox:
                 obj = self.font.render(txt, True, self.text_colour)
                 self.surface.blit(obj, (self.x + self.margin, self.y + (self.h * line)))
         # draw cursor
-        if self.cursor:
+        if self.cursor and self.typing:
             total = 0
             total = self._get_text_width(
                 self.text[self.current_line][: self.current_col]

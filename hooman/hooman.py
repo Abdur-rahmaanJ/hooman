@@ -525,6 +525,8 @@ class Hooman:
             self._timer_update()
         self.mouse_test_x = self.mouseX()
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.is_running = False
             self.handle_events(event)
 
     #
