@@ -520,7 +520,7 @@ class Slider:
 class TextBox:
     def __init__(self, x, y, w, h=0, params={}):
         options = {
-            "max_lines": 1000,
+            "max_lines": 1,
             "text": "",
             "background_color": (255, 255, 255),
             "font_size": 30,
@@ -564,7 +564,7 @@ class TextBox:
             self.surface = pygame.display.get_surface()
             if self.surface == None:
                 raise ValueError("No surface to blit to")
-        if options["calculateSize"] or self.h == 0:
+        if options["calculate_size"] or self.h == 0:
             self.h = self._get_font_height() + h
         self.typing = options["typing"]
 
