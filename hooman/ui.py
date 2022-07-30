@@ -515,9 +515,9 @@ class TextBox(Base_Widget):
         self.lines = options["max_lines"]
         if isinstance(options["text"], str):
             self.text = options["text"].split("\n")
-            print(self.text)
         else:
             self.text = options["text"]
+        print(self.text)
         self.char_length = [self._get_text_width(x) for x in self.text]
         self.margin = options["padding_x"]
         self.margin_y = options["padding_y"]
@@ -548,18 +548,19 @@ class TextBox(Base_Widget):
         for cur_line, line in enumerate(self.text):
             for i in range(len("".join(line))):
                 length = self._get_text_width("".join(line[:i]))
-                if length > self.w:
+                if length > self.w - self.margin:
                     indexs = [
                         i for i, e in enumerate(self.text[cur_line][:i]) if e == " "
                     ]
                     if cur_line < self.lines - 1:
                         if len(indexs) == 0:
                             indexs.append(i - 1)
-                        if change_cur:
+                        if change_cur and (self.current_line >= cur_line or self.current_col > len(self.text[self.current_line])):
                             self.current_line += 1
-                            self.current_col = len(self.text[cur_line]) - indexs[-1] - 1
+                            self.current_col = len(self.text[self.current_line-1]) - indexs[-1] - 1
+                            print(self.current_col)
                         if cur_line < len(self.text):
-                            self.text.append(self.text[cur_line][indexs[-1] + 1 :])
+                            self.text.append(self.text[cur_line][indexs[-1]+1:])
                         else:
                             self.text[cur_line + 1] = (
                                 self.text[cur_line][indexs[-1] + 1 :]
@@ -571,7 +572,6 @@ class TextBox(Base_Widget):
     # call this when the user presses a key down, supply the event from `pygame.event.get()`
     def key_down(self, e: pygame.event.Event):
         #if not selected, don't do anything
-        print(e.key, chr(e.key))
         if not self.typing:
             return
         # when backspace is pressed, delete last char
@@ -583,15 +583,24 @@ class TextBox(Base_Widget):
                     self.current_line -= 1
                     self.current_col = len(self.text[self.current_line])
             else:
-                del self.text[self.current_line][-1]
-                self.current_col -= 1
+                if self.current_col > 0:
+                    self.text[self.current_line] = self.text[self.current_line][:self.current_col-1] + self.text[self.current_line][self.current_col:]
+                    self.current_col -= 1
+                else:
+                    self.current_line -= 1
+                    self.current_col = len(self.text[self.current_line])
+                    self.text[self.current_line] = self.text[self.current_line][:-1] + self.text[self.current_line+1]
+                    del self.text[self.current_line+1]
+                    self.current_line -= 1
+                    self.current_col = len(self.text[self.current_line])
+                    self.wrapper(True)
         # if key is enter, create line
         elif e.key == pygame.K_RETURN:
             if self.Enter_action is not None:
                 self.Enter_action()
             elif self.current_line < self.lines - 1:
                 self.current_line += 1
-                self.text.append([""])
+                self.text.append("")
                 self.char_length.append([0])
                 self.current_col = 0
         # if key is a charachter, put on screen
@@ -651,20 +660,15 @@ class TextBox(Base_Widget):
 
     # update should be called every frame, it draws the textbox
     def update(self):
-        for e in pygame.event.get(pygame.KEYDOWN):
-            self.key_down(e)
-            pygame.event.post(e)
         self._draw()
 
     # get the text of a specific line or lines
     def get_lines(self, lines=-1, return_as_string=False):
-        pas = False
         # if user gives an int, check if it is -1 for all lines, else get specific line
         if isinstance(lines, int):
             if lines == -1:
                 lines = (0, self.lines)
-                pas = True
-            if not pas:
+            else:
                 if 0 > lines or self.lines < lines:
                     raise IndexError("line index not in range")
                 if len(self.text) < lines:
