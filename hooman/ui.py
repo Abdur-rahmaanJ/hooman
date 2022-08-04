@@ -136,12 +136,12 @@ class Base_Widget:
                 self.on_hold(self)
         else:
             self.hold = False
-            self._started_click = False
             if self._prev_click:
                 if self._started_click:
                     self.clicked = True
                 if self.on_release:
                     self.on_release(self)
+            self._started_click = False
         # update previous states
         self._prev_hover = self.hover
         self._prev_click = click
