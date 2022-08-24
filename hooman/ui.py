@@ -3,7 +3,6 @@ Author: https://github.com/TheBigKahuna353
 Edit: https://github.com/Abdur-rahmaanJ
 """
 
-from email.mime import base
 import pygame
 from .formula import constrain
 from .formula import round_to_num
@@ -412,13 +411,18 @@ class Slider(Base_Widget):
         self.slider_image = options["slider_image"]
         self.round = self.step / val_dif
 
-        
+        if self.image is None:
+            self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
+            self.image.blit(curve_square(self.w, self.h, self.curve, self.background_color), (0, 0))
+        elif self.w == 0 or self.h == 0:
+            self.w, self.h = self.image.get_size()
+
         # get slider width and height
         slider_h = options["slider_height"] # height of the slider is always the short side of the slider
         if slider_h is None:
-            slider_h = h
+            slider_h = self.h
         slider_w = (
-            options["slider_width"] if options["slider_width"] is not None else w
+            options["slider_width"] if options["slider_width"] is not None else self.w
         )
         # get the starting value
         if options["starting_value"] is not None:
@@ -428,9 +432,6 @@ class Slider(Base_Widget):
         else:
             self._val = 0.5
         # create the slider
-        if self.image is None:
-            self.image = pygame.Surface((self.w, self.h), pygame.SRCALPHA)
-            self.image.blit(curve_square(self.w, self.h, self.curve, self.background_color), (0, 0))
         if self.slider_image is None:
             self.slider_image = pygame.Surface((slider_w, slider_h), pygame.SRCALPHA)
             self.slider_image.blit(curve_square(slider_w, slider_h, options['slider_curve'], self.slider_bg), (0, 0))
@@ -444,9 +445,10 @@ class Slider(Base_Widget):
             self.y -= (slider_h - self.bg_rect.h) // 2
         else:
             self.x -= (slider_w - self.bg_rect.w) // 2
+        # print(self.w, self.h, slider_w, slider_h)
         self.w, self.h = slider_w, slider_h
         self._calculate_slider_pos()
-        
+
         self.slider_image.convert()
         self.image.convert()
 
@@ -492,8 +494,6 @@ class Slider(Base_Widget):
         self._calculate_slider_pos()
 
 
-
-
 class TextBox(Base_Widget):
     def __init__(self, x, y, w, h=0, params={}):
         options = {
@@ -517,19 +517,19 @@ class TextBox(Base_Widget):
             self.text = options["text"].split("\n")
         else:
             self.text = options["text"]
-        print(self.text)
-        self.char_length = [self._get_text_width(x) for x in self.text]
         self.margin = options["padding_x"]
         self.margin_y = options["padding_y"]
         self.Enter_action = options["on_enter"]
         if options["calculate_size"] or self.h == 0:
             self.h = self._get_font_height() + h
         self.typing = options["typing"]
+        self.enter = False
 
         if self.image is None:
             surf = pygame.Surface((self.w, self.h*self.lines + self.margin_y//2), pygame.SRCALPHA)
             surf.blit(curve_square(self.w, self.h* self.lines + self.margin_y//2, self.curve, self.background_color), (0, 0))
             self.image = surf
+        self.h = self.image.get_height()
 
     # get the width of the text using the font
     def _get_text_width(self, text):
@@ -545,6 +545,13 @@ class TextBox(Base_Widget):
         return obj.get_height()
 
     def wrapper(self, change_cur=False):
+        """
+        Wraps the text in the text box.
+        loop through each line, then loop through each character in the line,
+        seeing if the next character is too far to the right. keep track of spaces
+        to create new lines from there.
+        
+        """
         for cur_line, line in enumerate(self.text):
             for i in range(len("".join(line))):
                 length = self._get_text_width("".join(line[:i]))
@@ -557,14 +564,13 @@ class TextBox(Base_Widget):
                             indexs.append(i - 1)
                         if change_cur and (self.current_line >= cur_line or self.current_col > len(self.text[self.current_line])):
                             self.current_line += 1
-                            self.current_col = len(self.text[self.current_line-1]) - indexs[-1] - 1
-                            print(self.current_col)
-                        if cur_line < len(self.text):
+                            self.current_col -= indexs[-1] + 1
+                        if cur_line == len(self.text) -1:
                             self.text.append(self.text[cur_line][indexs[-1]+1:])
                         else:
                             self.text[cur_line + 1] = (
                                 self.text[cur_line][indexs[-1] + 1 :]
-                                + self.text[cur_line]
+                                + self.text[cur_line+1]
                             )
                         self.text[cur_line] = self.text[cur_line][: indexs[-1]]
                         break
@@ -589,20 +595,20 @@ class TextBox(Base_Widget):
                 else:
                     self.current_line -= 1
                     self.current_col = len(self.text[self.current_line])
-                    self.text[self.current_line] = self.text[self.current_line][:-1] + self.text[self.current_line+1]
+                    self.text[self.current_line] = self.text[self.current_line] + self.text[self.current_line+1]
                     del self.text[self.current_line+1]
-                    self.current_line -= 1
-                    self.current_col = len(self.text[self.current_line])
                     self.wrapper(True)
         # if key is enter, create line
         elif e.key == pygame.K_RETURN:
+            self.enter = True
             if self.Enter_action is not None:
                 self.Enter_action()
             elif self.current_line < self.lines - 1:
+                self.text.insert(self.current_line+1, self.text[self.current_line][self.current_col:])
                 self.current_line += 1
-                self.text.append("")
-                self.char_length.append([0])
-                self.current_col = 0
+                self.current_col = len(self.text[self.current_line])
+                if self.current_col > 0:
+                    self.text[self.current_line-1] = self.text[self.current_line-1][:-self.current_col]
         # if key is a charachter, put on screen
         elif e.unicode != "":
             if len(self.text[self.current_line]) > 0:
@@ -660,18 +666,26 @@ class TextBox(Base_Widget):
 
     # update should be called every frame, it draws the textbox
     def update(self):
+        super().update((0, 0))
         self._draw()
+        if self.enter:
+            self.enter = False
+            return True
+        return False
 
     # get the text of a specific line or lines
     def get_lines(self, lines=-1, return_as_string=False):
         # if user gives an int, check if it is -1 for all lines, else get specific line
         if isinstance(lines, int):
             if lines == -1:
-                lines = (0, self.lines)
+                if len(self.text) > 1:
+                    lines = (0, self.lines)
+                else:
+                    return self.text[0]
             else:
                 if 0 > lines or self.lines < lines:
                     raise IndexError("line index not in range")
-                if len(self.text) < lines:
+                if len(self.text) == 0:
                     return ""
                 return "".join(self.text[lines])
         # if user wants a range of lines, get lines
@@ -808,7 +822,7 @@ class Scroll:
                 20,
                 {
                     "starting_value": options["starting_x"],
-                    "value_range": [0, options["range_x"]],
+                    "range": [0, options["range_x"]],
                     "slider_color": options["slider_color"],
                     "background_color": options["bar_color"],
                     "resize_slider": True,
@@ -823,7 +837,7 @@ class Scroll:
                 self.h - 20,
                 {
                     "starting_value": options["starting_y"],
-                    "value_range": [0, options["range_y"]],
+                    "range": [0, options["range_y"]],
                     "slider_color": options["slider_color"],
                     "background_color": options["bar_color"],
                     "direction": "vertical",
