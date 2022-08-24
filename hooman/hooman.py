@@ -516,8 +516,7 @@ class Hooman:
             self.background(self.bg_col)
 
     def handle_events(self, event):
-        if event.type == pygame.QUIT:
-            self.is_running = False
+        pass
 
     def event_loop(self):
         """Get all new events. This should be called once every frame"""
@@ -544,7 +543,7 @@ class Hooman:
         return t
 
     def slider(self, *args, **kwargs) -> Slider:
-        s = Slider(self, *args, **kwargs)
+        s = Slider(*args, **kwargs)
         self._all_widgets.append(s)
         return s
 
