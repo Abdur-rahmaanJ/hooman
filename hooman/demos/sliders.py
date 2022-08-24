@@ -9,7 +9,7 @@ bg_col = (255, 255, 255)
 
 slider_options = {
     "background_color": hapi.color["grey"],
-    "slider_color": (200, 200, 200),
+    "slider_color": (220, 220, 220),
 }
 
 real_slider = hapi.slider(50, 300, 400, 30, slider_options)
@@ -31,13 +31,13 @@ hapi.handle_events = handle_events
 while hapi.is_running:
     hapi.background(bg_col)
 
-    hapi.fill(int(real_slider.val * 255))
+    hapi.fill(int(real_slider.value() * 255))
     hapi.rect(10, 10, 100, 100)
 
     real_slider.update()
-    slider_2.set_value(real_slider.val)
+    slider_2.set_value(real_slider.value())
     slider_2.update()
-    real_slider.set_value(slider_2.val)
+    real_slider.set_value(slider_2.value())
 
     hapi.flip_display()
     hapi.event_loop()

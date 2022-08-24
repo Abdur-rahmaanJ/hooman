@@ -16,7 +16,7 @@ yellow_black = hapi.gradient(
 black_white = hapi.gradient(300, 30, hapi.color["black"], hapi.color["white"]).convert()
 
 slider = hapi.slider(
-    100, 300, 300, 30, {"image": red_blue, "slider_height": 60, "value_range": [0, 255]}
+    100, 300, 300, 30, {"image": red_blue, "slider_height": 60, "range": [0, 255]}
 )
 
 color_slider = hapi.slider(
@@ -24,7 +24,7 @@ color_slider = hapi.slider(
     400,
     200,
     20,
-    {"slider_height": 40, "value_range": [0, 3], "step": 1, "starting_value": 0},
+    {"slider_height": 40, "range": [0, 3], "step": 1, "starting_value": 0},
 )
 
 

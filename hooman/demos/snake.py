@@ -10,7 +10,7 @@ btn_style = {
     "outline": True,
     "background_color": (255, 0, 0),
     "curve": 0.7,
-    "outline_thickness": 3,
+    "hover_outline_thickness": 3,
 }
 
 slider_style = {
@@ -29,12 +29,12 @@ class Game:
         self.menu_btn_quit = hapi.button(200, 400, 200, 50, "Quit", btn_style)
         self.settings_btn = hapi.button(200, 300, 200, 50, "Settings", btn_style)
 
-        slider_style.update({"value_range": [5, 30], "step": 1, "starting_value": 20})
+        slider_style.update({"range": [5, 30], "step": 1, "starting_value": 20})
         self.rows_slider = hapi.slider(300, 200, 200, 30, slider_style)
         self.rows_slider = hapi.slider_with_text(self.rows_slider)
 
         slider_style.update(
-            {"value_range": [0.01, 1], "step": 0, "starting_value": 0.1}
+            {"range": [0.01, 1], "step": 0, "starting_value": 0.1}
         )
         self.speed_slider = hapi.slider(300, 300, 200, 30, slider_style)
         self.speed_slider = hapi.slider_with_text(self.speed_slider, {"accuracy": 2})

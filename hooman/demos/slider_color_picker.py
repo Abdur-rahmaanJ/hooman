@@ -8,7 +8,7 @@ window_width, window_height = 500, 500
 hapi = Hooman(window_width, window_height)
 
 
-slider_options = {"value_range": [0, 255]}
+slider_options = {"range": [0, 255]}
 
 r_slider = hapi.slider(50, 300, 400, 10, slider_options)
 g_slider = hapi.slider(50, 330, 400, 10, slider_options)

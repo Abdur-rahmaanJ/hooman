@@ -7,7 +7,7 @@ hapi = Hooman(window_width, window_height)
 
 bg_col = (255, 255, 255)
 
-text_box_options = {"background_color": hapi.color["light_grey"], "lines": 3}
+text_box_options = {"background_color": hapi.color["light_grey"], "max_lines": 3}
 
 text_box = hapi.text_box(100, 100, 300, 40, text_box_options)
 
