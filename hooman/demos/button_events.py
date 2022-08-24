@@ -18,7 +18,7 @@ def button_clicked(this):
     this.background_color = hapi.color["blue"]
 
 
-def button_hover_enter(this):
+def button_enter(this):
     # hapi.rect(this.x + this.w, 250, 100, 20)
     this.curve = 0.5
     # hapi.background(hapi.color['green'])
@@ -27,7 +27,7 @@ def button_hover_enter(this):
     this.create_button()
 
 
-def button_hover_exit(this):
+def button_exit(this):
     # hapi.rect(this.x + this.w, 250, 100, 20)
     this.curve = 0.1
     # hapi.background(hapi.color['green'])
@@ -44,8 +44,8 @@ grey_style = {
     "padding_y": 5,
     "font_size": 15,
     "on_click": button_clicked,
-    "on_hover_enter": button_hover_enter,
-    "on_hover_exit": button_hover_exit,
+    "on_enter": button_enter,
+    "on_exit": button_exit,
 }
 
 

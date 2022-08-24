@@ -51,6 +51,21 @@ NEW: save to svg now supported
 
 -   more...
 
+# Getting Started
+
+hooman makes developing with pygame easy by having everything in 1 object!
+
+```
+from hooman import Hooman
+
+hapi = Hooman(width, height)
+
+while hapi.is_running:
+
+    hapi.flip_display()
+    hapi.event_loop()
+```
+
 # Docs
 
 ## Attributes
@@ -424,46 +439,41 @@ while hapi.is_running:
         hapi.update_ui()
 ```
 
+
 ## .button
 
-Create a button with `hapi.button(x, y, text, [optional paramters])`
+Create a button with `hapi.button(x, y, w, h, text, [optional paramters])`
 
 -   `x` - x location of the button
 -   `y` - y location of the button
+-   `w` - width of the button
+-   `h` - height of the button
 -   `text` - the text on the button
 -   `[optional parameters]` - a dictionary of any extra options you want for the button listed below
 
 #### Optional Parameters
+```python
+    "hover_background_color": None
+    "outline": False
+    "outline_thickness": 0
+    "hover_outline_thickness": None
+    "outline_color": (0, 0, 0)
+    "outline_half": False
+    "hover_image": None
+    "enlarge": False
+    "enlarge_amount": 1.1
+    "calculate_size": False
+    "dont_generate": False
+    "padding_x": 0
+    "padding_y": 0
+    all options from Base Ui Widget
+```
+plus all parameters from [Base Widget](#Base-Widget)
 
--   surface - the surface you want the button on, by default it is the main window
--   background_color - the color of the button background
--   hover_background_color - the color of the button background when the mouse is over the button
--   font - the font of the text, by default it is Calibri
--   font_size - the size of the text, by default it is 30
--   font_colour - the colour of the text, by default it is black
--   outline - when set to True, the button will have an outline when the mouse hovers over
--   outline_thickness - this is the thickness of the outline
--   outline_color - the colour of the outline
--   outline_half - when set to True, it will create an outline for the bottom and right side of the button
--   action - this is a function that gets called when the button is clicked
--   action_arg - if the function given in action requires a parameter, you can use this to send to the function
--   image - this should be a `pygame.Surface()` object that the button will show instead
--   hover_image - this should be a `pygame.Surface()` object that the button will show when the mouse is over the button
--   enlarge - this will resize the button when the mouse is over the button, this should be a bool
--   enlarge_amount - this is the percentage that you want the button to resize to when the mouse is over the button (1 = no change)
--   calculate_size - when set to True, this will calculate the width and height of the button from the size of the text
--   padding_x - an integer that is added on to the width on both sides of the text when calculate_size is set to True
--   padding_y - an integer that is added on to the height on both sides of the text when calulate_size is set to True
--   dont_generate - when set to True, the button will not generate the images to put on screen, this can be handy if you want to use calculate_size without supplying text, you will need to call `button.update_text()` to generate the images before drawing
--   curve - the amount of curve you want the button to have on the edges with 0 being no curve and 1 being full curve, by default it is 0
--   on_hover_enter - this is a function that gets called when the mouse enters the button, the first frame it hovers over
--   on_hover_exit - this is a function that gets called when the mouse exits the button, the frame once it stops hovering over
--   on_click - this is a function that gets called when the mouse clicks the button, this only gets called once, even if mouse i being held down
 
 ```python
-
-def on_hover_enter(this): # this refers to the button
-    this.background_color = hapi.color['blue']
+def on_hover_enter(btn):
+    btn.background_color = hapi.color['blue']
 
 button = hapi.button(150, 250, "Click Me",
         {'on_hover_enter':on_hover_enter}
@@ -472,58 +482,61 @@ button = hapi.button(150, 250, "Click Me",
 
 #### Methods
 
--   update() - this updates the button and draws it on screen, this should be called every frame
--   Update_text(text) - this changes the text and recreates the button
--   get_rect() - this returns a pygame.Rect of the button
--   width() - this returns the width of the button
--   height() - this returns the height of the button
--   create_button() - this applies any changes to the button
+-   `update()` -> bool - this updates the button and draws it on screen, this should be called every frame, return whether the button was clicked
+-   `Update_text(text)` - this changes the text and recreates the button
+-   `create_button()` - this applies any changes to the button
 
 ## .slider
 
 `.slider(x, y, w, h, [optional parameters])`
 
--   x - x coordinate
--   y - y coordinate
--   w - width
--   h - height
+-   `x` - x coordinate
+-   `y` - y coordinate
+-   `w` - width
+-   `h` - height
 -   optional parameters - a dictionary of optional options
 
 #### optional parameters
-
--   background_color - the background color of the slider
--   slider_width - the width of slider, by default it is the same as the height
--   slider_color - the color of the slider
--   starting_value - the starting value of the slider, by default it is in the middle of the range
--   value_range - the range that the slider ranges between, by default it is between 0 and 1
-
+```python
+    "slider_width": None
+    "slider_color": (200, 200, 200)
+    "starting_value": None
+    "range": [0, 1]
+    "slider_height": None
+    "step": 0
+    "direction": "horizontal"
+    "slider_image": None
+    "slider_curve": 0
+```
+plus all parameters from [Base Widget](#Base-Widget)
 #### Methods
 
--   update() - this updates the slider and draws it on screen, this should be called every frame
--   value() - this returns the current value of the slider
--   set_value(value) - given a integer or float, this sets the value and moves the slider
+-   `update()` -> float - this updates the slider and draws it on screen, this should be called every frame, return the value
+-   `value()` - this returns the current value of the slider
+-   `set_value(value)` - given a integer or float, this sets the value and moves the slider
 
 ## .slider_with_text
 
 `.slider_with_text(slider, [optianl parameters])`
 
-- slider - a `.slider` widget
+- `slider` - a `.slider` widget
 - optional parameters - a dictionary of optional options
 
 #### optional parameters
-
-- font -  the font of the text, by default it is Calibri
-- font_size - the size of the text, by default it is 20
-- font_color - the color of the text, by defualt it is black
-- padding_x - how far off the horizontal sides of the slider should the text be drawn, in pixels, by default it is 0
-- padding_y - how far off the vertical sides of the slider should the text be drawn, in pixels, by default it is 0
-- pivot - where the text is located in relation to the slider, this can be "top", "top_left", "bottom_right" etc, default is "top_left"
-- accuracy - how many decimal points the value has, by default it is 0
-
+```python
+    "font": "calibri"
+    "font_size": 20
+    "font_color": (0, 0, 0)
+    "padding_y": 2
+    "padding_x": 0
+    "pivot": "top_left"
+    "accuracy": 0
+```
+plus all parameters from [Base Widget](#Base-Widget)
 #### Methods
 
-- update() - this updates the text and the given slider
-- value() - this returns the value of the given slider
+- `update()` - this updates the text and the given slider
+- `value()` - this returns the value of the given slider
 
 ## .scroll
 
@@ -532,17 +545,17 @@ button = hapi.button(150, 250, "Click Me",
 -   optional parameters - a dictionary of optional options
 
 #### optional parameters
-
-- starting_x - the starting position of the horizontal scroll
-- starting_y - the starting position of the vertical scroll
-- range_x - the amount of extra pixels the scroll moves the screen by for the horizontal
-- range_y - the amount of extra pixel the scroll moves the screen by for the vertical
-- bar_color - the color of the bar, background of the slider
-- slider_color - the color of the slider, the forground of the slider
-
+```python
+    "starting_x": 0
+    "starting_y": 0
+    "range_x": 0
+    "range_y": 0
+    "bar_color": (200, 200, 200)
+    "slider_color": (150, 150, 150)
+```
 #### Methods
 
--update() - this updates the scroll widget
+-`update()` - this updates the scroll widget
 
 #### how to use the scroll
 
@@ -550,7 +563,7 @@ button = hapi.button(150, 250, "Click Me",
 `scroll_widget[1]` to get the amount of vertical scroll
 
 eg.
-```
+```python
 scroll_obj = hapi.scroll(params)
 
 while hapi.running:
@@ -563,37 +576,60 @@ while hapi.running:
 
 `.textbox(x, y, w, h=0, [optional parameters])`
 
--   x - x coordinate
--   y - y coordinate
--   w - width
--   h - height of each line
+-   `x` - x coordinate
+-   `y` - y coordinate
+-   `w` - width
+-   `h` - height of each line
 -   optional parameters - a dictionary of optional options
 
 #### optional parameters
 
--   lines - the amount of lines the textbox has
--   text - the starting text it has
--   background_color - the color of the background
--   font_size - the size of the text font
--   font - the font of the text
--   text_color - the color of the text
--   surface - the surface to put the textbox on, by default it is the main window
--   margin - the offset from the left side that the text starts from
--   cursor - a cursor to show you where you are typing, by default it is on
--   Enter_action - a function that gets called when enter is pressed
--   calculateSize - when True, it will calculate the height based off the height of the text
-
+```python
+   "max_lines": 1
+    "text": "" # this can be a list containg a string of each line or a single string containing '\n's
+    "padding_x": 2
+    "padding_y": 2
+    "cursor": True
+    "on_return": None
+    "calculate_size": False
+    "typing": True
+```
 #### Methods
 
--   update() - this updates the textbox and draws it on screen, this should be called every frame
--   get_lines(lines=1, return_as_string=False) - this returns the text in the textbox, lines can be the line number (starting from 1) or a range of lines eg. `(1,4)` gets lines 1 to 4, when return_as_string is False, it will return each line in a list
--   key_down(event) - when a KEYDOWN event happens, giving it to this method updates the textbox
+-   `update()` - this updates the textbox and draws it on screen, this should be called every frame
+-   `get_lines(lines=1, return_as_string=False)` - this returns the text in the textbox, lines can be the line number (starting from 1) or a range of lines eg. `(1,4)` gets lines 1 to 4, when return_as_string is False, it will return each line in a list
+-   `key_down(event)` - when a KEYDOWN event happens, giving it to this method updates the textbox
 
-```
+```python
 def handle_events(event):
     if event.type == pygame.KEYDOWN:
-        .keydown(event)
+        my_textbox.keydown(event)
 ```
+
+## Base Widget
+these are all optianl parameters and methods that all widgests have
+
+#### optional parameters
+
+```python
+    "background_color": (255, 255, 255)
+    "surface": None
+    "on_click": None
+    "on_hover": None
+    "on_hold": None
+    "on_release": None
+    "on_enter": None
+    "on_exit": None
+    "image": None
+    "curve": 0
+    "font_colour": (0, 0, 0)
+    "font": "Calibri"
+    "font_size": 30
+    "center": False
+```
+#### methods
+
+- `get_rect()` -> pygame.Rect
 
 ## Charts
 

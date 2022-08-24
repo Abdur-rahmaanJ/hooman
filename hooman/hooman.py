@@ -171,7 +171,7 @@ class Hooman:
 
         # check_col = check_
 
-    def gradient(self, w, h, start_col, end_col, direction=0):
+    def gradient(self, w : int, h : int, start_col, end_col, direction : int =0):
         """returns a pygame.Surface with a gradient between 2 colors"""
         param_types = {
             "w": [int, []],

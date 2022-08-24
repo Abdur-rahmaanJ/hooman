@@ -30,17 +30,17 @@ grey_style = {
 }
 
 
-def button_hover_enter(this):
+def button_enter(this):
     hapi.set_background(hapi.color["green"])
 
 
-def button_hover_exit(this):
+def button_exit(this):
     hapi.set_background(hapi.color["white"])
 
 
 stylex = grey_style.copy()
-stylex["on_hover_enter"] = button_hover_enter
-stylex["on_hover_exit"] = button_hover_exit
+stylex["on_enter"] = button_enter
+stylex["on_exit"] = button_exit
 
 button1 = hapi.button(150, 150, 100, 50, "Click Me", grey_style)
 

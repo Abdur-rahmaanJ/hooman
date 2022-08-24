@@ -420,9 +420,9 @@ class Slider(Base_Widget):
         # get slider width and height
         slider_h = options["slider_height"] # height of the slider is always the short side of the slider
         if slider_h is None:
-            slider_h = self.h
+            slider_h = self.h if self.direction == "horizontal" else self.w
         slider_w = (
-            options["slider_width"] if options["slider_width"] is not None else self.w
+            options["slider_width"] if options["slider_width"] is not None else slider_h
         )
         # get the starting value
         if options["starting_value"] is not None:
