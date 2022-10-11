@@ -9,10 +9,7 @@ from setuptools import setup, find_packages
 from os import path
 import os
 import sys
-from hooman import __version__  # thanks gunicorn
-
 here = path.abspath(path.dirname(__file__))
-
 
 requires = [
     'pygame',
@@ -24,12 +21,27 @@ if sys.argv[-1] == "publish":  # requests
     os.system("twine upload dist/* --skip-existing")
     sys.exit()
 
+# Following the PyPa solution for Single-sourcing the package version:
+# https://packaging.python.org/en/latest/guides/single-sourcing-package-version/
+def read(rel_path: str) -> str:
+    with open(os.path.join(here, rel_path)) as fp:
+        return fp.read()
+
+def get_version(rel_path: str) -> str:
+    for line in read(rel_path).splitlines():
+        if line.startswith("__version__"):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    raise RuntimeError("Unable to find version string.")
+
+
 # Get the long description from the README file
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
+
 setup(
     name="hooman",  # Required
-    version=__version__,  # Required
+    version=get_version(path.join("hooman", "__init__.py")),  # Required
     description="Pygame for humans",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
