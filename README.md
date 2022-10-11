@@ -21,41 +21,20 @@ The package for clearer, shorter and cleaner PyGame codebases!
 
 Fun fact: Codementor.io [tweeted about Hooman](https://twitter.com/CodementorIO/status/1306295790441246725?s=20) tagged #LearnPython #100DaysOfCode
 
-NEW: save to svg now supported
+# Tutorials
 
-# Examples of possibilities:
-
-[Examples](https://github.com/Kirastel/hooman/)
-
-
-# All Demos
-
--   [Buttons.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/Buttons.py)
--   [Gradient_rect.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/Buttons.py)
--   [analog_clock.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/analog_clock.py)
--   [button_events.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/button_events.py)
--   [color_mouse.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/color_mouse.py)
--   [constrain.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/constrain.py)
--   [gravity.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/gravity.py)
--   [heart_arrow_curve_rect.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/heart_arrow_curve_rect.py)
--   [line_mouse.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/line_mouse.py)
--   [more_supershapes.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/more_supershapes.py)
--   [rotation.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/rotation.py)
--   [slider_color_picker.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/slider_color_picker.py)
--   [sliders.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/sliders.py)
--   [squares.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/squares.py)
--   [star.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/star.py)
--   [super_shape.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/super_shape.py)
--   [text_box.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/text_box.py)
--   [transparent_circles.py](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos/transparent_circles.py)
-
--   more...
+- [Building A Color Picker](https://dev.to/abdurrahmaanj/building-a-color-picker-in-pygame-using-hooman-307m)
+- [Display most frequent words using PyGame](https://www.pythonkitchen.com/display-most-frequent-words-python-pygame/)
+- [Realtime CPU monitor using PyGame](https://www.pythonkitchen.com/realtime-cpu-monitor-using-pygame/)
+- [Android's Lock Screen in Pygame](https://www.codementor.io/@abdurrahmaanj/android-s-lock-screen-pattern-in-pygame-1y12ejsg3s)
+- [Demos](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos) 
+- [Possibilities](https://github.com/Abdur-rahmaanJ/hooman/blob/master/Examples%20of%20possibilities.md)
 
 # Getting Started
 
 hooman makes developing with pygame easy by having everything in 1 object!
 
-```
+```python
 from hooman import Hooman
 
 hapi = Hooman(width, height)
@@ -65,6 +44,229 @@ while hapi.is_running:
     hapi.flip_display()
     hapi.event_loop()
 ```
+
+# Features
+
+### (new) record video
+
+```python
+from hooman import Hooman
+
+import pygame
+
+hapi = Hooman(500, 500)
+
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
+
+
+hapi.handle_events = handle_events
+
+while hapi.is_running:
+    hapi.background((255, 255, 255))
+
+    hapi.stroke_size(5)
+    hapi.stroke((0, 255, 0))
+
+    for i in range(0, hapi.WIDTH, 20):
+        hapi.line(i, 0, hapi.mouseX(), hapi.mouseY())
+
+
+    hapi.record()
+    hapi.flip_display()
+    hapi.event_loop()
+    
+
+pygame.quit()
+hapi.save_record('mov.mp4', framerate=25)
+```
+
+### (new) screenshot
+
+
+```
+hapi.save(path)
+```
+
+### (new) Integrate with other pygame codes
+
+```python
+# from https://pythonguides.com/create-a-game-using-python-pygame/
+# Hooman >= 0.8.2
+
+import pygame
+
+
+from hooman import Hooman # <-- this
+
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+
+red = (255, 0, 0)
+WIDTH = 20
+HEIGHT = 20
+MARGIN = 5
+grid = []
+for row in range(10):
+    grid.append([])
+    for column in range(10):
+        grid[row].append(0) 
+grid[1][5] = 1
+pygame.init()
+window_size = [255, 255]
+scr = pygame.display.set_mode(window_size)
+hapi = Hooman(integrate=True, screen=scr) # <-- this
+pygame.display.set_caption("Grid")
+done = False
+clock = pygame.time.Clock()
+while not done:
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT: 
+            done = True 
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            column = pos[0] // (WIDTH + MARGIN)
+            row = pos[1] // (HEIGHT + MARGIN)
+            grid[row][column] = 1
+            print("Click ", pos, "Grid coordinates: ", row, column)
+    scr.fill(black)
+    for row in range(10):
+        for column in range(10):
+            color = white
+            if grid[row][column] == 1:
+                color = red
+            pygame.draw.rect(scr,
+                             color,
+                             [(MARGIN + WIDTH) * column + MARGIN,
+                              (MARGIN + HEIGHT) * row + MARGIN,
+                              WIDTH,
+                              HEIGHT])
+    clock.tick(50)
+    pygame.display.flip()
+    hapi.record() # <-- this
+pygame.quit()
+hapi.save_record('movie.mp4') # <-- this
+```
+
+### (new) save to svg
+
+```python
+# https://github.com/mwaskom/seaborn-data/blob/master/penguins.csv
+
+from hooman import Hooman
+import pandas as pd
+import os
+
+window_width, window_height = 650, 600
+hapi = Hooman(window_width, window_height, svg=True)
+
+
+base_path = os.path.dirname(os.path.abspath(__file__))
+df = pd.read_csv(os.path.join(base_path, "data", "penguins.csv"))
+df = df.fillna(0)
+
+data = {k:list(df[k]) for k in df.columns.values.tolist()}
+
+hapi.background(255)
+
+colx = "bill_length_mm"
+coly = "bill_depth_mm"
+
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_y": 12,
+            "ticks_x": 12,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "show_axes": True,
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "x": colx,
+            "y": coly,
+            "plot_background": False,
+            "plot_grid": False,
+            "line_color": 200,
+            "type": "hist",
+            "hist_color": "g"
+        },
+    )
+
+hapi.save_svg(os.path.join(base_path, 'file.svg'))
+```
+
+### (new) keyword argument same as dictionary
+
+
+```python
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_x": 5,
+            "mouse_line": False,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "x": colx,
+            "y": coly,
+            "hue": "clarity",
+            "hue_order": clarity_ranking,
+            "size": "depth",
+            "plot_background": False,
+            "plot_background_grid": True,
+            "plot_background_color": (234,234,242),
+            "plot_background_grid_color": 200,
+            "line_color": 200
+        }
+    )
+
+# same as
+
+hapi.scatterchart(
+        40,
+        30,
+        500,
+        500,
+        {
+        "data": data,
+            "ticks_x": 5,
+            "mouse_line": False,
+            "range_y": [min(data[coly]), max(data[coly])],
+            "range_x": [min(data[colx]), max(data[colx])],
+            "tick_size": 10,
+            "show_ticks_x": True,
+            "show_ticks_y": True,
+            "hue": "clarity",
+            "hue_order": clarity_ranking,
+            "size": "depth",
+            "plot_background": False,
+            "plot_background_grid": True,
+            "plot_background_color": (234,234,242),
+            "plot_background_grid_color": 200,
+            "line_color": 200
+        },
+        x=colx,
+        y=coly
+    )
+
+# i.e you can mix both or use one option over the other
+
+```
+
+
 
 # Docs
 
