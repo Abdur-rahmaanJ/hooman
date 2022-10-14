@@ -2,7 +2,7 @@
 
 <p align="center">
   <br>
-  <a href="https://github.com/Abdur-rahmaanJ/hooman"><img src="assets/hooman.png" alt="Hooman"></a>
+  <a href="https://github.com/Abdur-rahmaanJ/hooman"><img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/hooman.png" alt="Hooman"></a>
   <br>
 </p>
 

@@ -1,3 +1,14 @@
+### 0.9.2
+
+- Concentric circle demo
+- Fix arc param type: Add float type
+
+### 0.9.1
+
+- Fix install
+
+### 0.9.0
+
 ### 0.8.2
 
 - Integrate mode
