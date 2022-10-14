@@ -292,6 +292,7 @@ class Hooman:
         else:
             self.regular_polygon(x, y, width, height, 4, 45)
 
+    
     def text(self, letters, x, y):
         if not isinstance(letters, str):
             letters = str(letters)
@@ -327,13 +328,13 @@ class Hooman:
             "y": [[int, float], []],
             "width": [[int, float], []],
             "height": [[int, float], []],
-            "start_angle": [int, []],
-            "end_angle": [int, []],
+            "start_angle": [[int, float], []],
+            "end_angle": [[int, float], []],
         }
         verify_func_param(self.arc, param_types, locals())
         pygame.draw.arc(
             self.screen,
-            self._fill,
+            self._stroke,
             [x, y, width, height],
             start_angle,
             end_angle,

@@ -93,6 +93,7 @@ def verify_func_param(method, param_types, locals_):
         filename = traceback.extract_stack()[0].filename
         line = traceback.extract_stack()[0].line
         lineno = traceback.extract_stack()[0].lineno
+
         print(
             "Hooman",
             type(e).__name__,  # TypeError
@@ -116,6 +117,7 @@ def verify_color(colors=[]):
             filename = traceback.extract_stack()[0].filename
             line = traceback.extract_stack()[0].line
             lineno = traceback.extract_stack()[0].lineno
+
             print(
                 "Hooman",
                 type(e).__name__,  # TypeError
