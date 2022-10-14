@@ -1,3 +1,7 @@
+### 0.9.3
+
+- Feat: candy_colors
+
 ### 0.9.2
 
 - Concentric circle demo

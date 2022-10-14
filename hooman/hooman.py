@@ -52,6 +52,9 @@ from .check import verify_color
 from .check import check_value
 from .check import verify_func_param
 
+from .colors import candy_colors
+from .colors import candy_colors_list
+
 
 class Hooman:
     def __init__(self, WIDTH=None, HEIGHT=None, svg=False, integrate=False, screen=None):
@@ -90,10 +93,13 @@ class Hooman:
             "yellow": (255, 255, 0),
             "grey": (100, 100, 100),
             "light_grey": (200, 200, 200),
+            "candy_gray": (240, 240, 255),
         }
         self.colours = self.colors
         self.color = self.colors
         self.colour = self.colors
+        self.candy_colors = candy_colors
+        self.candy_colors_list = candy_colors_list
 
         self.set_caption = pygame.display.set_caption
 
