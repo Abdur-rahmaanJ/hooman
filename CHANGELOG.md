@@ -1,3 +1,9 @@
+### 0.9.4
+
+- Feat: ripple_graph
+
+
+
 ### 0.9.3
 
 - Feat: candy_colors

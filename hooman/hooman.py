@@ -55,6 +55,9 @@ from .check import verify_func_param
 from .colors import candy_colors
 from .colors import candy_colors_list
 
+from .widget import RippleGraph
+from .widget import LockPattern
+
 
 class Hooman:
     def __init__(self, WIDTH=None, HEIGHT=None, svg=False, integrate=False, screen=None):
@@ -516,11 +519,17 @@ class Hooman:
     # pygame
     #
 
-    def flip_display(self):
+    def flip_display(self, update_ui=True):
         """updates the screen. This should be called once every frame"""
         pygame.display.flip()
         if self.bg_col is not None:
             self.background(self.bg_col)
+
+
+        if update_ui:
+            self.update_ui()
+
+
 
     def handle_events(self, event):
         pass
@@ -543,6 +552,17 @@ class Hooman:
         b = Button(*args, **kwargs)
         self._all_widgets.append(b)
         return b
+
+
+    def ripple_graph(self, *args, **kwargs) -> RippleGraph:
+        rg = RippleGraph(self, *args, **kwargs)
+        # self._all_widgets.append(b)
+        return rg
+
+    def lock_pattern(self, *args, **kwargs) -> LockPattern:
+        lp = LockPattern(self, *args, **kwargs)
+        self._all_widgets.append(lp)
+        return lp
 
     def text_box(self, *args, **kwargs) -> TextBox:
         t = TextBox(*args, **kwargs)
