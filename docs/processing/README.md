@@ -2,179 +2,179 @@
 
 Time & Day
 
- - [x] day()
+ 👍 day()
 
- - [x] hour()
+ 👍 hour()
 
- - [x] millis()
+ 👍 millis()
 
- - [x] minute()
+ 👍 minute()
 
- - [x] month()
+ 👍 month()
 
- - [x] second()
+ 👍 second()
 
- - [x] year()
+ 👍 year()
 
 
 Keyboard
 
--[ ] key
+❌ key
 
--[ ] keyCode
+❌ keyCode
 
--[ ] keyPressed
+❌ keyPressed
 
--[ ] keyPressed()
+❌ keyPressed()
 
--[ ] keyReleased()
+❌ keyReleased()
 
--[ ] keyTyped()
+❌ keyTyped()
 
 
 Mouse
 
--[ ] mouseButton
+❌ mouseButton
 
--[ ] mouseClicked()
+❌ mouseClicked()
 
--[ ] mouseDragged()
+❌ mouseDragged()
 
--[ ] mouseMoved()
+❌ mouseMoved()
 
--[ ] mousePressed
+❌ mousePressed
 
--[ ] mousePressed()
+❌ mousePressed()
 
--[ ] mouseReleased()
+❌ mouseReleased()
 
--[ ] mouseWheel()
+❌ mouseWheel()
 
-- [x] mouseX # as mouseX()
+👍 mouseX # as mouseX()
 
-- [x] mouseY
+👍 mouseY
 
-- [x] pmouseX
+👍 pmouseX
 
-- [x] pmouseY
+👍 pmouseY
 
 Constants
 
-- [x] HALF_PI
+👍 HALF_PI
 
-- [x] PI
+👍 PI
 
-- [x] QUARTER_PI
+👍 QUARTER_PI
 
-- [x] TAU
+👍 TAU
 
-- [x] TWO_PI
+👍 TWO_PI
 
 2D Primitives
 
-- [x] arc()
+👍 arc()
 
-- [x] circle()
+👍 circle()
 
-- [x] ellipse()
+👍 ellipse()
 
-- [x] line()
+👍 line()
 
--[ ] point()
+❌ point()
 
--[ ] quad()
+❌ quad()
 
-- [x] rect()
+👍 rect()
 
-- [x] square()
+👍 square()
 
--[ ] triangle()
+❌ triangle()
 
 Vertex
 
--[ ] beginContour()
+❌ beginContour()
 
-- [x] beginShape() # as begin_shape
+👍 beginShape() # as begin_shape
 
--[ ] bezierVertex()
+❌ bezierVertex()
 
--[ ] curveVertex()
+❌ curveVertex()
 
--[ ] endContour()
+❌ endContour()
 
-- [x] endShape()
+👍 endShape()
 
--[ ] quadraticVertex()
+❌ quadraticVertex()
 
-- [x] vertex()
+👍 vertex()
 
 
 Transform
 
--[ ] applyMatrix()
+❌ applyMatrix()
 
-- [x] popMatrix()
+👍 popMatrix()
 
--[ ] printMatrix()
+❌ printMatrix()
 
-- [x] pushMatrix()
+👍 pushMatrix()
 
--[ ] resetMatrix()
+❌ resetMatrix()
 
--[ ] rotateX()
+❌ rotateX()
 
--[ ] rotateY()
+❌ rotateY()
 
--[ ] rotateZ()
+❌ rotateZ()
 
-- [x] rotate()
+👍 rotate()
 
--[ ] scale()
+❌ scale()
 
--[ ] shearX()
+❌ shearX()
 
--[ ] shearY()
+❌ shearY()
 
-- [x] translate()
+👍 translate()
 
 Environment
 
--[ ] cursor()
+❌ cursor()
 
--[ ] delay()
+❌ delay()
 
--[ ] displayDensity()
+❌ displayDensity()
 
--[ ] displayHeight
+❌ displayHeight
 
--[ ] displayWidth
+❌ displayWidth
 
--[ ] focused
+❌ focused
 
-- [x] frameCount
+👍 frameCount
 
--[ ] frameRate
+❌ frameRate
 
-- [x] height # as HEIGHT
+👍 height # as HEIGHT
 
-- [x] noCursor()
+👍 noCursor()
 
--[ ] noSmooth()
+❌ noSmooth()
 
--[ ] pixelDensity()
+❌ pixelDensity()
 
--[ ] pixelHeight
+❌ pixelHeight
 
--[ ] pixelWidth
+❌ pixelWidth
 
--[ ] fullScreen()
+❌ fullScreen()
 
--[ ] frameRate()
+❌ frameRate()
 
--[ ] settings()
+❌ settings()
 
--[ ] size()
+❌ size()
 
--[ ] smooth()
+❌ smooth()
 
--[ ] width
+❌ width
