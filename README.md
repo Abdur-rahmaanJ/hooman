@@ -9,7 +9,7 @@
 
 # hooman [![Downloads](https://pepy.tech/badge/hooman)](https://pepy.tech/project/hooman) ![PyPI](https://img.shields.io/pypi/v/hooman)
 
-~ pygame for humans
+~ pygame for humans [ [docs](https://abdur-rahmaanj.github.io/hooman) | [gallery](https://abdur-rahmaanj.github.io/hooman/gallery) ]
 
 ```
 pip install hooman
@@ -44,6 +44,19 @@ while hapi.is_running:
     hapi.flip_display()
     hapi.event_loop()
 ```
+
+# Playground
+
+You can use the *[jurigged](https://github.com/breuleux/jurigged)* package to reload your code while you update your file. The latter will give you a quick visual feedback while coding.
+
+## Example
+
+```
+jurigged hooman/hooman/demos/sketch_pad.py
+```
+# Contributing Notes
+
+-   **Demos**: Include your name and Github URL in a docstring at the top of the demo file
 
 # Features
 
@@ -934,15 +947,4 @@ params = {
     }
 
 ```
-# Playground
 
-You can use the *[jurigged](https://github.com/breuleux/jurigged)* package to reload your code while you update your file. The latter will give you a quick visual feedback while coding.
-
-## Example
-
-```
-jurigged hooman/hooman/demos/sketch_pad.py
-```
-# Contributing Notes
-
--   **Demos**: Include your name and Github URL in a docstring at the top of the demo file
