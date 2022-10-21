@@ -176,7 +176,7 @@ class Hooman:
     # colors
     #
 
-    def fill(self, col):
+    def fill(self, *col):
         """The color to fill drawn shapes with"""
         verify_color([col])
         self._fill = check_color(col).value
