@@ -74,7 +74,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
-    keywords="human pygame canvas api wrapper game",  # Optional
+    keywords="human pygame canvas api wrapper game processing",  # Optional
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().
     #

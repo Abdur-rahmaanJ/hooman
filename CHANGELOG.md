@@ -1,8 +1,14 @@
+### 0.9.5
+
+- Feat: time functions: .day, .hour, .year, .month
+- Feat: Add HALF_PI etc
+- Feat: .millis for milliseconds since program started
+- Feat: .frameCount for number of frames since program started
+- Feat: Add square, circle
+
 ### 0.9.4
 
 - Feat: ripple_graph
-
-
 
 ### 0.9.3
 
