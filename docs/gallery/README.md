@@ -28,3 +28,12 @@ Hooman makes pygame coding very easy!
 <a href="./constrain">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/constrain.gif" width="100" height=100>
 </a>
+<a href="./graphs">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/graphs.png" width="100" height=100>
+</a>
+<a href="./scatter_chart">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/scatter_chart.png" width="100" height=100>
+</a>
+<a href="./scatter_chart_hist">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/scatter_chart_hist.png" width="100" height=100>
+</a>
