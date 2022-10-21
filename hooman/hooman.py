@@ -65,6 +65,10 @@ class Hooman:
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.PI = pi
+        self.HALF_PI = pi / 2 
+        self.QUARTER_PI = 0.75 * pi 
+        self.TWO_PI = 2 * PI 
+        self.TAU = 2 * PI
 
         if not integrate:
             self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
