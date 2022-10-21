@@ -22,3 +22,6 @@ Hooman makes pygame coding very easy!
 <a href="./gallery/supershapes" title="supershapes">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/supershapes.png" width="100" height=100>
 </a>
+<a href="./gallery/cross_hair">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/cross_hair.gif" width="100" height=100>
+</a>
