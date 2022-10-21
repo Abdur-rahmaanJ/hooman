@@ -2,6 +2,7 @@ import sys
 import os 
 import shutil
 import uuid
+import time
 
 import pygame
 import pygame.gfxdraw
@@ -67,8 +68,8 @@ class Hooman:
         self.PI = pi
         self.HALF_PI = pi / 2 
         self.QUARTER_PI = 0.75 * pi 
-        self.TWO_PI = 2 * PI 
-        self.TAU = 2 * PI
+        self.TWO_PI = 2 * pi
+        self.TAU = 2 * pi
 
         if not integrate:
             self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
@@ -161,6 +162,15 @@ class Hooman:
 
         self.session_id = uuid.uuid1()
         self._session_vars = {}
+
+        self._previous_mouse = []
+
+        self._frame_count = 0
+
+        self._has_cursor = False
+
+        self._start_millis = time.time()
+
 
     #
     # colors
@@ -516,6 +526,23 @@ class Hooman:
         x, y = pygame.mouse.get_pos()
         return y
 
+    def pmouseX(self):
+        if len(self._previous_mouse) == 0:
+            return 0
+        else:
+            x, y = self._previous_mouse[0]
+            return x
+
+    def pmouseY(self):
+        if len(self._previous_mouse) == 0:
+            return 0
+        else:
+            x, y = self._previous_mouse[0]
+            return y
+
+    def mouse(self):
+        return pygame.mouse.get_pos()
+
     def cross_hair(self, coord):
         self._cross_hair(self, coord)
 
@@ -525,13 +552,24 @@ class Hooman:
 
     def flip_display(self, update_ui=True):
         """updates the screen. This should be called once every frame"""
-        pygame.display.flip()
+
+        self._frame_count += 1
+
+        self._previous_mouse.append(self.mouse())
+
+
+
+        if len(self._previous_mouse) > 2: # bug: 3 values in previous mouse
+            self._previous_mouse.remove(self._previous_mouse[0]) # a queue?
+        
         if self.bg_col is not None:
             self.background(self.bg_col)
 
 
         if update_ui:
             self.update_ui()
+        pygame.display.flip()
+        
 
 
 
@@ -724,9 +762,9 @@ class Hooman:
         except FileNotFoundError:
             pass
 
-        
+    #    
     # day n time
-
+    #
 
     def day(self):
         d = datetime.datetime.now()
@@ -754,3 +792,19 @@ class Hooman:
     def year(self):
         d = datetime.datetime.now()
         return d.hour
+
+    def millis(self):
+        return (time.time() - self._start_millis) * 1000
+
+    #
+    # Environment
+    #
+
+    def noCursor(self):
+        self._has_cursor = False 
+
+
+    def frameCount(self):
+        return self._frame_count
+
+
