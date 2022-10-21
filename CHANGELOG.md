@@ -1,10 +1,11 @@
-### 0.9.5
+### 0.10.0
 
 - Feat: time functions: .day, .hour, .year, .month
 - Feat: Add HALF_PI etc
 - Feat: .millis for milliseconds since program started
 - Feat: .frameCount for number of frames since program started
 - Feat: Add square, circle
+- Feat: pmouseX, pmouseY
 
 ### 0.9.4
 
