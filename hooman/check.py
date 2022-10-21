@@ -26,12 +26,21 @@ def check_params(params, options, funcname):
 
 
 def check_color(col):
+    # must be cleared
     if isinstance(col, int) or isinstance(col, float):
-        return Result.Ok((col, col, col))
-    elif isinstance(col, list) or isinstance(col, tuple):
+        pass
+    if isinstance(col, list) or isinstance(col, tuple):
         if not len(col) in [1, 3]:
             return Result.Fail("Fill takes only 1 or 3 parameters when using a list")
         if len(col) == 1:
+            if isinstance(col, tuple) or isinstance(col, list):
+                if (isinstance(col[0], tuple) or isinstance(col[0], list)) and len(col[0]) in [3]:
+                    return Result.Ok(col)
+                elif isinstance(col[0], int):
+                    val = (col[0], col[0], col[0])
+                    return Result.Ok(val)
+                else:
+                    raise Exception('color must be like fill(100) or fill((100, 100, 255)) or fill(100, 100, 255)')
             return Result.Ok((col[0], col[0], col[0]))
         else:
             return Result.Ok((col[0], col[1], col[2]))

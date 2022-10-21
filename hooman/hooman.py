@@ -178,19 +178,21 @@ class Hooman:
 
     def fill(self, *col):
         """The color to fill drawn shapes with"""
-        verify_color([col])
+        # verify_color([col])
         self._fill = check_color(col).value
 
-    def stroke(self, col):
+    def stroke(self, *col):
         """The color to draw lines/strokes with"""
-        verify_color([col])
+        # verify_color([col])
         self._stroke = check_color(col).value
 
-    def background(self, col):
+    def background(self, *col):
         """Fill the screen with a color"""
 
-        verify_color([col])
-        self.screen.fill(check_color(col).value)
+        # verify_color([col])
+        v = check_color(col).value
+
+        self.screen.fill(v)
 
         # check_col = check_
 
