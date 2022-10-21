@@ -1,3 +1,9 @@
+analog clock
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/analog_clock.gif)
+
+
+```python
 from hooman import Hooman
 import numpy
 from math import pow
@@ -67,10 +73,9 @@ while hapi.is_running:
 
     r_slider.update()
 
-    hapi.record()
     hapi.flip_display()
     hapi.event_loop()
 
 
-hapi.save_record('analog_clock.mp4', framerate=25)
 pygame.quit()
+```

@@ -1,3 +1,10 @@
+barchart
+
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/barchart.gif)
+
+
+```python
 from hooman import Hooman
 
 
@@ -15,3 +22,4 @@ while hapi.is_running:
     # hapi.text(hapi.mouseX(), 200, 200)
     hapi.flip_display()
     hapi.event_loop()
+```

@@ -1,7 +1,7 @@
 Welcome to hooman gallery
 ---
 
-Hooman makes pygame coding very easy! 
+Hooman makes pygame coding very easy! It also implements the [processing](https://processing.org) API.
 
 
 <a href="./snake_game">
@@ -36,4 +36,10 @@ Hooman makes pygame coding very easy!
 </a>
 <a href="./scatter_chart_hist">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/scatter_chart_hist.png" width="100" height=100>
+</a>
+<a href="./analog_clock">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/analog_clock.gif" width="100" height=100>
+</a>
+<a href="./barchart">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/barchart.gif" width="100" height=100>
 </a>
