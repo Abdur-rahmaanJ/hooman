@@ -61,3 +61,18 @@ Hooman makes pygame coding very easy! It also implements the [processing](https:
 <a href="./falling_stars">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/falling_stars.gif" width="200" height=200>
 </a>
+<a href="./fill_arc">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/fill_arc.gif" width="200" height=200>
+</a>
+<a href="./gradient_rect">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/gradient_rect.png" width="200" height=200>
+</a>
+<a href="./gravity">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/gravity.gif" width="200" height=200>
+</a>
+<a href="./integrate">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/integrate.gif" width="200" height=200>
+</a>
+<a href="./linegraph">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/linegraph.gif" width="200" height=200>
+</a>

@@ -1,3 +1,8 @@
+line graph
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/linegraph.gif)
+
+```python
 from hooman import Hooman
 
 window_width, window_height = 500, 500
@@ -64,3 +69,5 @@ while hapi.is_running:
 
     hapi.flip_display()
     hapi.event_loop()
+
+```

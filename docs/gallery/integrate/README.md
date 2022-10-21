@@ -1,3 +1,8 @@
+integrate
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/integrate.gif)
+
+```python
 # from https://pythonguides.com/create-a-game-using-python-pygame/
 # Hooman >= 0.8.2
 
@@ -58,3 +63,4 @@ while not done:
     hapi.record() # <-- this
 pygame.quit()
 hapi.save_record('integrate.mp4') # <-- this
+```
