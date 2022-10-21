@@ -76,3 +76,15 @@ Hooman makes pygame coding very easy! It also implements the [processing](https:
 <a href="./linegraph">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/linegraph.gif" width="200" height=200>
 </a>
+<a href="./password">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/password.gif" width="200" height=200>
+</a>
+<a href="./pie_chart_from_doughnut">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/pie_chart_from_doughnut.png" width="200" height=200>
+</a>
+<a href="./piechart">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/piechart.png" width="200" height=200>
+</a>
+<a href="./ripple_graph">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/ripple_graph.gif" width="200" height=200>
+</a>

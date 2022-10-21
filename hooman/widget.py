@@ -186,7 +186,7 @@ class LockPattern:
 
         # --- right password found ---
         if self.display_win:
-            if on_win is None:
+            if self.on_win is None:
                 self.hapi.fill((200, 200, 50))
                 self.hapi.font_size(30)
                 self.hapi.text("Right password!", 300, 50)

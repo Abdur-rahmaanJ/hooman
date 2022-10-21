@@ -1,3 +1,8 @@
+piechart
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/piechart.png)
+
+```python
 from hooman import Hooman
 from collections import OrderedDict
 import pygame
@@ -41,3 +46,5 @@ while hapi.is_running:
 
 hapi.save('assets/piechart.png')
 pygame.quit()
+
+```
