@@ -1,10 +1,6 @@
+## Snake Game
 
-
-
-Snake Game
----
-
-![](https://github.com/Abdur-rahmaanJ/hooman/blob/master/assets/snake.gif)
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/snake.gif)
 
 
 ```python
