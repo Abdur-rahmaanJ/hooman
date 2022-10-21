@@ -19,36 +19,36 @@ Time & Day
 
 Keyboard
 
-- [ ] key
+-[ ] key
 
-- [ ] keyCode
+-[ ] keyCode
 
-- [ ] keyPressed
+-[ ] keyPressed
 
-- [ ] keyPressed()
+-[ ] keyPressed()
 
-- [ ] keyReleased()
+-[ ] keyReleased()
 
-- [ ] keyTyped()
+-[ ] keyTyped()
 
 
 Mouse
 
-- [ ] mouseButton
+-[ ] mouseButton
 
-- [ ] mouseClicked()
+-[ ] mouseClicked()
 
-- [ ] mouseDragged()
+-[ ] mouseDragged()
 
-- [ ] mouseMoved()
+-[ ] mouseMoved()
 
-- [ ] mousePressed
+-[ ] mousePressed
 
-- [ ] mousePressed()
+-[ ] mousePressed()
 
-- [ ] mouseReleased()
+-[ ] mouseReleased()
 
-- [ ] mouseWheel()
+-[ ] mouseWheel()
 
 - [x] mouseX # as mouseX()
 
@@ -80,101 +80,101 @@ Constants
 
 - [x] line()
 
-- [ ] point()
+-[ ] point()
 
-- [ ] quad()
+-[ ] quad()
 
 - [x] rect()
 
 - [x] square()
 
-- [ ] triangle()
+-[ ] triangle()
 
 Vertex
 
-- [ ] beginContour()
+-[ ] beginContour()
 
 - [x] beginShape() # as begin_shape
 
-- [ ] bezierVertex()
+-[ ] bezierVertex()
 
-- [ ] curveVertex()
+-[ ] curveVertex()
 
-- [ ] endContour()
+-[ ] endContour()
 
 - [x] endShape()
 
-- [ ] quadraticVertex()
+-[ ] quadraticVertex()
 
 - [x] vertex()
 
 
 Transform
 
-- [ ] applyMatrix()
+-[ ] applyMatrix()
 
 - [x] popMatrix()
 
-- [ ] printMatrix()
+-[ ] printMatrix()
 
 - [x] pushMatrix()
 
-- [ ] resetMatrix()
+-[ ] resetMatrix()
 
-- [ ] rotateX()
+-[ ] rotateX()
 
-- [ ] rotateY()
+-[ ] rotateY()
 
-- [ ] rotateZ()
+-[ ] rotateZ()
 
 - [x] rotate()
 
-- [ ] scale()
+-[ ] scale()
 
-- [ ] shearX()
+-[ ] shearX()
 
-- [ ] shearY()
+-[ ] shearY()
 
 - [x] translate()
 
 Environment
 
-- [ ] cursor()
+-[ ] cursor()
 
-- [ ] delay()
+-[ ] delay()
 
-- [ ] displayDensity()
+-[ ] displayDensity()
 
-- [ ] displayHeight
+-[ ] displayHeight
 
-- [ ] displayWidth
+-[ ] displayWidth
 
-- [ ] focused
+-[ ] focused
 
 - [x] frameCount
 
-- [ ] frameRate
+-[ ] frameRate
 
 - [x] height # as HEIGHT
 
 - [x] noCursor()
 
-- [ ] noSmooth()
+-[ ] noSmooth()
 
-- [ ] pixelDensity()
+-[ ] pixelDensity()
 
-- [ ] pixelHeight
+-[ ] pixelHeight
 
-- [ ] pixelWidth
+-[ ] pixelWidth
 
-- [ ] fullScreen()
+-[ ] fullScreen()
 
-- [ ] frameRate()
+-[ ] frameRate()
 
-- [ ] settings()
+-[ ] settings()
 
-- [ ] size()
+-[ ] size()
 
-- [ ] smooth()
+-[ ] smooth()
 
-- [ ] width
+-[ ] width
