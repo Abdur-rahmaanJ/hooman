@@ -43,3 +43,15 @@ Hooman makes pygame coding very easy! It also implements the [processing](https:
 <a href="./barchart">
 	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/barchart.gif" width="100" height=100>
 </a>
+<a href="./button_events">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/button_events.gif" width="100" height=100>
+</a>
+<a href="./button_on_hold">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/button_on_hold.gif" width="100" height=100>
+</a>
+<a href="./cube">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/cube.gif" width="100" height=100>
+</a>
+<a href="./doughnut">
+	<img src="https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/doughnut.gif" width="100" height=100>
+</a>

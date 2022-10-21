@@ -1,3 +1,8 @@
+cube
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/cube.gif)
+
+```python
 """
 Thanks to Kostas Terzidis
 
@@ -138,3 +143,4 @@ while hapi.is_running:
     hapi.event_loop()
 
 hapi.pygame.quit()
+```

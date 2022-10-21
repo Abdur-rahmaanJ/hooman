@@ -1,3 +1,9 @@
+doughnut
+
+![](https://github.com/Abdur-rahmaanJ/hooman/raw/master/assets/doughnut.gif)
+
+
+```python
 from hooman import Hooman
 
 import pygame
@@ -44,3 +50,4 @@ while hapi.is_running:
     hapi.flip_display()
 
 pygame.quit()
+```
