@@ -721,3 +721,32 @@ class Hooman:
             pass
 
         
+    # day n time
+
+
+    def day(self):
+        d = datetime.datetime.now()
+        return d.day
+
+
+    def month(self):
+        d = datetime.datetime.now()
+        return d.month
+
+    def hour(self):
+        d = datetime.datetime.now()
+        return d.hour
+
+    def minute(self):
+        d = datetime.datetime.now()
+        return d.minute
+
+
+    def second(self):
+        d = datetime.datetime.now()
+        return d.second
+
+
+    def year(self):
+        d = datetime.datetime.now()
+        return d.hour
