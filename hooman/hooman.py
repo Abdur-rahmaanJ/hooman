@@ -288,6 +288,10 @@ class Hooman:
             svg_element = SVG.tag("ellipse", attributes=attributes, self_close=True)
             self._svg_commands.append(svg_element)
 
+    def circle(self, x, y, width):
+        self.ellipse(x, y, width, width)
+
+
     def rect(self, x, y, width, height):
         param_types = {
             "x": [[int, float], []],
@@ -315,6 +319,8 @@ class Hooman:
         else:
             self.regular_polygon(x, y, width, height, 4, 45)
 
+    def square(self, x, y, width):
+        self.rect(x, y, width, width)
     
     def text(self, letters, x, y):
         if not isinstance(letters, str):
