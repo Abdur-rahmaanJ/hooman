@@ -27,8 +27,7 @@ Fun fact: Codementor.io [tweeted about Hooman](https://twitter.com/CodementorIO/
 - [Display most frequent words using PyGame](https://www.pythonkitchen.com/display-most-frequent-words-python-pygame/)
 - [Realtime CPU monitor using PyGame](https://www.pythonkitchen.com/realtime-cpu-monitor-using-pygame/)
 - [Android's Lock Screen in Pygame](https://www.codementor.io/@abdurrahmaanj/android-s-lock-screen-pattern-in-pygame-1y12ejsg3s)
-- [Demos](https://github.com/Abdur-rahmaanJ/hooman/tree/master/hooman/demos) 
-- [Possibilities](https://github.com/Abdur-rahmaanJ/hooman/blob/master/Examples%20of%20possibilities.md)
+
 
 # Getting Started
 
