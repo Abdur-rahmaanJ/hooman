@@ -13,9 +13,11 @@ Each function is accompanied by illustrative graphics
 Ref
 ---
 
-[.WIDTH](./ref/width)
+### CONSTANTS
 
-[.HEIGHT](./ref/width)
+[.WIDTH / .width](./ref/width)
 
+[.HEIGHT / .width](./ref/height)
 
+[.tau / .TAU](./ref/tau)
 
