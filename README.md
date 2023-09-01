@@ -7,7 +7,7 @@
 </p>
 
 
-# hooman [![Downloads](https://pepy.tech/badge/hooman)](https://pepy.tech/project/hooman) ![PyPI](https://img.shields.io/pypi/v/hooman)
+# hooman [![Downloads](https://static.pepy.tech/badge/hooman)](https://pepy.tech/project/hooman) ![PyPI](https://img.shields.io/pypi/v/hooman)
 
 ~ pygame for humans [ [docs](https://abdur-rahmaanj.github.io/hooman) | [gallery](https://abdur-rahmaanj.github.io/hooman/gallery) ]
 
