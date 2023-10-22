@@ -19,6 +19,8 @@ join discord: https://discord.gg/Q23ATve
 
 The package for clearer, shorter and cleaner PyGame codebases!
 
+Featured by [r/Pygame](https://www.reddit.com/r/pygame/)
+
 Fun fact: Codementor.io [tweeted about Hooman](https://twitter.com/CodementorIO/status/1306295790441246725?s=20) tagged #LearnPython #100DaysOfCode
 
 # Tutorials
