@@ -814,5 +814,3 @@ class Hooman:
 
     def frameCount(self):
         return self._frame_count
-
-
