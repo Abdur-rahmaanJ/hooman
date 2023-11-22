@@ -1,4 +1,3 @@
-# demo_starfield.py
 from hooman import Hooman
 import pygame
 import random
@@ -19,6 +18,8 @@ for _ in range(num_stars):
     star_speed = random.uniform(1, 5)
     stars.append((star_x, star_y, star_speed))
 
+fps = 60
+
 def handle_events(event):
     if event.type == pygame.QUIT:
         hapi.is_running = False
@@ -29,7 +30,7 @@ def handle_events(event):
 hapi.handle_events = handle_events
 
 while hapi.is_running:
-    
+
     hapi.background(bg_col)
 
     # Update and draw stars
@@ -42,10 +43,13 @@ while hapi.is_running:
 
         # Reset stars that go off-screen
         if x > window_width or y > window_height:
-            stars[i] = (0, 0, speed)
+            stars[i] = (random.randint(0, window_width), random.randint(0, window_height), speed)
 
     # Update display and handle events
     hapi.flip_display()
     hapi.event_loop()
+
+    # FPS limiter
+    hapi.clock.tick(fps)
 
 pygame.quit()
