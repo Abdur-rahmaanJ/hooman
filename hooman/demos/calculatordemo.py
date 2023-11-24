@@ -1,45 +1,42 @@
-def add(x, y):
-    return x + y
+import tkinter as tk
 
-def subtract(x, y):
-    return x - y
+def on_click(button):
+    current_text = entry.get()
 
-def multiply(x, y):
-    return x * y
-
-def divide(x, y):
-    if y != 0:
-        return x / y
+    if button == 'C':
+        entry.delete(0, tk.END)
+    elif button == '=':
+        try:
+            result = str(eval(current_text))
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, result)
+        except Exception as e:
+            entry.delete(0, tk.END)
+            entry.insert(tk.END, 'Error')
     else:
-        return "Error: Division by zero"
+        entry.insert(tk.END, button)
 
-def calculator():
-    print("Simple Calculator Demo")
-    print("Select operation:")
-    print("1. Addition")
-    print("2. Subtraction")
-    print("3. Multiplication")
-    print("4. Division")
+# Create the main window
+root = tk.Tk()
+root.title("Calculator")
 
-    choice = input("Enter choice (1/2/3/4): ")
+# Entry widget for display
+entry = tk.Entry(root, width=16, font=('Arial', 20), justify='right')
+entry.grid(row=0, column=0, columnspan=4)
 
-    num1 = float(input("Enter first number: "))
-    num2 = float(input("Enter second number: "))
+# Define button positions and labels
+buttons = [
+    ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
+    ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3),
+    ('1', 3, 0), ('2', 3, 1), ('3', 3, 2), ('-', 3, 3),
+    ('0', 4, 0), ('C', 4, 1), ('=', 4, 2), ('+', 4, 3)
+]
 
-    if choice == '1':
-        result = add(num1, num2)
-        print(f"{num1} + {num2} = {result}")
-    elif choice == '2':
-        result = subtract(num1, num2)
-        print(f"{num1} - {num2} = {result}")
-    elif choice == '3':
-        result = multiply(num1, num2)
-        print(f"{num1} * {num2} = {result}")
-    elif choice == '4':
-        result = divide(num1, num2)
-        print(f"{num1} / {num2} = {result}")
-    else:
-        print("Invalid Input")
+# Create and place buttons in a grid
+for (text, row, col) in buttons:
+    button = tk.Button(root, text=text, width=4, height=2, font=('Arial', 16),
+                       command=lambda t=text: on_click(t))
+    button.grid(row=row, column=col)
 
-if __name__ == "__main__":
-    calculator()
+# Start the main event loop
+root.mainloop()
