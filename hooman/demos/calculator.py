@@ -1,102 +1,82 @@
+from hooman import Hooman
 import pygame
-import sys
 
-# Initialize Pygame
-pygame.init()
+# Initialize Hooman and Pygame
+h = Hooman(400, 600, "Calculator")
+pygame.font.init()
 
-# Set up the screen
-WIDTH, HEIGHT = 300, 400
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Calculator")
+# Set up fonts
+font_big = pygame.font.Font(None, 50)
+font_small = pygame.font.Font(None, 36)
 
-# Set up colors
-WHITE = (255, 255, 255)
-GRAY = (200, 200, 200)
-BLACK = (0, 0, 0)
+# Calculator variables
+expression = ""
+result = ""
 
-# Create a clock object to control the frame rate
-clock = pygame.time.Clock()
+# Store the previous state of the left mouse button
+h.prev_left_button = False
 
-# Initialize calculator state
-calculator_state = {
-    'input': '',
-    'output': ''
-}
+# Function to evaluate the expression and update the result
+def calculate():
+    try:
+        global result
+        result = str(eval(expression))
+    except:
+        result = "Error"
 
-def draw_button(x, y, width, height, color, label):
-    pygame.draw.rect(screen, color, (x, y, width, height))
-    font = pygame.font.Font(None, 36)
-    text = font.render(label, True, BLACK)
-    screen.blit(text, (x + 20, y + 20))
-
-def update_display():
-    pygame.draw.rect(screen, WHITE, (10, 10, 280, 50))
-    font = pygame.font.Font(None, 24)
-    input_text = font.render(calculator_state['input'], True, BLACK)
-    output_text = font.render(calculator_state['output'], True, BLACK)
-    screen.blit(input_text, (20, 30))
-    screen.blit(output_text, (20, 50))
-
-def main():
-    # Define button positions
-    button_positions = [
-        (10, 80), (90, 80), (170, 80), (250, 80),
-        (10, 160), (90, 160), (170, 160), (250, 160),
-        (10, 240), (90, 240), (170, 240), (250, 240),
-        (10, 320), (90, 320), (170, 320), (250, 320),
-    ]
-
-    # Define button labels
-    button_labels = [
-        '7', '8', '9', '/',
-        '4', '5', '6', '*',
-        '1', '2', '3', '-',
-        'C', '0', '=', '+'
-    ]
-
-    # Create calculator buttons
-    buttons = []
-    for label, (x, y) in zip(button_labels, button_positions):
-        draw_button(x, y, 70, 70, GRAY, label)
-        buttons.append((x, y, 70, 70, label))
-
-    # Game loop
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                for button in buttons:
-                    bx, by, bwidth, bheight, blabel = button
-                    if x >= bx and x <= bx + bwidth and y >= by and y <= by + bheight:
-                        handle_button_click(blabel)
-
-        # Update the display
-        update_display()
-        pygame.display.flip()
-
-        # Cap the frame rate
-        clock.tick(60)
-
-    # Quit Pygame
-    pygame.quit()
-    sys.exit()
-
-def handle_button_click(label):
-    global calculator_state
-
-    if label == 'C':
-        calculator_state['input'] = ''
-        calculator_state['output'] = ''
-    elif label == '=':
-        try:
-            calculator_state['output'] = str(eval(calculator_state['input']))
-        except Exception as e:
-            calculator_state['output'] = 'Error'
+# Function to handle button clicks
+def handle_button_click(button_text):
+    global expression, result
+    if button_text == "=":
+        calculate()
+    elif button_text == "C":
+        expression = ""
+        result = ""
     else:
-        calculator_state['input'] += label
+        expression += button_text
 
-if __name__ == "__main__":
-    main()
+# Main loop
+while h.is_running:
+    h.background(h.color["white"])
+
+    # Draw the input expression
+    text_surface = font_big.render(expression, True, pygame.Color("black"))
+    h.screen.blit(text_surface, (20, 50))
+
+    # Draw the result
+    text_surface = font_big.render(result, True, pygame.Color("green"))
+    h.screen.blit(text_surface, (20, 100))
+
+    # Draw calculator buttons
+    buttons = [
+        ("7", 20, 200), ("8", 120, 200), ("9", 220, 200), ("/", 320, 200),
+        ("4", 20, 300), ("5", 120, 300), ("6", 220, 300), ("*", 320, 300),
+        ("1", 20, 400), ("2", 120, 400), ("3", 220, 400), ("-", 320, 400),
+        ("C", 20, 500), ("0", 120, 500), ("=", 220, 500),  # Removed the "." button
+        ("+", 320, 500),
+    ]
+    button_size = 80
+
+    for button in buttons:
+        text, x, y = button
+        pygame.draw.rect(h.screen, pygame.Color(200, 200, 200), (x, y, button_size, button_size))
+        
+        text_surface = font_small.render(text, True, pygame.Color("black"))
+        text_rect = text_surface.get_rect(center=(x + button_size // 2, y + button_size // 2))
+        h.screen.blit(text_surface, text_rect)
+        
+    # Check for left mouse button click
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    left_button, _, _ = pygame.mouse.get_pressed()
+
+    if left_button and not h.prev_left_button:
+        for button in buttons:
+            text, x, y = button
+            if x < mouse_x < x + button_size and y < mouse_y < y + button_size:
+                handle_button_click(text)
+
+    # Store the current state of the left button for the next iteration
+    h.prev_left_button = left_button
+
+    h.flip_display()
+    h.event_loop()
