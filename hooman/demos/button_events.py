@@ -7,7 +7,6 @@ hapi = Hooman(window_width, window_height)
 
 bg_col = (255, 255, 255)
 
-# the function that gets called when the button is clicked on
 
 
 def button_clicked(this):
