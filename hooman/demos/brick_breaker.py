@@ -1,8 +1,6 @@
 from hooman import Hooman
 import random
 import pygame
-import sys
-
 
 window_width, window_height = 600, 400
 hapi = Hooman(window_width, window_height)
@@ -16,8 +14,8 @@ brick_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0)]
 ball_radius = 10
 ball_x = window_width // 2
 ball_y = window_height // 2
-ball_speed_x = random.choice([-1, 1])
-ball_speed_y = -2
+ball_speed_x = random.choice([-0.5, 0.5])
+ball_speed_y = -0.5
 ball_color = (0, 0, 0) 
 
 
@@ -101,4 +99,6 @@ while hapi.is_running:
     hapi.event_loop()
 
 pygame.quit()  
-sys.exit()
+
+
+
