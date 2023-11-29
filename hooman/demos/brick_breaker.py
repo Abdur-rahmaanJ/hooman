@@ -98,7 +98,7 @@ while hapi.is_running:
     hapi.flip_display()
     hapi.event_loop()
 
-pygame.quit()  
+
 
 
 
