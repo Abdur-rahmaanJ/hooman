@@ -15,6 +15,13 @@
 pip install hooman
 ```
 
+demos
+
+```
+python -m hooman.demos # see all demos
+python -m hooman.demos.sliders # select one
+```
+
 join discord: https://discord.gg/Q23ATve
 
 The package for clearer, shorter and cleaner PyGame codebases!
