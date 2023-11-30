@@ -41,7 +41,7 @@ def add_letter():
 while hapi.is_running and not game_over:
     hapi.background(WHITE)
     hapi.event_loop()
-
+    
     # Add a new letter at random intervals
     if random.randint(1, 30) == 1:  # Adjust the frequency as needed
         add_letter()
@@ -61,7 +61,7 @@ while hapi.is_running and not game_over:
         if letter_info['y'] > hapi.HEIGHT:
             game_over = True
 
-
+    
     # Handle key presses
     keys = pygame.key.get_pressed()
     for i in range(len(pygame.key.get_pressed())):
@@ -72,7 +72,7 @@ while hapi.is_running and not game_over:
                     letters.remove(letter_info)
                     score += 1
                     break  # Break to only remove one letter at a time
-
+    
     # Display the score
     # hapi.text(f"Score: {score}", 10, 10, size=font_size, color=BLACK)
     # hapi.text(f"Score: {score}", 10, 10)

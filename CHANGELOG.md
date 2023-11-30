@@ -1,3 +1,7 @@
+### 0.11.0
+
+- Feat: python -m hooman.demos
+
 ### 0.10.0
 
 - Feat: time functions: .day, .hour, .year, .month
