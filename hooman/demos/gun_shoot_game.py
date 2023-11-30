@@ -11,7 +11,7 @@ hapi = Hooman(window_width, window_height)
 spaceship_width, spaceship_height = 50, 50
 spaceship_x = (window_width - spaceship_width) // 2
 spaceship_y = window_height - spaceship_height - 10
-spaceship_speed = 5
+spaceship_speed = 2
 gun_height = 10  # Height of the 'gun' part at the bottom of the spaceship
 
 # Asteroids settings
@@ -117,5 +117,3 @@ while hapi.is_running and lives > 0:
 
     hapi.flip_display()
     hapi.event_loop()
-
-pygame.quit()
