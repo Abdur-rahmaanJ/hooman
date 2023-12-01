@@ -2,88 +2,151 @@ import random
 import pygame
 from hooman import Hooman
 
-# Initialize hooman
-pygame.init()
-window_width, window_height = 800, 600  # Set your desired window dimensions
-hapi = Hooman(window_width, window_height)
+# Game window dimensions
+WIDTH, HEIGHT = 600, 800
 
-# Define colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+# Initialize Hooman
+hapi = Hooman(WIDTH, HEIGHT)
 
-# Game variables
-letters = []
-speed = 1
+# Spaceship class
+class Spaceship:
+    def __init__(self):
+        self.x = WIDTH // 2
+        self.y = HEIGHT - 60
+        self.speed = 5
+        self.color = (255, 255, 255)
+
+    def move(self, direction):
+        if direction == "LEFT" and self.x > 0:
+            self.x -= self.speed
+        elif direction == "RIGHT" and self.x < WIDTH - 50:
+            self.x += self.speed
+
+    def draw(self):
+        hapi.fill(self.color)
+        hapi.rect(self.x, self.y, 50, 30)
+        hapi.fill(255, 255, 255)
+
+    def change_speed(self, increase):
+        if increase:
+            self.speed = 10  # Increased speed
+        else:
+            self.speed = 5  # Default speed
+
+    def change_color(self, color):
+        self.color = color
+
+# Asteroid class
+class Asteroid:
+    def __init__(self):
+        self.x = random.randint(0, WIDTH - 30)
+        self.y = 0
+        self.speed = random.uniform(2.0, 4.0)
+
+    def update(self):
+        self.y += self.speed
+        if self.y > HEIGHT:
+            self.y = 0
+            self.x = random.randint(0, WIDTH - 30)
+
+    def draw(self):
+        hapi.rect(self.x, self.y, 30, 30)
+
+    def is_hit_by(self, projectile):
+        return (self.x < projectile.x < self.x + 30 and
+                self.y < projectile.y < self.y + 30)
+
+# Projectile class
+class Projectile:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.speed = 10
+
+    def update(self):
+        self.y -= self.speed
+
+    def draw(self):
+        hapi.rect(self.x, self.y, 5, 10)
+
+    def off_screen(self):
+        return self.y < 0
+
+# Initialize spaceship, asteroids, projectiles, and score
+spaceship = Spaceship()
+asteroids = [Asteroid() for _ in range(5)]
+projectiles = []
 score = 0
-font_size = 30
-game_over = False
 
-font_size = 40 
-score_font_size = 30
+# Define the event handler function
+def handle_events(event):
+    if event.type == pygame.QUIT:
+        hapi.is_running = False
 
-# Setup the font for rendering text
-font = pygame.font.SysFont('Arial', font_size)
-score_font = pygame.font.SysFont('Arial', score_font_size)
-
-# Function to add a new letter
-def add_letter():
-    # letter = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    # x = random.randint(0, hapi.WIDTH - font_size)
-    # y = 0  # Start at the top
-    # letters.append({'letter': letter, 'x': x, 'y': y})
-    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"  # Include numbers
-    char = random.choice(chars)
-    x = random.randint(0, hapi.WIDTH - font_size)
-    y = 0
-    letters.append({'letter': char, 'x': x, 'y': y})
-
-# Main game loop
-while hapi.is_running and not game_over:
-    hapi.background(WHITE)
-    hapi.event_loop()
-
-    # Add a new letter at random intervals
-    if random.randint(1, 30) == 1:  # Adjust the frequency as needed
-        add_letter()
-
-    # Draw the letters
-    for letter_info in letters:
-        letter_info['y'] += speed  # Move the letter down
-        # hapi.text(letter_info['letter'], letter_info['x'], letter_info['y'], size=font_size, color=BLACK)
-        hapi.fill((255, 0, 0))
-        # hapi.text(letter_info['letter'], letter_info['x'], letter_info['y'])
-        text_surface = font.render(letter_info['letter'], True, (255, 0, 0))
-        hapi.screen.blit(text_surface, (letter_info['x'], letter_info['y'])) 
+# Attach the event handler to the Hooman instance
+hapi.handle_event = handle_events
 
 
-    # Check for game over
-    for letter_info in letters:
-        if letter_info['y'] > hapi.HEIGHT:
-            game_over = True
+# Game loop
+while hapi.is_running:
+    # Handle events and spaceship movement
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            hapi.is_running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                spaceship.move("LEFT")
+                spaceship.change_color((255, 0, 0))
+                spaceship.change_speed(increase=True)
+            elif event.key == pygame.K_RIGHT:
+                spaceship.move("RIGHT")
+                spaceship.change_color((255, 0, 0))
+                spaceship.change_speed(increase=True)
+            elif event.key == pygame.K_SPACE:
+                projectiles.append(Projectile(spaceship.x + 22, spaceship.y))
+            elif event.key == pygame.K_UP:  # Example key to increase speed
+                spaceship.change_speed(True)
+        if event.type == pygame.KEYUP:
+            if event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
+                spaceship.change_color((255, 255, 255))  # Change color back to original
+                spaceship.change_speed(increase=False)
+            if event.key == pygame.K_UP:  # Example key to reset speed
+                spaceship.change_speed(False)
+    # hapi.event_loop()
 
-    # Handle key presses
-    keys = pygame.key.get_pressed()
-    for i in range(len(pygame.key.get_pressed())):
-        if keys[i] == 1:
-            char = pygame.key.name(i).upper()
-            for letter_info in letters:
-                if letter_info['letter'] == char:
-                    letters.remove(letter_info)
-                    score += 1
-                    break  # Break to only remove one letter at a time
+    # Update and draw asteroids
+    hapi.background(0, 0, 0)
+    for asteroid in asteroids:
+        asteroid.update()
+        asteroid.draw()
 
-    # Display the score
-    # hapi.text(f"Score: {score}", 10, 10, size=font_size, color=BLACK)
-    # hapi.text(f"Score: {score}", 10, 10)
-    score_surface = score_font.render(f"Score: {score}", True, (0, 0, 0))  # Black color
-    hapi.screen.blit(score_surface, (10, 10))
+    # Update and draw projectiles
+    for projectile in projectiles[:]:
+        projectile.update()
+        if projectile.off_screen():
+            projectiles.remove(projectile)
+        else:
+            projectile.draw()
 
+    # Check for collisions and update score
+    for projectile in projectiles[:]:
+        for asteroid in asteroids[:]:
+            if asteroid.is_hit_by(projectile):
+                projectiles.remove(projectile)
+                asteroids.remove(asteroid)
+                asteroids.append(Asteroid())  # Add a new asteroid
+                score += 1  # Increase score
+                break
 
+    # Draw the spaceship
+    spaceship.draw()
 
-    # Update the game display and tick
+    # Draw the score
+    hapi.fill(255, 255, 255)  # White color for the text
+    hapi.text(f"Score: {score}", 10, 10)
+
+    # Refresh the screen
     hapi.flip_display()
-    hapi.clock.tick(30)
 
-# End the game
-pygame.quit()
+# pygame.quit()
