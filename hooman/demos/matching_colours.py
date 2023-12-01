@@ -118,6 +118,7 @@ while hapi.is_running and not game_over:
     hapi.rect(player_x - player_size // 2, player_y - player_size // 2, player_size, player_size)
 
     hapi.fill(hapi.color['black'])
+    hapi.font_size(15)
     hapi.text(f"Score: {score}", 10, 10)
     hapi.text(f"Lives: {lives}", 10, 40)
 
