@@ -23,7 +23,7 @@ def random_color():
 
 # Target color and color change count
 target_color = random_color()
-color_match_timer = 300  # Time in frames to match the color
+color_match_timer = 500  # Time in frames to match the color
 color_change_count = 0
 max_color_changes = 5  # Quit after 5 color changes
 
@@ -79,6 +79,7 @@ while hapi.is_running:
 
     # Display the timer and score
     remaining_time = color_match_timer // frame_rate
+    hapi.font_size(20)
     hapi.text(f"Time: {remaining_time}s", 220, 450)
     hapi.text(f"Score: {score}", 50, 450)
 
