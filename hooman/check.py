@@ -36,7 +36,7 @@ def check_color(col):
             if isinstance(col, tuple) or isinstance(col, list):
                 if (isinstance(col[0], tuple) or isinstance(col[0], list)) and len(col[0]) in [3]:
                     return Result.Ok(col)
-                elif isinstance(col[0], int):
+                elif (isinstance(col[0], int) or isinstance(col[0],float)):
                     val = (col[0], col[0], col[0])
                     return Result.Ok(val)
                 else:

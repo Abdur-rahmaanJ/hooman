@@ -201,9 +201,11 @@ class Hooman:
         param_types = {
             "w": [int, []],
             "h": [int, []],
+            "start_col": [[list, tuple], []],
+            "end_col": [[list, tuple], []],
             "direction": [int, []],
         }
-        verify_color([start_col, end_col])
+        # verify_color([start_col, end_col])
         verify_func_param(self.gradient, param_types, locals())
         return self._gradient(
             w, h, check_color(start_col).value, check_color(end_col).value, direction
@@ -212,7 +214,7 @@ class Hooman:
     def set_background(self, col):
         """this calls hapi.background every frame with the given color"""
 
-        verify_color([col])
+        # verify_color([col])
         self.bg_col = check_color(col).value
 
     def stroke_size(self, weight):
