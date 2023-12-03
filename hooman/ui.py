@@ -785,7 +785,7 @@ class slider_with_text:
         if "top" in self.pivot:
             y = self.y - obj.get_height()
         y = self.y
-        self.surface.blit(obj, (x, y))
+        self.slider.surface.blit(obj, (x, y))
 
     def _get_text_height(self):
         return self.font.render(" ", True, (0, 0, 0)).get_height()
