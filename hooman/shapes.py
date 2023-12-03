@@ -57,6 +57,11 @@ def curve_rect(hapi, x, y, width, height, curve, rotation):
     pygame.draw.circle(surf, shape_fill, (width - curve, height - curve), curve)
     hapi.screen.blit(surf,(x,y))
     """
+    if rotation == 0:
+        pygame.draw.rect(
+            hapi.screen, shape_fill, (x, y + curve, width, height), border_radius=curve
+        )
+        return
     hapi.rect(x + curve, y, width - curve * 2, height)
     hapi.rect(x, y + curve, width, height - curve * 2)
     top_left = pygame.Vector2(-width // 2 + curve, -height // 2 + curve).rotate(
