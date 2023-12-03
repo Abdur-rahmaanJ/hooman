@@ -381,7 +381,8 @@ class Hooman:
     def end_shape(self, fill=1):
         if fill:
             pygame.draw.polygon(self.screen, self._fill, self._polygon_coords)
-            svg_fill = f"rgb({self._fill[0]},{self._fill[1]},{self._fill[2]})"
+            f = self._fill[0]
+            svg_fill = f"rgb({f[0]},{f[1]},{f[2]})"
         else:
             pygame.draw.polygon(
                 self.screen, self._fill, self._polygon_coords, self._stroke_weight

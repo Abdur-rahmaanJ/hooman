@@ -1,3 +1,12 @@
+### 0.11.1
+
+- Fix: shapes.py _fill
+- Chore: Update demos 
+
+### 0.11.0
+
+- Feat: python -m hooman.demos
+
 ### 0.10.0
 
 - Feat: time functions: .day, .hour, .year, .month

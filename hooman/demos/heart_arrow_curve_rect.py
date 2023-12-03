@@ -23,14 +23,14 @@ clock = pygame.time.Clock()
 while hapi.is_running:
     hapi.background(bg_col)
 
-    hapi.rotate(hapi.mouseX())
+    # hapi.rotate(hapi.mouseX())
 
     hapi.fill(hapi.color["red"])
-    hapi.heart(10, 200, hapi.mouseX() // 4, hapi.mouseY() // 4)
+    hapi.heart(10, 200, 100, 50)
 
-    hapi.arrow(300, 200, hapi.mouseX(), hapi.mouseY() // 2)
+    hapi.arrow(300, 200, 100, 60)
 
-    hapi.curve_rect(10, 10, 200, 100, hapi.mouseY() // 5)
+    hapi.curve_rect(10, 10, 200, 100, 70)
 
     hapi.event_loop()
 

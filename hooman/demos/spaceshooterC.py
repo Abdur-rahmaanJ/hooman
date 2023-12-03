@@ -90,7 +90,7 @@ hapi.handle_event = handle_events
 # Game loop
 while hapi.is_running:
     # Handle events and spaceship movement
-
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             hapi.is_running = False
@@ -114,7 +114,7 @@ while hapi.is_running:
             if event.key == pygame.K_UP:  # Example key to reset speed
                 spaceship.change_speed(False)
     # hapi.event_loop()
-
+    
     # Update and draw asteroids
     hapi.background(0, 0, 0)
     for asteroid in asteroids:

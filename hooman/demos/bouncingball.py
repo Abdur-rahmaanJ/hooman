@@ -12,7 +12,7 @@ bg_col = (255, 255, 255)
 # Ball
 ball_x, ball_y = window_width // 2, window_height // 2
 ball_radius = 20
-ball_speed_x, ball_speed_y = 5, 5
+ball_speed_x, ball_speed_y = 2, 1
 ball_color = hapi.color["blue"]  
 
 # Effects
