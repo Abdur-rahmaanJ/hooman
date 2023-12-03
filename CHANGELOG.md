@@ -1,3 +1,8 @@
+### 0.11.2
+
+- Fix: check_color
+- Fix: verify_func_params
+
 ### 0.11.1
 
 - Fix: shapes.py _fill
