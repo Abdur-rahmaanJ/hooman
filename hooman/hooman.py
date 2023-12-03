@@ -559,7 +559,7 @@ class Hooman:
     # pygame
     #
 
-    def flip_display(self, update_ui=True):
+    def flip_display(self, update_ui=False):
         """updates the screen. This should be called once every frame"""
 
         self._frame_count += 1
