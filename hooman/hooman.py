@@ -166,6 +166,7 @@ class Hooman:
         self._previous_mouse = []
 
         self._frame_count = 0
+        self._fps = 60
 
         self._has_cursor = False
 
@@ -591,6 +592,7 @@ class Hooman:
         """Get all new events. This should be called once every frame"""
         if len(self._timers) > 0:
             self._timer_update()
+        self.clock.tick(self._fps)
         self.mouse_test_x = self.mouseX()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -668,6 +670,12 @@ class Hooman:
     def second(self) -> int:
         now = datetime.datetime.now()
         return now.second
+
+    def get_fps(self) -> int:
+        return self.clock.get_fps()
+    
+    def set_fps(self, fps):
+        self._fps = fps
 
     #
     # charts
