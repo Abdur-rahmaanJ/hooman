@@ -101,13 +101,11 @@ paddle = Paddle()
 bricks = [Brick(col * (BRICK_WIDTH + 2), row * (BRICK_HEIGHT + 2)) for row in range(5) for col in range(10)]
 
 #game main loop
-running = True
-game_over = False
-while running and hapi.is_running:
+while hapi.is_running:
     hapi.background(WHITE)
 
     # Updating game elements
-    if not game_over:
+    if hapi.is_running:
         ball_out = ball.update()
         paddle.update()
 
@@ -125,16 +123,16 @@ while running and hapi.is_running:
     # Draw game elements
     for brick in bricks:
         brick.draw()
-    if not game_over:
+    if hapi.is_running:
         ball.draw()
-    paddle.draw()
+        paddle.draw()
 
     # Render and display the score
     score_surface = score_font.render(f"Score: {score}", True, BLACK)
     hapi.screen.blit(score_surface, (10, 10))
 
     # Check if the game is over
-    if ball_out and not game_over:
+    if ball_out and hapi.is_running:
         game_over = True
         game_over_surface = score_font.render("Game Over - Press any key to exit", True, BLACK)
         hapi.screen.blit(game_over_surface, (window_width // 2 - 150, window_height // 2 - 20))
@@ -144,14 +142,11 @@ while running and hapi.is_running:
 
     # End game if ball is out
     if ball_out:
-        while game_over:
+        while hapi.is_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    game_over = False
-                    running = False
+                    hapi.is_running = False
                 elif event.type == pygame.KEYDOWN:
-                    game_over = False
-                    running = False
+                    hapi.is_running = False
 
-# Quit the game
-pygame.quit()
+
