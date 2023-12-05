@@ -2,9 +2,6 @@ import random
 import pygame
 from hooman import Hooman
 
-# Initialize pygame and hooman
-pygame.init()
-
 # Setup game window and variables
 width, height = 600, 400
 hapi = Hooman(width, height)
@@ -85,6 +82,3 @@ while not game_over:
 
     # Limit the frame rate
     clock.tick(fps)
-
-# Quit the game
-pygame.quit()
