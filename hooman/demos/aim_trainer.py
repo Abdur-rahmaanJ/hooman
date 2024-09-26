@@ -78,5 +78,3 @@ while hapi.is_running:
 
     # Refresh screen
     hapi.flip_display()
-
-pygame.quit()
