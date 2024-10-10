@@ -1,3 +1,7 @@
+### 0.11.3
+
+- Add up to 3.13 support
+
 ### 0.11.2
 
 - Fix: check_color
