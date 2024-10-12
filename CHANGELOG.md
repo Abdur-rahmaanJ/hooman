@@ -1,3 +1,9 @@
+### 0.12.0
+
+- @hapi.onmousedown
+- @hapi.onmouseup
+- @hapi.onmousedrag
+
 ### 0.11.3
 
 - Add up to 3.13 support
