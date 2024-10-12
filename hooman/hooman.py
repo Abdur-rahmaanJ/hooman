@@ -602,7 +602,7 @@ class Hooman:
         if event.type == pygame.MOUSEMOTION:
             if self.mouse_pressed: 
                 if self._onmousedrag_func is not None:
-                    self.onmousedrag(event.pos[0], event.pos[1])
+                    self._onmousedrag_func(event.pos[0], event.pos[1])
     
     def onmousedown(self, func): 
         self._onmousedown_func = func
