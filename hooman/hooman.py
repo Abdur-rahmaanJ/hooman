@@ -172,6 +172,11 @@ class Hooman:
 
         self._start_millis = time.time()
 
+        self._onmousedown_func = None
+        self._onmouseup_func = None
+        self._onmousedrag_func = None
+        self.mouse_pressed = False
+
 
     #
     # colors
@@ -582,11 +587,31 @@ class Hooman:
             self.update_ui()
         pygame.display.flip()
         
-
-
-
     def handle_events(self, event):
-        pass
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if self._onmousedown_func is not None:
+                    self._onmousedown_func(event.pos[0], event.pos[1])
+                self.mouse_pressed = True
+        
+        if event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                if self._onmouseup_func is not None:
+                    self._onmouseup_func(event.pos[0], event.pos[1])
+                self.mouse_pressed = False
+        if event.type == pygame.MOUSEMOTION:
+            if self.mouse_pressed: 
+                if self._onmousedrag_func is not None:
+                    self.onmousedrag(event.pos[0], event.pos[1])
+    
+    def onmousedown(self, func): 
+        self._onmousedown_func = func
+
+    def onmouseup(self, func): 
+        self._onmouseup_func = func
+
+    def onmousedrag(self, func): 
+        self._onmousedrag_func = func
 
     def event_loop(self):
         """Get all new events. This should be called once every frame"""
@@ -597,6 +622,7 @@ class Hooman:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.is_running = False
+            
             self.handle_events(event)
 
     #
