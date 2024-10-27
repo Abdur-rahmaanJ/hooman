@@ -1,3 +1,7 @@
+### 0.12.1
+
+- Remove pygame dep to accomodate pygame-ce
+
 ### 0.12.0
 
 - @hapi.onmousedown

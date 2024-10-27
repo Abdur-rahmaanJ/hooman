@@ -11,6 +11,8 @@
 
 ~ pygame for humans [ [docs](https://github.com/Abdur-rahmaanJ/hooman#docs) | [gallery](https://abdur-rahmaanj.github.io/hooman/gallery) ]
 
+Supports pygame / pygame-ce
+
 ```
 pip install hooman
 ```
