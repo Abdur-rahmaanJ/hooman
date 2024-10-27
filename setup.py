@@ -12,7 +12,6 @@ import sys
 here = path.abspath(path.dirname(__file__))
 
 requires = [
-    'pygame',
     'numpy'
 ]
 
